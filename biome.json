@@ -1,0 +1,82 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main",
+    "root": "."
+  },
+  "files": {
+    "ignoreUnknown": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "convex/convex/**/*.ts",
+      "vite.config.ts"
+    ]
+  },
+  "overrides": [
+    {
+      "includes": ["src/routeTree.gen.ts", "convex/convex/_generated/**/*.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ],
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "useImportType": "warn"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "fix": "unsafe",
+          "level": "warn",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "tw", "tw.*"]
+          }
+        }
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "indentWidth": 2
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "indentWidth": 2
+    }
+  }
+}
