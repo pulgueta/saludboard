@@ -59,4 +59,4 @@ export const Button: FC<ButtonProps> = ({
   );
 };
 
-export { Button, buttonVariants };
+export { buttonVariants };
