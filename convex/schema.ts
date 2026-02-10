@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { zid, zodToConvex } from "convex-helpers/server/zod4";
 import type { ZodType } from "zod";
-import { array, number, object, string, } from "zod";
+import { array, number, object, string } from "zod";
 
 export const {
   table: experiencesTable,
@@ -16,7 +16,7 @@ export const {
   technologies: array(string()),
   startDate: number(),
   endDate: number().optional(),
-  deletedAt: number().optional()
+  deletedAt: number().optional(),
 });
 
 export const {
@@ -32,7 +32,7 @@ export const {
     website: string().url(),
     github: string().url(),
   }),
-  deletedAt: number().optional()
+  deletedAt: number().optional(),
 });
 
 export default defineSchema({

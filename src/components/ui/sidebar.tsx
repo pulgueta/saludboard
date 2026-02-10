@@ -1,6 +1,18 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { SidebarIcon } from "@phosphor-icons/react";
+import { Button } from "@ui/button";
+import { Input } from "@ui/input";
+import { Separator } from "@ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@ui/sheet";
+import { Skeleton } from "@ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, CSSProperties, FC, ReactNode } from "react";
@@ -12,23 +24,6 @@ import {
   useMemo,
   useState,
 } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 

@@ -1,7 +1,6 @@
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
+import { Button } from "@ui/button";
 import type { ComponentProps, FC } from "react";
-
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const AlertDialog: FC<AlertDialogPrimitive.Root.Props> = ({

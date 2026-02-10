@@ -1,10 +1,9 @@
+import { Label } from "@ui/label";
+import { Separator } from "@ui/separator";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, FC, ReactNode } from "react";
 import { useMemo } from "react";
-
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 export const FieldSet: FC<ComponentProps<"fieldset">> = ({

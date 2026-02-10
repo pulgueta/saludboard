@@ -1,10 +1,9 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { Separator } from "@ui/separator";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, FC } from "react";
-
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 export const ItemGroup: FC<ComponentProps<"ul">> = ({

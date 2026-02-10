@@ -3,12 +3,11 @@ import {
   CaretLeftIcon,
   CaretRightIcon,
 } from "@phosphor-icons/react";
+import { Button, buttonVariants } from "@ui/button";
 import type { ComponentProps, FC } from "react";
 import { useEffect, useRef } from "react";
 import type { DayButton, Locale } from "react-day-picker";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
-
-import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type CalendarProps = ComponentProps<typeof DayPicker> & {

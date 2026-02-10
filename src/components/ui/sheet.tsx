@@ -1,8 +1,7 @@
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
 import { XIcon } from "@phosphor-icons/react";
+import { Button } from "@ui/button";
 import type { ComponentProps, FC, ReactNode } from "react";
-
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Sheet: FC<SheetPrimitive.Root.Props> = ({ ...props }) => {

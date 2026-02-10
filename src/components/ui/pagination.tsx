@@ -3,9 +3,8 @@ import {
   CaretRightIcon,
   DotsThreeIcon,
 } from "@phosphor-icons/react";
+import { Button } from "@ui/button";
 import type { ComponentProps, FC } from "react";
-
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Pagination: FC<ComponentProps<"nav">> = ({

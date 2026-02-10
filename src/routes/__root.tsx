@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { TooltipProvider } from "@ui/tooltip";
+
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -42,7 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",
