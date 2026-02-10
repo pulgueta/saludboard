@@ -1,5 +1,6 @@
 import type { FC, ReactNode } from "react";
 
+import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
 import { StepIndicator } from "@/components/primitives/step-indicator";
 import { useOnboarding } from "@/lib/onboarding-context";
 import { cn } from "@/lib/utils";
@@ -51,6 +52,9 @@ export const OnboardingLayout: FC<OnboardingLayoutProps> = ({
 
         {/* Step content */}
         <div className="flex flex-1 flex-col">{children}</div>
+
+        {/* Persistent footer - outside step content to prevent flash */}
+        <OnboardingFooter className="mt-auto" />
       </div>
 
       {/* Subtle bottom border decoration */}

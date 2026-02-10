@@ -2,8 +2,8 @@ import { CheckCircle } from "@phosphor-icons/react";
 import { Badge } from "@ui/badge";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
+import { useCallback, useEffect } from "react";
 
-import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
 import { getHealthFieldById } from "@/lib/health-fields";
@@ -13,13 +13,13 @@ import { useOnboarding } from "@/lib/onboarding-context";
  * Step 5: Confirmation summary showing all selections before completing onboarding.
  */
 export const ConfirmationStep: FC = () => {
-  const { state } = useOnboarding();
+  const { state, setFooterConfig } = useOnboarding();
 
   const selectedFieldNames = state.selectedFields
     .map((id) => getHealthFieldById(id)?.name)
     .filter(Boolean);
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     // In a real app this would persist to the backend.
     // For now, we log and could navigate to the dashboard.
     console.info("Onboarding complete:", {
@@ -27,7 +27,14 @@ export const ConfirmationStep: FC = () => {
       selectedFields: state.selectedFields,
       profile: state.profile,
     });
-  };
+  }, [state.accountType, state.selectedFields, state.profile]);
+
+  useEffect(() => {
+    setFooterConfig({
+      nextLabel: "Ir al dashboard",
+      onComplete: handleComplete,
+    });
+  }, [setFooterConfig, handleComplete]);
 
   return (
     <OnboardingStep>
@@ -129,13 +136,6 @@ export const ConfirmationStep: FC = () => {
           </div>
         </div>
       </AnimatedContainer>
-
-      <div className="mt-auto">
-        <OnboardingFooter
-          nextLabel="Ir al dashboard"
-          onComplete={handleComplete}
-        />
-      </div>
     </OnboardingStep>
   );
 };

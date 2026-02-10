@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
+
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AccountTypeSelector } from "@/components/features/health-field/account-type-selector";
@@ -22,10 +22,6 @@ export const AccountTypeStep: FC = () => {
         selected={state.accountType}
         onSelect={setAccountType}
       />
-
-      <div className="mt-auto">
-        <OnboardingFooter />
-      </div>
     </OnboardingStep>
   );
 };

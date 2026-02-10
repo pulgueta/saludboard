@@ -1,7 +1,7 @@
 import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import type { FC } from "react";
-import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
+
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
@@ -110,10 +110,6 @@ export const ProfileStep: FC = () => {
             </div>
           </AnimatedContainer>
         </div>
-      </div>
-
-      <div className="mt-auto">
-        <OnboardingFooter />
       </div>
     </OnboardingStep>
   );

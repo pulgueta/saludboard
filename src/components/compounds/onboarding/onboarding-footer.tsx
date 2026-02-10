@@ -7,21 +7,24 @@ import { cn } from "@/lib/utils";
 
 type OnboardingFooterProps = {
   className?: string;
-  nextLabel?: string;
-  onComplete?: () => void;
 };
 
 /**
  * Navigation footer for onboarding steps.
  * Renders Back/Next buttons with contextual labels and disabled states.
+ * This component is persistent and doesn't flash between steps.
  */
-export const OnboardingFooter: FC<OnboardingFooterProps> = ({
-  className,
-  nextLabel,
-  onComplete,
-}) => {
-  const { canGoNext, canGoPrev, isLastStep, nextStep, prevStep } =
-    useOnboarding();
+export const OnboardingFooter: FC<OnboardingFooterProps> = ({ className }) => {
+  const {
+    canGoNext,
+    canGoPrev,
+    isLastStep,
+    nextStep,
+    prevStep,
+    state: { footerConfig },
+  } = useOnboarding();
+
+  const { nextLabel, onComplete } = footerConfig;
 
   const handleNext = () => {
     if (isLastStep && onComplete) {
@@ -36,26 +39,12 @@ export const OnboardingFooter: FC<OnboardingFooterProps> = ({
       data-slot="onboarding-footer"
       className={cn("flex items-center justify-between pt-6", className)}
     >
-      {canGoPrev ? (
-        <Button
-          variant="ghost"
-          size="lg"
-          onClick={prevStep}
-          className="gap-2 text-muted-foreground"
-        >
-          <ArrowLeft weight="bold" className="size-4" />
-          Volver
-        </Button>
-      ) : (
-        <div />
-      )}
+      <Button variant="outline" onClick={prevStep} disabled={!canGoPrev}>
+        <ArrowLeft weight="bold" className="size-4" />
+        Volver
+      </Button>
 
-      <Button
-        size="lg"
-        onClick={handleNext}
-        disabled={!canGoNext}
-        className="gap-2 px-6"
-      >
+      <Button onClick={handleNext} disabled={!canGoNext}>
         {isLastStep ? (
           <>
             {nextLabel ?? "Comenzar"}

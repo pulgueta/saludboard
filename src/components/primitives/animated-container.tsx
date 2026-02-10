@@ -1,4 +1,5 @@
 import type { ComponentProps, CSSProperties, FC } from "react";
+
 import { cn } from "@/lib/utils";
 
 type AnimatedContainerProps = ComponentProps<"div"> & {

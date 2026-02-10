@@ -1,4 +1,5 @@
 import type { ComponentProps, FC, ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
 
 type SelectionCardProps = Omit<ComponentProps<"button">, "children"> & {
@@ -24,9 +25,9 @@ export const SelectionCard: FC<SelectionCardProps> = ({
       aria-pressed={selected}
       className={cn(
         "group/selection relative flex cursor-pointer flex-col items-start gap-3 rounded-2xl border p-5 text-left outline-none transition-all duration-300",
-        "hover:border-primary/30 hover:bg-primary/[0.02] focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
+        "hover:border-primary/30 hover:bg-primary/2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
         selected
-          ? "border-primary/40 bg-primary/[0.04] ring-1 ring-primary/10"
+          ? "border-primary/40 bg-primary/4 ring-1 ring-primary/10"
           : "border-border bg-card",
         className,
       )}

@@ -5,11 +5,12 @@ import {
   Sparkle,
 } from "@phosphor-icons/react";
 import type { FC } from "react";
+import { useEffect } from "react";
 
-import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
+import { useOnboarding } from "@/lib/onboarding-context";
 
 const FEATURES = [
   {
@@ -38,6 +39,12 @@ const FEATURES = [
  * Step 1: Welcome screen introducing SaludBoard and its core features.
  */
 export const WelcomeStep: FC = () => {
+  const { setFooterConfig } = useOnboarding();
+
+  useEffect(() => {
+    setFooterConfig({ nextLabel: "Empezar" });
+  }, [setFooterConfig]);
+
   return (
     <OnboardingStep>
       <OnboardingHeader
@@ -65,10 +72,6 @@ export const WelcomeStep: FC = () => {
             </div>
           </AnimatedContainer>
         ))}
-      </div>
-
-      <div className="mt-auto">
-        <OnboardingFooter nextLabel="Empezar" />
       </div>
     </OnboardingStep>
   );

@@ -6,6 +6,7 @@ import {
   useMemo,
   useReducer,
 } from "react";
+
 import type { HealthFieldId } from "@/lib/health-fields";
 
 export type AccountType = "individual" | "organization";
@@ -36,6 +37,10 @@ type OnboardingState = {
     documentNumber: string;
     licenseNumber: string;
   };
+  footerConfig: {
+    nextLabel?: string;
+    onComplete?: () => void;
+  };
 };
 
 type OnboardingAction =
@@ -50,6 +55,7 @@ type OnboardingAction =
       field: keyof OnboardingState["profile"];
       value: string;
     }
+  | { type: "SET_FOOTER_CONFIG"; config: OnboardingState["footerConfig"] }
   | { type: "RESET" };
 
 const initialState: OnboardingState = {
@@ -63,6 +69,7 @@ const initialState: OnboardingState = {
     documentNumber: "",
     licenseNumber: "",
   },
+  footerConfig: {},
 };
 
 function onboardingReducer(
@@ -111,6 +118,9 @@ function onboardingReducer(
         profile: { ...state.profile, [action.field]: action.value },
       };
 
+    case "SET_FOOTER_CONFIG":
+      return { ...state, footerConfig: action.config };
+
     case "RESET":
       return initialState;
 
@@ -136,6 +146,7 @@ type OnboardingContextValue = {
     field: keyof OnboardingState["profile"],
     value: string,
   ) => void;
+  setFooterConfig: (config: OnboardingState["footerConfig"]) => void;
   reset: () => void;
 };
 
@@ -192,6 +203,11 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "UPDATE_PROFILE", field, value }),
     [],
   );
+  const setFooterConfig = useCallback(
+    (config: OnboardingState["footerConfig"]) =>
+      dispatch({ type: "SET_FOOTER_CONFIG", config }),
+    [],
+  );
   const reset = useCallback(() => dispatch({ type: "RESET" }), []);
 
   const value = useMemo(
@@ -209,6 +225,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       toggleField,
       setField,
       updateProfile,
+      setFooterConfig,
       reset,
     }),
     [
@@ -224,6 +241,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       toggleField,
       setField,
       updateProfile,
+      setFooterConfig,
       reset,
     ],
   );

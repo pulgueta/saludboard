@@ -1,7 +1,6 @@
 import { Badge } from "@ui/badge";
 import type { FC } from "react";
 
-import { OnboardingFooter } from "@/components/compounds/onboarding/onboarding-footer";
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { HealthFieldGrid } from "@/components/features/health-field/health-field-grid";
@@ -54,10 +53,6 @@ export const HealthFieldStep: FC = () => {
         selectedFields={state.selectedFields}
         onSelect={handleSelect}
       />
-
-      <div className="mt-auto">
-        <OnboardingFooter />
-      </div>
     </OnboardingStep>
   );
 };
