@@ -30,7 +30,7 @@ export const SignInCard: FC<SignInCardProps> = ({
     <SignIn
       appearance={clerkAppearance}
       signUpUrl={signUpUrl}
-      forceRedirectUrl={redirectUrl}
+      fallbackRedirectUrl={redirectUrl}
     />
   );
 };

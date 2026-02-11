@@ -93,7 +93,7 @@ export const MarketingNavbar: FC = () => {
             </SignUpButton>
           </WhenSignedOut>
           <WhenSignedIn>
-            <Button size="sm" render={<Link to="/dashboard" />}>
+            <Button nativeButton={false} render={<Link to="/dashboard" />}>
               Dashboard
             </Button>
           </WhenSignedIn>
