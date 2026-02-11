@@ -29,7 +29,7 @@ export const DashboardShell: FC<DashboardShellProps> = ({
       />
       <SidebarInset>
         <DashboardHeader />
-        <div className="flex flex-1 flex-col gap-6 p-4 pt-0">{children}</div>
+        <main className="flex flex-col gap-4 p-4 pt-0">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

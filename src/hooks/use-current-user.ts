@@ -1,5 +1,4 @@
 import { useUser } from "@clerk/tanstack-react-start";
-import { useMemo } from "react";
 
 /**
  * Normalized user profile for use across the application.
@@ -43,7 +42,7 @@ function deriveInitials(name: string): string {
 export function useCurrentUser() {
   const { user, isLoaded, isSignedIn } = useUser();
 
-  const currentUser: CurrentUser | null = useMemo(() => {
+  const currentUser = () => {
     if (!user) return null;
 
     const fullName =
@@ -60,11 +59,11 @@ export function useCurrentUser() {
       initials: deriveInitials(fullName),
       hasImage: user.hasImage,
     };
-  }, [user]);
+  };
 
   return {
-    user: currentUser,
+    user: currentUser(),
     isLoaded,
-    isSignedIn: isSignedIn ?? false,
+    isSignedIn,
   } as const;
 }

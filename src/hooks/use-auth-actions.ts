@@ -1,6 +1,5 @@
 import { useClerk } from "@clerk/tanstack-react-start";
 import { useRouter } from "@tanstack/react-router";
-import { useCallback } from "react";
 
 /**
  * Provides pre-wired authentication actions (sign out, open profile, etc.)
@@ -21,26 +20,26 @@ export function useAuthActions() {
   const clerk = useClerk();
   const router = useRouter();
 
-  const signOut = useCallback(async () => {
+  const signOut = async () => {
     await clerk.signOut();
     router.navigate({ to: "/login/$" });
-  }, [clerk, router]);
+  };
 
-  const openUserProfile = useCallback(() => {
+  const openUserProfile = () => {
     clerk.openUserProfile();
-  }, [clerk]);
+  };
 
-  const openOrganizationProfile = useCallback(() => {
+  const openOrganizationProfile = () => {
     clerk.openOrganizationProfile();
-  }, [clerk]);
+  };
 
-  const redirectToSignIn = useCallback(() => {
+  const redirectToSignIn = () => {
     router.navigate({ to: "/login/$" });
-  }, [router]);
+  };
 
-  const redirectToSignUp = useCallback(() => {
+  const redirectToSignUp = () => {
     router.navigate({ to: "/register/$" });
-  }, [router]);
+  };
 
   return {
     signOut,

@@ -56,29 +56,14 @@ export function useOrganizationData() {
     };
   }, [organization, membership]);
 
-  const organizations: OrganizationInfo[] = useMemo(() => {
-    if (!userMemberships?.data) return [];
-
-    return userMemberships.data.map(
-      (entry: {
-        organization: {
-          id: string;
-          name: string;
-          slug: string | null;
-          imageUrl: string;
-          membersCount: number | undefined;
-        };
-        role: string | undefined;
-      }) => ({
-        id: entry.organization.id,
-        name: entry.organization.name,
-        slug: entry.organization.slug,
-        imageUrl: entry.organization.imageUrl,
-        membersCount: entry.organization.membersCount,
-        role: entry.role,
-      }),
-    );
-  }, [userMemberships?.data]);
+  const organizations = userMemberships?.data?.map((entry) => ({
+    id: entry.organization.id,
+    name: entry.organization.name,
+    slug: entry.organization.slug,
+    imageUrl: entry.organization.imageUrl,
+    membersCount: entry.organization.membersCount,
+    role: entry.role,
+  }));
 
   return {
     currentOrg,

@@ -56,7 +56,7 @@ function HomePage() {
         </WhenSignedOut>
 
         <WhenSignedIn>
-          <Button size="lg" render={<Link to="/dashboard" />}>
+          <Button nativeButton={false} render={<Link to="/dashboard" />}>
             Ir al dashboard
             <ArrowRight weight="bold" className="ml-1 size-4" />
           </Button>

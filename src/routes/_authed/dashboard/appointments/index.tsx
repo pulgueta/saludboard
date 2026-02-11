@@ -1,20 +1,15 @@
 import { CalendarDots } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
-
 import { Badge } from "@ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
-import { ListSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import { MOCK_UPCOMING_APPOINTMENTS } from "@/lib/dashboard-mock-data";
 
 export const Route = createFileRoute("/_authed/dashboard/appointments/")({
   component: AppointmentsPage,
-  pendingComponent: AppointmentsPending,
+  pendingComponent: DashboardPageSkeleton,
 });
-
-function AppointmentsPending() {
-  return <ListSkeleton rows={8} showFilters={false} />;
-}
 
 function formatDateTime(isoString: string): string {
   return new Intl.DateTimeFormat("es-CO", {

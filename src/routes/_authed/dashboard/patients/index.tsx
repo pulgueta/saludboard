@@ -6,18 +6,14 @@ import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import { Input } from "@ui/input";
 import { useState } from "react";
-import { ListSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import { MOCK_RECENT_PATIENTS } from "@/lib/dashboard-mock-data";
 
 export const Route = createFileRoute("/_authed/dashboard/patients/")({
   component: PatientsPage,
-  pendingComponent: PatientsPending,
+  pendingComponent: DashboardPageSkeleton,
 });
-
-function PatientsPending() {
-  return <ListSkeleton rows={6} showFilters={false} />;
-}
 
 function getInitials(name: string): string {
   return name
@@ -43,10 +39,15 @@ function PatientsPage() {
         title="Pacientes"
         description="Gestiona la lista de pacientes"
         actions={
-          <Button size="sm" render={<Link to="/dashboard/patients/new" />}>
-            <Plus weight="bold" className="size-4" />
-            Nuevo paciente
-          </Button>
+          <Button
+            nativeButton={false}
+            render={
+              <Link to="/dashboard/patients/new">
+                <Plus weight="bold" className="size-4" />
+                Nuevo paciente
+              </Link>
+            }
+          />
         }
       />
       <div className="relative max-w-sm">

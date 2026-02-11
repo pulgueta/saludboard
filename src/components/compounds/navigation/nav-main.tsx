@@ -8,7 +8,6 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  useSidebar,
 } from "@ui/sidebar";
 import type { FC } from "react";
 
@@ -24,7 +23,6 @@ type NavMainProps = {
  */
 export const NavMain: FC<NavMainProps> = ({ items }) => {
   const location = useLocation();
-  const { setOpenMobile } = useSidebar();
 
   return (
     <SidebarGroup>
@@ -37,20 +35,24 @@ export const NavMain: FC<NavMainProps> = ({ items }) => {
                 <SidebarMenuButton
                   tooltip={item.title}
                   isActive={location.pathname === item.url}
+                  className="transition-colors ease-in hover:bg-primary/10 hover:text-primary active:bg-primary/20 active:text-primary"
                   render={
-                    <Link to={item.url} onClick={() => setOpenMobile(false)} />
+                    <Link to={item.url}>
+                      <item.icon weight="duotone" />
+                      <span>{item.title}</span>
+                    </Link>
                   }
-                >
-                  <item.icon weight="duotone" />
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
+                />
               </SidebarMenuItem>
             );
           }
 
           return (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                className="pointer-events-none"
+              >
                 <item.icon weight="duotone" />
                 <span>{item.title}</span>
               </SidebarMenuButton>
@@ -58,16 +60,14 @@ export const NavMain: FC<NavMainProps> = ({ items }) => {
                 {item.items.map((sub) => (
                   <SidebarMenuSubItem key={sub.title}>
                     <SidebarMenuSubButton
+                      className="transition-colors ease-in hover:bg-primary/10 hover:text-primary active:bg-primary/20 active:text-primary"
                       isActive={location.pathname === sub.url}
                       render={
-                        <Link
-                          to={sub.url}
-                          onClick={() => setOpenMobile(false)}
-                        />
+                        <Link to={sub.url}>
+                          <span>{sub.title}</span>
+                        </Link>
                       }
-                    >
-                      <span>{sub.title}</span>
-                    </SidebarMenuSubButton>
+                    />
                   </SidebarMenuSubItem>
                 ))}
               </SidebarMenuSub>

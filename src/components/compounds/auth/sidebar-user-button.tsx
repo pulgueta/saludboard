@@ -4,7 +4,7 @@ import type { FC } from "react";
 
 export const SidebarUserButton: FC = () => {
   return (
-    <UserButton>
+    <UserButton showName>
       <UserButton.MenuItems>
         <UserButton.Action
           label="Actualizar plan"

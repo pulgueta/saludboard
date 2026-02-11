@@ -31,6 +31,7 @@ export const DateRangeToggle: FC<DateRangeToggleProps> = ({
       aria-label="Rango de fechas"
     >
       {options.map((days) => (
+        // biome-ignore lint/a11y/useSemanticElements: this is a button but we need to use role="radio" for the aria-checked attribute
         <button
           key={days}
           type="button"

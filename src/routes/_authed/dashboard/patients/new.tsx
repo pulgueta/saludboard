@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-
 import { Button } from "@ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 import { Input } from "@ui/input";
@@ -11,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/select";
-import { FormSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import {
   DOCUMENT_TYPES,
@@ -22,7 +21,7 @@ import {
 
 export const Route = createFileRoute("/_authed/dashboard/patients/new")({
   component: NewPatientPage,
-  pendingComponent: FormSkeleton,
+  pendingComponent: DashboardPageSkeleton,
 });
 
 function NewPatientPage() {

@@ -4,18 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 
 import { FileList } from "@/components/compounds/file-upload/file-list";
 import { FileUploadZone } from "@/components/compounds/file-upload/file-upload-zone";
-import { CardGridSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import { useFileUpload } from "@/hooks/use-file-upload";
 
 export const Route = createFileRoute("/_authed/dashboard/documents/")({
   component: DocumentsPage,
-  pendingComponent: DocumentsPending,
+  pendingComponent: DashboardPageSkeleton,
 });
-
-function DocumentsPending() {
-  return <CardGridSkeleton cards={4} columns={1} />;
-}
 
 function DocumentsPage() {
   const { files, addFiles, removeFile } = useFileUpload({ maxFiles: 20 });

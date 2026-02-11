@@ -11,6 +11,8 @@ import { OrgSwitcher } from "@/components/compounds/auth/org-switcher";
 import { NavMain } from "@/components/compounds/navigation/nav-main";
 import { NavProjects } from "@/components/compounds/navigation/nav-projects";
 import { NavUser } from "@/components/compounds/navigation/nav-user";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import type { HealthFieldId } from "@/lib/health-fields";
 import { FIELD_SPECIFIC_NAV, MAIN_NAV_ITEMS } from "@/lib/navigation-config";
 
@@ -28,12 +30,18 @@ type DashboardSidebarProps = {
 export const DashboardSidebar: FC<DashboardSidebarProps> = ({
   healthFieldId = "general-medicine",
 }) => {
+  const { isLoaded, isSignedIn } = useCurrentUser();
+
   const fieldNav = FIELD_SPECIFIC_NAV[healthFieldId] ?? [];
 
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader>
-        <OrgSwitcher />
+        {isLoaded && isSignedIn ? (
+          <OrgSwitcher />
+        ) : (
+          <Skeleton className="h-8 w-full" />
+        )}
       </SidebarHeader>
 
       <SidebarContent>
@@ -44,7 +52,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser />
+        {isLoaded && isSignedIn ? (
+          <NavUser />
+        ) : (
+          <Skeleton className="h-8 w-full" />
+        )}
       </SidebarFooter>
 
       <SidebarRail />

@@ -1,6 +1,12 @@
-import { OrganizationSwitcher } from "@clerk/tanstack-react-start";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  OrganizationSwitcher,
+} from "@clerk/tanstack-react-start";
 import { clerkAppearance } from "@config/clerk-appearance";
 import type { FC } from "react";
+
+import { Skeleton } from "@/components/ui/skeleton";
 
 type OrgSwitcherProps = {
   /**
@@ -36,27 +42,33 @@ export const OrgSwitcher: FC<OrgSwitcherProps> = ({
   afterCreateOrganizationUrl = "/dashboard",
 }) => {
   return (
-    <OrganizationSwitcher
-      hidePersonal={hidePersonal}
-      afterSelectOrganizationUrl={afterSelectOrganizationUrl}
-      afterCreateOrganizationUrl={afterCreateOrganizationUrl}
-      hideSlug
-      appearance={{
-        ...clerkAppearance,
-        elements: {
-          ...clerkAppearance.elements,
-          // rootBox: "w-full",
-          // organizationSwitcherTrigger:
-          //   "w-full justify-between rounded-md px-2 py-1.5 hover:bg-sidebar-accent focus-visible:ring-sidebar-ring border-0",
-          // organizationSwitcherTriggerIcon: "text-sidebar-foreground",
-          // organizationPreviewMainIdentifier:
-          //   "text-sm font-semibold text-sidebar-foreground truncate",
-          // organizationPreviewSecondaryIdentifier:
-          //   "text-xs text-muted-foreground",
-          // organizationSwitcherPopoverCard: "border-border shadow-md bg-popover",
-          // organizationPreviewAvatarBox: "size-8 rounded-lg",
-        },
-      }}
-    />
+    <>
+      <ClerkLoading>
+        <Skeleton className="h-8 w-full" />
+      </ClerkLoading>
+      <ClerkLoaded>
+        <OrganizationSwitcher
+          hidePersonal={hidePersonal}
+          afterSelectOrganizationUrl={afterSelectOrganizationUrl}
+          afterCreateOrganizationUrl={afterCreateOrganizationUrl}
+          appearance={{
+            ...clerkAppearance,
+            elements: {
+              ...clerkAppearance.elements,
+              // rootBox: "w-full",
+              // organizationSwitcherTrigger:
+              //   "w-full justify-between rounded-md px-2 py-1.5 hover:bg-sidebar-accent focus-visible:ring-sidebar-ring border-0",
+              // organizationSwitcherTriggerIcon: "text-sidebar-foreground",
+              // organizationPreviewMainIdentifier:
+              //   "text-sm font-semibold text-sidebar-foreground truncate",
+              // organizationPreviewSecondaryIdentifier:
+              //   "text-xs text-muted-foreground",
+              // organizationSwitcherPopoverCard: "border-border shadow-md bg-popover",
+              // organizationPreviewAvatarBox: "size-8 rounded-lg",
+            },
+          }}
+        />
+      </ClerkLoaded>
+    </>
   );
 };

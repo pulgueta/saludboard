@@ -4,7 +4,7 @@ import { AppointmentChart } from "@/components/features/dashboard/appointment-ch
 import { RecentActivity } from "@/components/features/dashboard/recent-activity";
 import { StatCards } from "@/components/features/dashboard/stat-cards";
 import { UpcomingAppointments } from "@/components/features/dashboard/upcoming-appointments";
-import { DashboardSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import {
   MOCK_RECENT_PATIENTS,
@@ -14,7 +14,7 @@ import {
 
 export const Route = createFileRoute("/_authed/dashboard/")({
   component: DashboardHomePage,
-  pendingComponent: DashboardSkeleton,
+  pendingComponent: DashboardPageSkeleton,
 });
 
 function DashboardHomePage() {

@@ -1,18 +1,13 @@
 import { ClipboardText } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
-
 import { Card, CardContent } from "@ui/card";
-import { ListSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 
 export const Route = createFileRoute("/_authed/dashboard/records/")({
   component: RecordsPage,
-  pendingComponent: RecordsPending,
+  pendingComponent: DashboardPageSkeleton,
 });
-
-function RecordsPending() {
-  return <ListSkeleton rows={6} showFilters={false} />;
-}
 
 function RecordsPage() {
   return (

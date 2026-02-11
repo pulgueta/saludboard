@@ -3,14 +3,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AiGenerateButton } from "@/components/compounds/consent-forms/ai-generate-button";
 import { ConsentEditor } from "@/components/compounds/consent-forms/consent-editor";
 import { ConsentTemplateList } from "@/components/compounds/consent-forms/consent-template-list";
-import { FormSkeleton } from "@/components/primitives/gradient-skeleton";
+import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 
 export const Route = createFileRoute(
   "/_authed/dashboard/documents/consent-forms",
 )({
   component: ConsentFormsPage,
-  pendingComponent: FormSkeleton,
+  pendingComponent: DashboardPageSkeleton,
 });
 
 function ConsentFormsPage() {
