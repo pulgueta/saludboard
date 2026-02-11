@@ -11,7 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterSplatRouteImport } from './routes/register.$'
+import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
+import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedDashboardRecordsIndexRouteImport } from './routes/_authed/dashboard/records/index'
+import { Route as AuthedDashboardPatientsIndexRouteImport } from './routes/_authed/dashboard/patients/index'
+import { Route as AuthedDashboardDocumentsIndexRouteImport } from './routes/_authed/dashboard/documents/index'
+import { Route as AuthedDashboardAppointmentsIndexRouteImport } from './routes/_authed/dashboard/appointments/index'
+import { Route as AuthedDashboardPatientsNewRouteImport } from './routes/_authed/dashboard/patients/new'
+import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from './routes/_authed/dashboard/documents/consent-forms'
 
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
   id: '/_authed',
@@ -22,37 +32,161 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterSplatRoute = RegisterSplatRouteImport.update({
+  id: '/register/$',
+  path: '/register/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginSplatRoute = LoginSplatRouteImport.update({
+  id: '/login/$',
+  path: '/login/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedOnboardingRoute = AuthedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
+const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const AuthedDashboardRecordsIndexRoute =
+  AuthedDashboardRecordsIndexRouteImport.update({
+    id: '/records/',
+    path: '/records/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardPatientsIndexRoute =
+  AuthedDashboardPatientsIndexRouteImport.update({
+    id: '/patients/',
+    path: '/patients/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardDocumentsIndexRoute =
+  AuthedDashboardDocumentsIndexRouteImport.update({
+    id: '/documents/',
+    path: '/documents/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardAppointmentsIndexRoute =
+  AuthedDashboardAppointmentsIndexRouteImport.update({
+    id: '/appointments/',
+    path: '/appointments/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardPatientsNewRoute =
+  AuthedDashboardPatientsNewRouteImport.update({
+    id: '/patients/new',
+    path: '/patients/new',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardDocumentsConsentFormsRoute =
+  AuthedDashboardDocumentsConsentFormsRouteImport.update({
+    id: '/documents/consent-forms',
+    path: '/documents/consent-forms',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/onboarding': typeof AuthedOnboardingRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
+  '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
+  '/dashboard/documents/': typeof AuthedDashboardDocumentsIndexRoute
+  '/dashboard/patients/': typeof AuthedDashboardPatientsIndexRoute
+  '/dashboard/records/': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof AuthedOnboardingRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
+  '/dashboard': typeof AuthedDashboardIndexRoute
+  '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/dashboard/appointments': typeof AuthedDashboardAppointmentsIndexRoute
+  '/dashboard/documents': typeof AuthedDashboardDocumentsIndexRoute
+  '/dashboard/patients': typeof AuthedDashboardPatientsIndexRoute
+  '/dashboard/records': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteRouteWithChildren
+  '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/_authed/onboarding': typeof AuthedOnboardingRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
+  '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_authed/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/_authed/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/_authed/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
+  '/_authed/dashboard/documents/': typeof AuthedDashboardDocumentsIndexRoute
+  '/_authed/dashboard/patients/': typeof AuthedDashboardPatientsIndexRoute
+  '/_authed/dashboard/records/': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/onboarding'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/login/$'
+    | '/register/$'
+    | '/dashboard/'
+    | '/dashboard/documents/consent-forms'
+    | '/dashboard/patients/new'
+    | '/dashboard/appointments/'
+    | '/dashboard/documents/'
+    | '/dashboard/patients/'
+    | '/dashboard/records/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding'
-  id: '__root__' | '/' | '/_authed' | '/_authed/onboarding'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/login/$'
+    | '/register/$'
+    | '/dashboard'
+    | '/dashboard/documents/consent-forms'
+    | '/dashboard/patients/new'
+    | '/dashboard/appointments'
+    | '/dashboard/documents'
+    | '/dashboard/patients'
+    | '/dashboard/records'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authed'
+    | '/_authed/dashboard'
+    | '/_authed/onboarding'
+    | '/login/$'
+    | '/register/$'
+    | '/_authed/dashboard/'
+    | '/_authed/dashboard/documents/consent-forms'
+    | '/_authed/dashboard/patients/new'
+    | '/_authed/dashboard/appointments/'
+    | '/_authed/dashboard/documents/'
+    | '/_authed/dashboard/patients/'
+    | '/_authed/dashboard/records/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  LoginSplatRoute: typeof LoginSplatRoute
+  RegisterSplatRoute: typeof RegisterSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -71,6 +205,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register/$': {
+      id: '/register/$'
+      path: '/register/$'
+      fullPath: '/register/$'
+      preLoaderRoute: typeof RegisterSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/$': {
+      id: '/login/$'
+      path: '/login/$'
+      fullPath: '/login/$'
+      preLoaderRoute: typeof LoginSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed/onboarding': {
       id: '/_authed/onboarding'
       path: '/onboarding'
@@ -78,14 +226,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOnboardingRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
+    '/_authed/dashboard': {
+      id: '/_authed/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthedDashboardRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/dashboard/': {
+      id: '/_authed/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthedDashboardIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/records/': {
+      id: '/_authed/dashboard/records/'
+      path: '/records'
+      fullPath: '/dashboard/records/'
+      preLoaderRoute: typeof AuthedDashboardRecordsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/patients/': {
+      id: '/_authed/dashboard/patients/'
+      path: '/patients'
+      fullPath: '/dashboard/patients/'
+      preLoaderRoute: typeof AuthedDashboardPatientsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/documents/': {
+      id: '/_authed/dashboard/documents/'
+      path: '/documents'
+      fullPath: '/dashboard/documents/'
+      preLoaderRoute: typeof AuthedDashboardDocumentsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/appointments/': {
+      id: '/_authed/dashboard/appointments/'
+      path: '/appointments'
+      fullPath: '/dashboard/appointments/'
+      preLoaderRoute: typeof AuthedDashboardAppointmentsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/patients/new': {
+      id: '/_authed/dashboard/patients/new'
+      path: '/patients/new'
+      fullPath: '/dashboard/patients/new'
+      preLoaderRoute: typeof AuthedDashboardPatientsNewRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/documents/consent-forms': {
+      id: '/_authed/dashboard/documents/consent-forms'
+      path: '/documents/consent-forms'
+      fullPath: '/dashboard/documents/consent-forms'
+      preLoaderRoute: typeof AuthedDashboardDocumentsConsentFormsRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
   }
 }
 
+interface AuthedDashboardRouteRouteChildren {
+  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
+  AuthedDashboardDocumentsConsentFormsRoute: typeof AuthedDashboardDocumentsConsentFormsRoute
+  AuthedDashboardPatientsNewRoute: typeof AuthedDashboardPatientsNewRoute
+  AuthedDashboardAppointmentsIndexRoute: typeof AuthedDashboardAppointmentsIndexRoute
+  AuthedDashboardDocumentsIndexRoute: typeof AuthedDashboardDocumentsIndexRoute
+  AuthedDashboardPatientsIndexRoute: typeof AuthedDashboardPatientsIndexRoute
+  AuthedDashboardRecordsIndexRoute: typeof AuthedDashboardRecordsIndexRoute
+}
+
+const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
+  AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
+  AuthedDashboardDocumentsConsentFormsRoute:
+    AuthedDashboardDocumentsConsentFormsRoute,
+  AuthedDashboardPatientsNewRoute: AuthedDashboardPatientsNewRoute,
+  AuthedDashboardAppointmentsIndexRoute: AuthedDashboardAppointmentsIndexRoute,
+  AuthedDashboardDocumentsIndexRoute: AuthedDashboardDocumentsIndexRoute,
+  AuthedDashboardPatientsIndexRoute: AuthedDashboardPatientsIndexRoute,
+  AuthedDashboardRecordsIndexRoute: AuthedDashboardRecordsIndexRoute,
+}
+
+const AuthedDashboardRouteRouteWithChildren =
+  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
+
 interface AuthedRouteRouteChildren {
+  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
   AuthedOnboardingRoute: typeof AuthedOnboardingRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
+  AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
   AuthedOnboardingRoute: AuthedOnboardingRoute,
 }
 
@@ -96,6 +326,8 @@ const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
+  LoginSplatRoute: LoginSplatRoute,
+  RegisterSplatRoute: RegisterSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,8 +1,8 @@
 import { esMX } from "@clerk/localizations";
 import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
 import { auth } from "@clerk/tanstack-react-start/server";
+import { clerkAppearance } from "@config/clerk-appearance";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
-import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
@@ -10,7 +10,6 @@ import {
   Scripts,
   useRouteContext,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
 import { TooltipProvider } from "@ui/tooltip";
 import type { ConvexReactClient } from "convex/react";
@@ -44,7 +43,7 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "SaludBoard — Gestión de salud",
       },
     ],
     links: [
@@ -73,7 +72,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const ctx = useRouteContext({ from: Route.id });
 
   return (
-    <ClerkProvider localization={esMX} signInUrl="/login" signUpUrl="/register">
+    <ClerkProvider
+      localization={esMX}
+      appearance={clerkAppearance}
+      signInUrl="/login"
+      signUpUrl="/register"
+      afterSignOutUrl="/login"
+    >
       <ConvexProviderWithClerk client={ctx.convexClient} useAuth={useAuth}>
         <html lang="es" suppressHydrationWarning>
           <head>
@@ -82,7 +87,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <body>
             <TooltipProvider>{children}</TooltipProvider>
 
-            <TanStackDevtools
+            {/* <TanStackDevtools
               config={{
                 position: "bottom-right",
               }}
@@ -92,7 +97,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                   render: <TanStackRouterDevtoolsPanel />,
                 },
               ]}
-            />
+            /> */}
             <Scripts />
           </body>
         </html>

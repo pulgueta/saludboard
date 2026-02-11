@@ -1,0 +1,17 @@
+import { Separator } from "@ui/separator";
+import { SidebarTrigger } from "@ui/sidebar";
+import type { FC } from "react";
+
+/**
+ * Top header bar with sidebar trigger and separator.
+ */
+export const DashboardHeader: FC = () => {
+  return (
+    <header className="flex h-16 shrink-0 items-center gap-2">
+      <div className="flex items-center gap-2 px-4">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="h-4" />
+      </div>
+    </header>
+  );
+};
