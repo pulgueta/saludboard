@@ -29,10 +29,10 @@ function HomePage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h1 className="font-bold text-4xl tracking-tight text-foreground">
+          <h1 className="font-bold text-4xl text-foreground tracking-tight">
             Salud<span className="text-primary">Board</span>
           </h1>
-          <p className="max-w-md text-muted-foreground text-lg leading-relaxed">
+          <p className="max-w-md text-lg text-muted-foreground leading-relaxed">
             La plataforma para profesionales de salud en Colombia. Gestiona
             pacientes, citas, historias clínicas y documentos en un solo lugar.
           </p>

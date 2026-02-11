@@ -5,6 +5,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@ui/sidebar";
 import type { FC } from "react";
 
@@ -21,6 +22,7 @@ type NavProjectsProps = {
  */
 export const NavProjects: FC<NavProjectsProps> = ({ label, projects }) => {
   const location = useLocation();
+  const { setOpenMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -31,7 +33,9 @@ export const NavProjects: FC<NavProjectsProps> = ({ label, projects }) => {
             <SidebarMenuButton
               tooltip={project.name}
               isActive={location.pathname === project.url}
-              render={<Link to={project.url} />}
+              render={
+                <Link to={project.url} onClick={() => setOpenMobile(false)} />
+              }
             >
               <project.icon weight="duotone" />
               <span>{project.name}</span>

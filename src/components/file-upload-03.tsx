@@ -104,7 +104,7 @@ export default function FileUpload03() {
                     <SelectItem value="public">Public</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-pretty mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-pretty text-muted-foreground text-sm">
                   Only admins can change visibility.
                 </p>
               </div>
@@ -145,18 +145,16 @@ export default function FileUpload03() {
                     </div>
                   </div>
                 </div>
-                <p className="text-pretty mt-2 text-sm leading-5 text-muted-foreground sm:flex sm:items-center sm:justify-between">
+                <p className="mt-2 text-pretty text-muted-foreground text-sm leading-5 sm:flex sm:items-center sm:justify-between">
                   <span>All file types are allowed to upload.</span>
                   <span className="pl-1 sm:pl-0">Max. size per file: 50MB</span>
                 </p>
                 {filesList.length > 0 && (
                   <>
-                    <h4 className="text-balance mt-6 font-medium text-foreground">
+                    <h4 className="mt-6 text-balance font-medium text-foreground">
                       File(s) to upload
                     </h4>
-                    <ul role="list" className="mt-4 space-y-4">
-                      {filesList}
-                    </ul>
+                    <ul className="mt-4 space-y-4">{filesList}</ul>
                   </>
                 )}
               </div>
