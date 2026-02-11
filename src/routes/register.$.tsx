@@ -9,10 +9,7 @@ export const Route = createFileRoute("/register/$")({
 
 function RegisterPage() {
   return (
-    <AuthLayout
-      title="Crear cuenta"
-      description="Regístrate para comenzar a gestionar tus pacientes"
-    >
+    <AuthLayout>
       <SignUpCard />
     </AuthLayout>
   );

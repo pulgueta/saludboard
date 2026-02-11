@@ -7,10 +7,6 @@ import { cn } from "@/lib/utils";
 type AuthLayoutProps = {
   children: ReactNode;
   className?: string;
-  /** Optional heading shown below the brand mark. */
-  title?: string;
-  /** Optional subtext shown below the title. */
-  description?: string;
 };
 
 /**
@@ -20,17 +16,12 @@ type AuthLayoutProps = {
  * consistent with the onboarding layout aesthetic.
  * Clerk's `<SignIn />` / `<SignUp />` components are rendered as children.
  */
-export const AuthLayout: FC<AuthLayoutProps> = ({
-  children,
-  className,
-  title,
-  description,
-}) => {
+export const AuthLayout: FC<AuthLayoutProps> = ({ children, className }) => {
   return (
     <div
       data-slot="auth-layout"
       className={cn(
-        "relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-background px-4",
+        "relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-background p-4",
         className,
       )}
     >
@@ -54,18 +45,6 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
             <span className="text-primary">Board</span>
           </h1>
         </Link>
-
-        {/* Optional heading */}
-        {(title || description) && (
-          <div className="flex flex-col items-center gap-1 text-center">
-            {title && (
-              <h2 className="font-semibold text-foreground text-lg">{title}</h2>
-            )}
-            {description && (
-              <p className="text-muted-foreground text-sm">{description}</p>
-            )}
-          </div>
-        )}
 
         {/* Clerk form slot */}
         <div className="mx-auto w-max">{children}</div>
