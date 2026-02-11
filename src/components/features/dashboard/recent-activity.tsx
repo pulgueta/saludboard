@@ -1,4 +1,4 @@
-import { UserPlus } from "@phosphor-icons/react";
+import { UserPlusIcon } from "@phosphor-icons/react";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 import type { FC } from "react";
@@ -63,7 +63,7 @@ export const RecentActivity: FC<RecentActivityProps> = ({ patients }) => {
               key={patient.id}
               className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
             >
-              <Avatar size="sm">
+              <Avatar>
                 <AvatarFallback>{getInitials(patient.name)}</AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -71,7 +71,7 @@ export const RecentActivity: FC<RecentActivityProps> = ({ patients }) => {
                   {patient.name}
                 </span>
                 <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                  <UserPlus size={12} weight="bold" />
+                  <UserPlusIcon size={12} weight="bold" />
                   <span>Nuevo paciente</span>
                   <span aria-hidden>·</span>
                   <span>CC {patient.documentNumber}</span>

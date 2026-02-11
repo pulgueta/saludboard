@@ -1,20 +1,39 @@
 import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import type { FC } from "react";
+import { useEffect, useRef } from "react";
 
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { useOnboarding } from "@/lib/onboarding-context";
 
 /**
- * Step 4: Basic profile information.
- * Collects name, email, document number, phone, and optional license number.
+ * Step 6 (professionals only): Basic profile information.
+ *
+ * Auto-populates name and email from the Clerk session on first render.
+ * Only fields that are empty get filled so the user's manual edits are preserved.
  */
 export const ProfileStep: FC = () => {
   const { state, updateProfile } = useOnboarding();
+  const { user } = useCurrentUser();
+  const hasPopulated = useRef(false);
 
-  const isOrganization = state.accountType === "organization";
+  const isOrganization = state.professionalType === "organization";
+
+  // Auto-populate from Clerk session once
+  useEffect(() => {
+    if (hasPopulated.current || !user) return;
+    hasPopulated.current = true;
+
+    if (!state.profile.fullName && user.fullName) {
+      updateProfile("fullName", user.fullName);
+    }
+    if (!state.profile.email && user.email) {
+      updateProfile("email", user.email);
+    }
+  }, [user, state.profile.fullName, state.profile.email, updateProfile]);
 
   return (
     <OnboardingStep>
@@ -23,7 +42,7 @@ export const ProfileStep: FC = () => {
         subtitle={
           isOrganization
             ? "Datos de contacto principales de tu organización."
-            : "Datos de tu perfil profesional."
+            : "Datos de tu perfil profesional. Algunos campos se completaron automáticamente."
         }
       />
 
@@ -36,7 +55,7 @@ export const ProfileStep: FC = () => {
             <Input
               id="fullName"
               placeholder={
-                isOrganization ? "Centro Medico Ejemplo" : "Dra. Maria Perez"
+                isOrganization ? "Centro Médico Ejemplo" : "Dra. María Pérez"
               }
               value={state.profile.fullName}
               onChange={(e) => updateProfile("fullName", e.target.value)}

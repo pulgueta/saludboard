@@ -1,11 +1,12 @@
+import type { Icon } from "@phosphor-icons/react";
 import {
-  Baby,
-  Bone,
-  Brain,
-  Drop,
-  Leaf,
-  Stethoscope,
-  Tooth,
+  BabyIcon,
+  BoneIcon,
+  BrainIcon,
+  DropIcon,
+  LeafIcon,
+  StethoscopeIcon,
+  ToothIcon,
 } from "@phosphor-icons/react";
 import type { CSSProperties, FC } from "react";
 
@@ -20,14 +21,14 @@ type HealthFieldIconProps = {
   size?: number;
 };
 
-const ICON_MAP: Record<HealthFieldId, typeof Stethoscope> = {
-  "general-medicine": Stethoscope,
-  pediatrics: Baby,
-  dermatology: Drop,
-  orthopedics: Bone,
-  dentistry: Tooth,
-  nutrition: Leaf,
-  psychology: Brain,
+const ICON_MAP: Record<HealthFieldId, Icon> = {
+  "general-medicine": StethoscopeIcon,
+  pediatrics: BabyIcon,
+  dermatology: DropIcon,
+  orthopedics: BoneIcon,
+  dentistry: ToothIcon,
+  nutrition: LeafIcon,
+  psychology: BrainIcon,
 };
 
 /**

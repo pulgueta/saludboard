@@ -1,4 +1,4 @@
-import { CalendarDots } from "@phosphor-icons/react";
+import { CalendarDotsIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
@@ -43,7 +43,7 @@ function AppointmentsPage() {
                   className="flex items-center gap-4 px-4 py-4 transition-colors hover:bg-muted/50"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <CalendarDots size={20} weight="duotone" />
+                    <CalendarDotsIcon size={20} weight="duotone" />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <span className="truncate font-medium text-sm">

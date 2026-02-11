@@ -1,23 +1,23 @@
 import type { Icon } from "@phosphor-icons/react";
 import {
-  Baby,
-  Bone,
-  Brain,
-  CalendarDots,
-  Camera,
-  ChartLineUp,
-  ClipboardText,
-  Clock,
-  Drop,
-  FileText,
-  FolderOpen,
-  House,
-  Leaf,
-  Needle,
-  Stethoscope,
-  Tooth,
-  UserPlus,
-  Users,
+  BabyIcon,
+  BoneIcon,
+  BrainIcon,
+  CalendarDotsIcon,
+  CameraIcon,
+  ChartLineUpIcon,
+  ClipboardTextIcon,
+  ClockIcon,
+  DropIcon,
+  FileTextIcon,
+  FolderOpenIcon,
+  HouseIcon,
+  LeafIcon,
+  NeedleIcon,
+  StethoscopeIcon,
+  ToothIcon,
+  UserPlusIcon,
+  UsersIcon,
 } from "@phosphor-icons/react";
 
 import type { HealthFieldId } from "@/lib/health-fields";
@@ -40,12 +40,12 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
   {
     title: "Inicio",
     url: "/dashboard",
-    icon: House,
+    icon: HouseIcon,
   },
   {
     title: "Pacientes",
     url: "/dashboard/patients",
-    icon: Users,
+    icon: UsersIcon,
     items: [
       { title: "Lista de pacientes", url: "/dashboard/patients" },
       { title: "Nuevo paciente", url: "/dashboard/patients/new" },
@@ -54,19 +54,19 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
   {
     title: "Historia clínica",
     url: "/dashboard/records",
-    icon: ClipboardText,
+    icon: ClipboardTextIcon,
     items: [{ title: "Ver historias", url: "/dashboard/records" }],
   },
   {
     title: "Agenda",
     url: "/dashboard/appointments",
-    icon: CalendarDots,
+    icon: CalendarDotsIcon,
     items: [{ title: "Citas programadas", url: "/dashboard/appointments" }],
   },
   {
     title: "Documentos",
     url: "/dashboard/documents",
-    icon: FileText,
+    icon: FileTextIcon,
     items: [
       { title: "Archivos", url: "/dashboard/documents" },
       { title: "Consentimientos", url: "/dashboard/documents/consent-forms" },
@@ -77,43 +77,55 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
 /** Field-specific navigation sections. */
 export const FIELD_SPECIFIC_NAV: Record<HealthFieldId, NavProject[]> = {
   "general-medicine": [
-    { name: "Interconsultas", url: "/dashboard/referrals", icon: UserPlus },
+    { name: "Interconsultas", url: "/dashboard/referrals", icon: UserPlusIcon },
     {
       name: "Archivos clínicos",
       url: "/dashboard/clinical-files",
-      icon: FolderOpen,
+      icon: FolderOpenIcon,
     },
   ],
   pediatrics: [
-    { name: "Vacunación", url: "/dashboard/vaccines", icon: Needle },
-    { name: "Crecimiento", url: "/dashboard/growth", icon: ChartLineUp },
+    { name: "Vacunación", url: "/dashboard/vaccines", icon: NeedleIcon },
+    { name: "Crecimiento", url: "/dashboard/growth", icon: ChartLineUpIcon },
   ],
   dermatology: [
-    { name: "Fotografías clínicas", url: "/dashboard/photos", icon: Camera },
-    { name: "Seguimiento lesiones", url: "/dashboard/lesions", icon: Drop },
+    {
+      name: "Fotografías clínicas",
+      url: "/dashboard/photos",
+      icon: CameraIcon,
+    },
+    { name: "Seguimiento lesiones", url: "/dashboard/lesions", icon: DropIcon },
   ],
   orthopedics: [
-    { name: "Imágenes diagnósticas", url: "/dashboard/imaging", icon: Bone },
-    { name: "Rehabilitación", url: "/dashboard/rehab", icon: Clock },
+    {
+      name: "Imágenes diagnósticas",
+      url: "/dashboard/imaging",
+      icon: BoneIcon,
+    },
+    { name: "Rehabilitación", url: "/dashboard/rehab", icon: ClockIcon },
   ],
   dentistry: [
-    { name: "Odontograma", url: "/dashboard/odontogram", icon: Tooth },
-    { name: "Radiografías", url: "/dashboard/xrays", icon: Camera },
+    { name: "Odontograma", url: "/dashboard/odontogram", icon: ToothIcon },
+    { name: "Radiografías", url: "/dashboard/xrays", icon: CameraIcon },
   ],
   nutrition: [
-    { name: "Plan nutricional", url: "/dashboard/meal-plans", icon: Leaf },
+    { name: "Plan nutricional", url: "/dashboard/meal-plans", icon: LeafIcon },
     {
       name: "Composición corporal",
       url: "/dashboard/body-comp",
-      icon: ChartLineUp,
+      icon: ChartLineUpIcon,
     },
   ],
   psychology: [
-    { name: "Notas de sesión", url: "/dashboard/session-notes", icon: Brain },
+    {
+      name: "Notas de sesión",
+      url: "/dashboard/session-notes",
+      icon: BrainIcon,
+    },
     {
       name: "Tests psicométricos",
       url: "/dashboard/tests",
-      icon: ClipboardText,
+      icon: ClipboardTextIcon,
     },
   ],
 };
@@ -122,11 +134,11 @@ export const FIELD_SPECIFIC_NAV: Record<HealthFieldId, NavProject[]> = {
  * Returns the icon component for a given health field ID.
  */
 export const HEALTH_FIELD_SIDEBAR_ICONS: Record<HealthFieldId, Icon> = {
-  "general-medicine": Stethoscope,
-  pediatrics: Baby,
-  dermatology: Drop,
-  orthopedics: Bone,
-  dentistry: Tooth,
-  nutrition: Leaf,
-  psychology: Brain,
+  "general-medicine": StethoscopeIcon,
+  pediatrics: BabyIcon,
+  dermatology: DropIcon,
+  orthopedics: BoneIcon,
+  dentistry: ToothIcon,
+  nutrition: LeafIcon,
+  psychology: BrainIcon,
 };

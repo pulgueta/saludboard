@@ -9,14 +9,14 @@ import { useOnboarding } from "@/lib/onboarding-context";
 import { cn } from "@/lib/utils";
 
 /**
- * Step 3: Health field selection.
+ * Step 5 (professionals only): Health field / specialty selection.
  * - Individual: single-select (radio behavior)
  * - Organization: multi-select (checkbox behavior)
  */
 export const HealthFieldStep: FC = () => {
   const { state, setField, toggleField } = useOnboarding();
 
-  const isOrganization = state.accountType === "organization";
+  const isOrganization = state.professionalType === "organization";
 
   const handleSelect = isOrganization ? toggleField : setField;
 

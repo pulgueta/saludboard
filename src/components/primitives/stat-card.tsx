@@ -1,5 +1,5 @@
 import type { Icon } from "@phosphor-icons/react";
-import { TrendUp } from "@phosphor-icons/react";
+import { TrendUpIcon } from "@phosphor-icons/react";
 import { Card, CardContent } from "@ui/card";
 import type { FC, ReactNode } from "react";
 import { cn } from "@/lib/utils";
@@ -48,7 +48,7 @@ export const StatCard: FC<StatCardProps> = ({
             ) : null}
             {trend ? (
               <div className="mt-1 flex items-center gap-1">
-                <TrendUp
+                <TrendUpIcon
                   weight="bold"
                   className={cn(
                     "size-3",

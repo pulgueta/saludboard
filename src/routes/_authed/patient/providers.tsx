@@ -1,11 +1,11 @@
 import {
-  CalendarDots,
-  Check,
-  Envelope,
-  Phone,
-  Plus,
-  Stethoscope,
-  X,
+  CalendarDotsIcon,
+  CheckIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  PlusIcon,
+  StethoscopeIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
@@ -59,8 +59,8 @@ function PatientProvidersPage() {
             {/* Invite drawer trigger */}
             <Drawer direction="right">
               <DrawerTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Envelope weight="bold" className="size-4" />
+                <Button variant="outline">
+                  <EnvelopeIcon weight="bold" className="size-4" />
                   Invitaciones
                   {invites.length > 0 && (
                     <Badge className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-[10px]">
@@ -82,7 +82,10 @@ function PatientProvidersPage() {
                   {invites.length === 0 ? (
                     <div className="flex flex-col items-center gap-3 py-12 text-center">
                       <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-                        <Envelope size={24} className="text-muted-foreground" />
+                        <EnvelopeIcon
+                          size={24}
+                          className="text-muted-foreground"
+                        />
                       </div>
                       <p className="text-muted-foreground text-sm">
                         No tienes invitaciones pendientes
@@ -127,16 +130,12 @@ function PatientProvidersPage() {
                               {formatDateTime(invite.sentAt)}
                             </span>
                             <div className="flex items-center gap-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="h-7 text-xs"
-                              >
-                                <X size={12} weight="bold" />
+                              <Button variant="outline" className="h-7 text-xs">
+                                <XIcon size={12} weight="bold" />
                                 Rechazar
                               </Button>
-                              <Button size="sm" className="h-7 text-xs">
-                                <Check size={12} weight="bold" />
+                              <Button className="h-7 text-xs">
+                                <CheckIcon size={12} weight="bold" />
                                 Aceptar
                               </Button>
                             </div>
@@ -149,8 +148,8 @@ function PatientProvidersPage() {
               </DrawerContent>
             </Drawer>
 
-            <Button size="sm">
-              <Plus weight="bold" className="size-4" />
+            <Button>
+              <PlusIcon weight="bold" className="size-4" />
               Conectar profesional
             </Button>
           </div>
@@ -185,31 +184,31 @@ function PatientProvidersPage() {
 
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Phone size={14} />
+                  <PhoneIcon size={14} />
                   <span>{provider.phone}</span>
                 </div>
                 {provider.nextAppointment ? (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <CalendarDots size={14} />
+                    <CalendarDotsIcon size={14} />
                     <span>
                       Proxima cita: {formatDateTime(provider.nextAppointment)}
                     </span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <CalendarDots size={14} />
+                    <CalendarDotsIcon size={14} />
                     <span>Sin citas programadas</span>
                   </div>
                 )}
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="flex-1">
-                  <Stethoscope size={14} />
+                <Button variant="outline" className="flex-1">
+                  <StethoscopeIcon size={14} />
                   Ver perfil
                 </Button>
-                <Button variant="outline" size="sm" className="flex-1">
-                  <Envelope size={14} />
+                <Button variant="outline" className="flex-1">
+                  <EnvelopeIcon size={14} />
                   Mensaje
                 </Button>
               </div>

@@ -1,4 +1,4 @@
-import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Badge } from "@ui/badge";
@@ -6,6 +6,7 @@ import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import { Input } from "@ui/input";
 import { useState } from "react";
+
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import { MOCK_RECENT_PATIENTS } from "@/lib/dashboard-mock-data";
@@ -25,7 +26,7 @@ function getInitials(name: string): string {
 }
 
 function PatientsPage() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const filtered = MOCK_RECENT_PATIENTS.filter(
     (p) =>
@@ -43,7 +44,7 @@ function PatientsPage() {
             nativeButton={false}
             render={
               <Link to="/dashboard/patients/new">
-                <Plus weight="bold" className="size-4" />
+                <PlusIcon weight="bold" className="size-4" />
                 Nuevo paciente
               </Link>
             }
@@ -51,7 +52,7 @@ function PatientsPage() {
         }
       />
       <div className="relative max-w-sm">
-        <MagnifyingGlass className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <MagnifyingGlassIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Buscar por nombre o documento..."
           value={search}
@@ -59,7 +60,7 @@ function PatientsPage() {
           className="pl-9"
         />
       </div>
-      <div className="grid gap-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {filtered.length === 0 ? (
           <Card>
             <CardContent className="py-8 text-center text-muted-foreground text-sm">

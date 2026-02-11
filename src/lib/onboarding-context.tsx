@@ -9,26 +9,55 @@ import {
 
 import type { HealthFieldId } from "@/lib/health-fields";
 
-export type AccountType = "individual" | "organization";
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+/** Whether the user is a patient or a healthcare professional. */
+export type UserType = "patient" | "professional";
+
+/** Professional sub-type: solo practitioner or multi-seat org. */
+export type ProfessionalType = "individual" | "organization";
 
 export type OnboardingStep =
   | "welcome"
-  | "account-type"
+  | "user-type"
+  | "professional-type"
   | "health-field"
   | "profile"
   | "confirmation";
 
-const STEP_ORDER: OnboardingStep[] = [
+/**
+ * Step order depends on the user-type selection.
+ * Patients only see welcome + user-type, then get redirected.
+ * Professionals go through the full onboarding funnel.
+ */
+const PROFESSIONAL_STEPS: OnboardingStep[] = [
   "welcome",
-  "account-type",
+  "user-type",
+  "professional-type",
   "health-field",
   "profile",
   "confirmation",
 ];
 
+const PATIENT_STEPS: OnboardingStep[] = ["welcome", "user-type"];
+
+function getStepsForUserType(userType: UserType | null): OnboardingStep[] {
+  if (userType === "patient") return PATIENT_STEPS;
+  if (userType === "professional") return PROFESSIONAL_STEPS;
+  // Before any selection, show full professional steps for the indicator
+  return PROFESSIONAL_STEPS;
+}
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+
 type OnboardingState = {
   currentStep: OnboardingStep;
-  accountType: AccountType | null;
+  userType: UserType | null;
+  professionalType: ProfessionalType | null;
   selectedFields: HealthFieldId[];
   profile: {
     fullName: string;
@@ -37,6 +66,8 @@ type OnboardingState = {
     documentNumber: string;
     licenseNumber: string;
   };
+  /** Whether the user has selected a plan via PricingTable. */
+  planSelected: boolean;
   footerConfig: {
     nextLabel?: string;
     onComplete?: () => void;
@@ -47,7 +78,8 @@ type OnboardingAction =
   | { type: "SET_STEP"; step: OnboardingStep }
   | { type: "NEXT_STEP" }
   | { type: "PREV_STEP" }
-  | { type: "SET_ACCOUNT_TYPE"; accountType: AccountType }
+  | { type: "SET_USER_TYPE"; userType: UserType }
+  | { type: "SET_PROFESSIONAL_TYPE"; professionalType: ProfessionalType }
   | { type: "TOGGLE_FIELD"; fieldId: HealthFieldId }
   | { type: "SET_FIELD"; fieldId: HealthFieldId }
   | {
@@ -55,12 +87,14 @@ type OnboardingAction =
       field: keyof OnboardingState["profile"];
       value: string;
     }
+  | { type: "SET_PLAN_SELECTED"; selected: boolean }
   | { type: "SET_FOOTER_CONFIG"; config: OnboardingState["footerConfig"] }
   | { type: "RESET" };
 
 const initialState: OnboardingState = {
   currentStep: "welcome",
-  accountType: null,
+  userType: null,
+  professionalType: null,
   selectedFields: [],
   profile: {
     fullName: "",
@@ -69,8 +103,13 @@ const initialState: OnboardingState = {
     documentNumber: "",
     licenseNumber: "",
   },
+  planSelected: false,
   footerConfig: {},
 };
+
+// ---------------------------------------------------------------------------
+// Reducer
+// ---------------------------------------------------------------------------
 
 function onboardingReducer(
   state: OnboardingState,
@@ -81,24 +120,37 @@ function onboardingReducer(
       return { ...state, currentStep: action.step };
 
     case "NEXT_STEP": {
-      const currentIndex = STEP_ORDER.indexOf(state.currentStep);
-      const nextStep = STEP_ORDER[currentIndex + 1];
+      const steps = getStepsForUserType(state.userType);
+      const currentIndex = steps.indexOf(state.currentStep);
+      const nextStep = steps[currentIndex + 1];
       if (nextStep) return { ...state, currentStep: nextStep };
       return state;
     }
 
     case "PREV_STEP": {
-      const currentIndex = STEP_ORDER.indexOf(state.currentStep);
-      const prevStep = STEP_ORDER[currentIndex - 1];
+      const steps = getStepsForUserType(state.userType);
+      const currentIndex = steps.indexOf(state.currentStep);
+      const prevStep = steps[currentIndex - 1];
       if (prevStep) return { ...state, currentStep: prevStep };
       return state;
     }
 
-    case "SET_ACCOUNT_TYPE":
+    case "SET_USER_TYPE":
       return {
         ...state,
-        accountType: action.accountType,
+        userType: action.userType,
+        // Reset downstream selections when user type changes
+        professionalType: null,
         selectedFields: [],
+        planSelected: false,
+      };
+
+    case "SET_PROFESSIONAL_TYPE":
+      return {
+        ...state,
+        professionalType: action.professionalType,
+        // Reset plan when switching between individual/org
+        planSelected: false,
       };
 
     case "TOGGLE_FIELD":
@@ -118,6 +170,9 @@ function onboardingReducer(
         profile: { ...state.profile, [action.field]: action.value },
       };
 
+    case "SET_PLAN_SELECTED":
+      return { ...state, planSelected: action.selected };
+
     case "SET_FOOTER_CONFIG":
       return { ...state, footerConfig: action.config };
 
@@ -129,8 +184,13 @@ function onboardingReducer(
   }
 }
 
+// ---------------------------------------------------------------------------
+// Context
+// ---------------------------------------------------------------------------
+
 type OnboardingContextValue = {
   state: OnboardingState;
+  steps: OnboardingStep[];
   stepIndex: number;
   totalSteps: number;
   progressPercent: number;
@@ -139,13 +199,15 @@ type OnboardingContextValue = {
   isLastStep: boolean;
   nextStep: () => void;
   prevStep: () => void;
-  setAccountType: (type: AccountType) => void;
+  setUserType: (type: UserType) => void;
+  setProfessionalType: (type: ProfessionalType) => void;
   toggleField: (fieldId: HealthFieldId) => void;
   setField: (fieldId: HealthFieldId) => void;
   updateProfile: (
     field: keyof OnboardingState["profile"],
     value: string,
   ) => void;
+  setPlanSelected: (selected: boolean) => void;
   setFooterConfig: (config: OnboardingState["footerConfig"]) => void;
   reset: () => void;
 };
@@ -155,17 +217,21 @@ const OnboardingContext = createContext<OnboardingContextValue | null>(null);
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(onboardingReducer, initialState);
 
-  const stepIndex = STEP_ORDER.indexOf(state.currentStep);
-  const totalSteps = STEP_ORDER.length;
-  const progressPercent = (stepIndex / (totalSteps - 1)) * 100;
+  const steps = getStepsForUserType(state.userType);
+  const stepIndex = steps.indexOf(state.currentStep);
+  const totalSteps = steps.length;
+  const progressPercent =
+    totalSteps > 1 ? (stepIndex / (totalSteps - 1)) * 100 : 0;
   const isLastStep = stepIndex === totalSteps - 1;
 
   const canGoNext = useMemo(() => {
     switch (state.currentStep) {
       case "welcome":
         return true;
-      case "account-type":
-        return state.accountType !== null;
+      case "user-type":
+        return state.userType !== null;
+      case "professional-type":
+        return state.professionalType !== null;
       case "health-field":
         return state.selectedFields.length > 0;
       case "profile":
@@ -185,9 +251,13 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
   const nextStep = useCallback(() => dispatch({ type: "NEXT_STEP" }), []);
   const prevStep = useCallback(() => dispatch({ type: "PREV_STEP" }), []);
-  const setAccountType = useCallback(
-    (accountType: AccountType) =>
-      dispatch({ type: "SET_ACCOUNT_TYPE", accountType }),
+  const setUserType = useCallback(
+    (userType: UserType) => dispatch({ type: "SET_USER_TYPE", userType }),
+    [],
+  );
+  const setProfessionalType = useCallback(
+    (professionalType: ProfessionalType) =>
+      dispatch({ type: "SET_PROFESSIONAL_TYPE", professionalType }),
     [],
   );
   const toggleField = useCallback(
@@ -203,6 +273,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "UPDATE_PROFILE", field, value }),
     [],
   );
+  const setPlanSelected = useCallback(
+    (selected: boolean) => dispatch({ type: "SET_PLAN_SELECTED", selected }),
+    [],
+  );
   const setFooterConfig = useCallback(
     (config: OnboardingState["footerConfig"]) =>
       dispatch({ type: "SET_FOOTER_CONFIG", config }),
@@ -213,6 +287,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       state,
+      steps,
       stepIndex,
       totalSteps,
       progressPercent,
@@ -221,15 +296,18 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       isLastStep,
       nextStep,
       prevStep,
-      setAccountType,
+      setUserType,
+      setProfessionalType,
       toggleField,
       setField,
       updateProfile,
+      setPlanSelected,
       setFooterConfig,
       reset,
     }),
     [
       state,
+      steps,
       stepIndex,
       progressPercent,
       canGoNext,
@@ -237,12 +315,15 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       isLastStep,
       nextStep,
       prevStep,
-      setAccountType,
+      setUserType,
+      setProfessionalType,
       toggleField,
       setField,
       updateProfile,
+      setPlanSelected,
       setFooterConfig,
       reset,
+      totalSteps,
     ],
   );
 

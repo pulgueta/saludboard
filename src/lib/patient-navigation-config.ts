@@ -1,10 +1,10 @@
 import type { Icon } from "@phosphor-icons/react";
 import {
-  CalendarDots,
-  ClipboardText,
-  House,
-  Pill,
-  Stethoscope,
+  CalendarDotsIcon,
+  ClipboardTextIcon,
+  HouseIcon,
+  PillIcon,
+  StethoscopeIcon,
 } from "@phosphor-icons/react";
 
 export type PatientNavItem = {
@@ -14,9 +14,9 @@ export type PatientNavItem = {
 };
 
 export const PATIENT_NAV_ITEMS: PatientNavItem[] = [
-  { label: "Inicio", href: "/patient", icon: House },
-  { label: "Citas", href: "/patient/appointments", icon: CalendarDots },
-  { label: "Historial", href: "/patient/records", icon: ClipboardText },
-  { label: "Recetas", href: "/patient/prescriptions", icon: Pill },
-  { label: "Profesionales", href: "/patient/providers", icon: Stethoscope },
+  { label: "Inicio", href: "/patient", icon: HouseIcon },
+  { label: "Citas", href: "/patient/appointments", icon: CalendarDotsIcon },
+  { label: "Historial", href: "/patient/records", icon: ClipboardTextIcon },
+  { label: "Recetas", href: "/patient/prescriptions", icon: PillIcon },
+  { label: "Profesionales", href: "/patient/providers", icon: StethoscopeIcon },
 ];

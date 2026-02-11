@@ -1,3 +1,4 @@
+import { useSubscription } from "@clerk/clerk-react/experimental";
 import { useUser } from "@clerk/tanstack-react-start";
 
 /**
@@ -42,6 +43,12 @@ function deriveInitials(name: string): string {
 export function useCurrentUser() {
   const { user, isLoaded, isSignedIn } = useUser();
 
+  const userHasOrganization = !!user?.organizationMemberships.length;
+
+  const { data: currentSubscription } = useSubscription({
+    for: userHasOrganization ? "organization" : "user",
+  });
+
   const currentUser = () => {
     if (!user) return null;
 
@@ -65,5 +72,6 @@ export function useCurrentUser() {
     user: currentUser(),
     isLoaded,
     isSignedIn,
+    subscription: currentSubscription,
   } as const;
 }

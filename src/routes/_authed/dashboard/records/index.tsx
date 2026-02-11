@@ -1,4 +1,4 @@
-import { ClipboardText } from "@phosphor-icons/react";
+import { ClipboardTextIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, CardContent } from "@ui/card";
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
@@ -19,7 +19,7 @@ function RecordsPage() {
       <Card>
         <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
           <div className="flex size-14 items-center justify-center rounded-2xl bg-muted">
-            <ClipboardText
+            <ClipboardTextIcon
               size={28}
               weight="duotone"
               className="text-muted-foreground"

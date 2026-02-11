@@ -1,4 +1,4 @@
-import { Stethoscope } from "@phosphor-icons/react";
+import { StethoscopeIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import type { FC, ReactNode } from "react";
 
@@ -38,7 +38,7 @@ export const AuthLayout: FC<AuthLayoutProps> = ({ children, className }) => {
           className="flex flex-col items-center gap-2.5 text-center transition-opacity hover:opacity-80"
         >
           <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Stethoscope size={22} weight="bold" />
+            <StethoscopeIcon size={22} weight="bold" />
           </div>
           <h1 className="font-semibold text-foreground text-xl tracking-tighter md:text-3xl">
             Salud

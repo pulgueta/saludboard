@@ -1,4 +1,4 @@
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Badge } from "@ui/badge";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
@@ -10,7 +10,8 @@ import { getHealthFieldById } from "@/lib/health-fields";
 import { useOnboarding } from "@/lib/onboarding-context";
 
 /**
- * Step 5: Confirmation summary showing all selections before completing onboarding.
+ * Step 7 (professionals only): Confirmation summary.
+ * Shows all selections before completing onboarding.
  */
 export const ConfirmationStep: FC = () => {
   const { state, setFooterConfig } = useOnboarding();
@@ -19,15 +20,24 @@ export const ConfirmationStep: FC = () => {
     .map((id) => getHealthFieldById(id)?.name)
     .filter(Boolean);
 
+  const isOrganization = state.professionalType === "organization";
+
   const handleComplete = useCallback(() => {
     // In a real app this would persist to the backend.
-    // For now, we log and could navigate to the dashboard.
     console.info("Onboarding complete:", {
-      accountType: state.accountType,
+      userType: state.userType,
+      professionalType: state.professionalType,
       selectedFields: state.selectedFields,
       profile: state.profile,
+      planSelected: state.planSelected,
     });
-  }, [state.accountType, state.selectedFields, state.profile]);
+  }, [
+    state.userType,
+    state.professionalType,
+    state.selectedFields,
+    state.profile,
+    state.planSelected,
+  ]);
 
   useEffect(() => {
     setFooterConfig({
@@ -41,7 +51,11 @@ export const ConfirmationStep: FC = () => {
       <AnimatedContainer delay={50} duration={500}>
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex size-14 items-center justify-center rounded-full bg-primary/10">
-            <CheckCircle size={32} weight="duotone" className="text-primary" />
+            <CheckCircleIcon
+              size={32}
+              weight="duotone"
+              className="text-primary"
+            />
           </div>
 
           <h2 className="font-semibold text-2xl text-foreground tracking-tight">
@@ -57,16 +71,24 @@ export const ConfirmationStep: FC = () => {
 
       <AnimatedContainer delay={200} duration={450}>
         <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm">
-          {/* Account type */}
+          {/* Professional type */}
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-muted-foreground text-sm">
               Tipo de cuenta
             </span>
             <span className="font-medium text-foreground text-sm">
-              {state.accountType === "organization"
-                ? "Organización"
-                : "Individual"}
+              {isOrganization ? "Organización" : "Individual"}
             </span>
+          </div>
+
+          <Separator />
+
+          {/* Plan */}
+          <div className="flex items-center justify-between px-5 py-4">
+            <span className="text-muted-foreground text-sm">Plan</span>
+            <Badge variant="secondary">
+              {state.planSelected ? "Seleccionado" : "Pendiente"}
+            </Badge>
           </div>
 
           <Separator />
@@ -74,9 +96,7 @@ export const ConfirmationStep: FC = () => {
           {/* Health fields */}
           <div className="flex flex-col gap-2.5 px-5 py-4">
             <span className="text-muted-foreground text-sm">
-              {state.accountType === "organization"
-                ? "Especialidades"
-                : "Especialidad"}
+              {isOrganization ? "Especialidades" : "Especialidad"}
             </span>
             <div className="flex flex-wrap gap-1.5">
               {selectedFieldNames.map((name) => (
@@ -99,7 +119,7 @@ export const ConfirmationStep: FC = () => {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground text-sm">
-                {state.accountType === "organization" ? "NIT" : "Documento"}
+                {isOrganization ? "NIT" : "Documento"}
               </span>
               <span className="font-medium text-foreground text-sm">
                 {state.profile.documentNumber || "-"}
@@ -124,7 +144,7 @@ export const ConfirmationStep: FC = () => {
             {state.profile.licenseNumber ? (
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground text-sm">
-                  {state.accountType === "organization"
+                  {isOrganization
                     ? "Código de habilitación"
                     : "Registro profesional"}
                 </span>

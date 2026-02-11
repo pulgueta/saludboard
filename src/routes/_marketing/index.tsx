@@ -1,17 +1,17 @@
 import { SignUpButton } from "@clerk/tanstack-react-start";
 import {
-  ArrowRight,
-  CalendarDots,
-  ChartLineUp,
-  ClipboardText,
-  Cloud,
-  FileText,
-  Lock,
-  Pill,
-  Stethoscope,
-  UserCircle,
-  Users,
-  VideoCamera,
+  ArrowRightIcon,
+  CalendarDotsIcon,
+  ChartLineUpIcon,
+  ClipboardTextIcon,
+  CloudIcon,
+  FileTextIcon,
+  LockIcon,
+  PillIcon,
+  StethoscopeIcon,
+  UserCircleIcon,
+  UsersIcon,
+  VideoCameraIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Badge } from "@ui/badge";
@@ -105,7 +105,7 @@ function LandingPage() {
               <SignUpButton mode="redirect">
                 <Button size="lg">
                   Soy profesional de salud
-                  <ArrowRight weight="bold" className="ml-1 size-4" />
+                  <ArrowRightIcon weight="bold" className="ml-1 size-4" />
                 </Button>
               </SignUpButton>
               <SignUpButton mode="redirect">
@@ -118,22 +118,22 @@ function LandingPage() {
           <WhenSignedIn>
             <Button size="lg" render={<Link to="/dashboard" />}>
               Ir al dashboard
-              <ArrowRight weight="bold" className="ml-1 size-4" />
+              <ArrowRightIcon weight="bold" className="ml-1 size-4" />
             </Button>
           </WhenSignedIn>
 
           {/* Trust badges */}
           <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-muted-foreground">
             <div className="flex items-center gap-2 text-xs">
-              <Lock size={16} weight="duotone" />
+              <LockIcon size={16} weight="duotone" />
               <span>Datos encriptados</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <Cloud size={16} weight="duotone" />
+              <CloudIcon size={16} weight="duotone" />
               <span>100% en la nube</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <Stethoscope size={16} weight="duotone" />
+              <StethoscopeIcon size={16} weight="duotone" />
               <span>Cumple normatividad colombiana</span>
             </div>
           </div>
@@ -165,17 +165,17 @@ function LandingPage() {
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
-                icon={<CalendarDots size={22} weight="duotone" />}
+                icon={<CalendarDotsIcon size={22} weight="duotone" />}
                 title="Agenda inteligente"
                 description="Gestiona citas, disponibilidad y recordatorios automaticos para tus pacientes."
               />
               <FeatureCard
-                icon={<ClipboardText size={22} weight="duotone" />}
+                icon={<ClipboardTextIcon size={22} weight="duotone" />}
                 title="Historias clinicas digitales"
                 description="Registra consultas, diagnosticos y evoluciones con formatos adaptados a tu especialidad."
               />
               <FeatureCard
-                icon={<FileText size={22} weight="duotone" />}
+                icon={<FileTextIcon size={22} weight="duotone" />}
                 title="Gestion de documentos"
                 description="Consentimientos informados, ordenes medicas y certificados en formato digital."
               />
@@ -189,17 +189,17 @@ function LandingPage() {
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
-                icon={<VideoCamera size={22} weight="duotone" />}
+                icon={<VideoCameraIcon size={22} weight="duotone" />}
                 title="Citas online y presenciales"
                 description="Agenda citas con tus profesionales de confianza y accede a teleconsultas."
               />
               <FeatureCard
-                icon={<UserCircle size={22} weight="duotone" />}
+                icon={<UserCircleIcon size={22} weight="duotone" />}
                 title="Acceso a tu historial"
                 description="Consulta tus historias clinicas, resultados de laboratorio e imagenes diagnosticas."
               />
               <FeatureCard
-                icon={<Pill size={22} weight="duotone" />}
+                icon={<PillIcon size={22} weight="duotone" />}
                 title="Recetas digitales"
                 description="Recibe y gestiona tus recetas medicas de forma digital con tu farmacia preferida."
               />
@@ -213,17 +213,17 @@ function LandingPage() {
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
-                icon={<Users size={22} weight="duotone" />}
+                icon={<UsersIcon size={22} weight="duotone" />}
                 title="Multi-sede y equipos"
                 description="Administra multiples sedes, profesionales y personal administrativo en una sola cuenta."
               />
               <FeatureCard
-                icon={<ChartLineUp size={22} weight="duotone" />}
+                icon={<ChartLineUpIcon size={22} weight="duotone" />}
                 title="Reportes y analytics"
                 description="Visualiza metricas de atencion, ocupacion y rendimiento de tu organizacion."
               />
               <FeatureCard
-                icon={<Lock size={22} weight="duotone" />}
+                icon={<LockIcon size={22} weight="duotone" />}
                 title="Control de acceso"
                 description="Roles y permisos granulares para proteger la informacion clinica de tus pacientes."
               />
@@ -282,14 +282,14 @@ function LandingPage() {
             <SignUpButton mode="redirect">
               <Button size="lg">
                 Crear cuenta gratis
-                <ArrowRight weight="bold" className="ml-1 size-4" />
+                <ArrowRightIcon weight="bold" className="ml-1 size-4" />
               </Button>
             </SignUpButton>
           </WhenSignedOut>
           <WhenSignedIn>
             <Button size="lg" render={<Link to="/dashboard" />}>
               Ir al dashboard
-              <ArrowRight weight="bold" className="ml-1 size-4" />
+              <ArrowRightIcon weight="bold" className="ml-1 size-4" />
             </Button>
           </WhenSignedIn>
         </div>

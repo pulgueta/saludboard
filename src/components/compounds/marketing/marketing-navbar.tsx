@@ -1,5 +1,5 @@
 import { SignInButton, SignUpButton } from "@clerk/tanstack-react-start";
-import { List, Stethoscope, X } from "@phosphor-icons/react";
+import { ListIcon, StethoscopeIcon, XIcon } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Button } from "@ui/button";
 import { Separator } from "@ui/separator";
@@ -50,7 +50,7 @@ export const MarketingNavbar: FC = () => {
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
         >
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Stethoscope size={18} weight="bold" />
+            <StethoscopeIcon size={18} weight="bold" />
           </div>
           <span className="font-semibold text-foreground text-lg tracking-tighter">
             Salud<span className="text-primary">Board</span>
@@ -84,12 +84,10 @@ export const MarketingNavbar: FC = () => {
         <div className="hidden items-center gap-2 md:flex">
           <WhenSignedOut>
             <SignInButton mode="redirect">
-              <Button variant="ghost" size="sm">
-                Iniciar sesion
-              </Button>
+              <Button variant="ghost">Iniciar sesion</Button>
             </SignInButton>
             <SignUpButton mode="redirect">
-              <Button size="sm">Crear cuenta</Button>
+              <Button>Crear cuenta</Button>
             </SignUpButton>
           </WhenSignedOut>
           <WhenSignedIn>
@@ -106,7 +104,7 @@ export const MarketingNavbar: FC = () => {
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label={mobileOpen ? "Cerrar menu" : "Abrir menu"}
         >
-          {mobileOpen ? <X size={20} /> : <List size={20} />}
+          {mobileOpen ? <XIcon size={20} /> : <ListIcon size={20} />}
         </button>
       </nav>
 

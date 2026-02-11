@@ -1,4 +1,9 @@
-import { CalendarDots, Clock, FileText, Users } from "@phosphor-icons/react";
+import {
+  CalendarDotsIcon,
+  ClockIcon,
+  FileTextIcon,
+  UsersIcon,
+} from "@phosphor-icons/react";
 import type { FC } from "react";
 
 import { StatCard } from "@/components/primitives/stat-card";
@@ -18,7 +23,7 @@ export const StatCards: FC<StatCardsProps> = ({ stats }) => {
       <StatCard
         title="Pacientes totales"
         value={stats.totalPatients}
-        icon={Users}
+        icon={UsersIcon}
         trend={{ value: stats.totalPatientsChange, label: "este mes" }}
         variant="default"
       />
@@ -26,21 +31,21 @@ export const StatCards: FC<StatCardsProps> = ({ stats }) => {
         title="Citas hoy"
         value={stats.todayAppointments}
         subtitle={`${stats.todayCompleted} completadas, ${stats.todayPending} pendientes`}
-        icon={CalendarDots}
+        icon={CalendarDotsIcon}
         variant="success"
       />
       <StatCard
         title="Documentos pendientes"
         value={stats.pendingDocuments}
         subtitle="Por revisar o firmar"
-        icon={FileText}
+        icon={FileTextIcon}
         variant={stats.pendingDocuments > 0 ? "warning" : "default"}
       />
       <StatCard
         title="Próxima cita"
         value={`${stats.nextAppointmentMinutes} min`}
         subtitle="Tiempo estimado"
-        icon={Clock}
+        icon={ClockIcon}
       />
     </div>
   );

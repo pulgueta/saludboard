@@ -1,4 +1,4 @@
-import { Clock, Pill, Warning } from "@phosphor-icons/react";
+import { ClockIcon, PillIcon, WarningIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@ui/badge";
 import { Card, CardContent } from "@ui/card";
@@ -41,7 +41,7 @@ function PatientPrescriptionsPage() {
             <Card key={rx.id} className="overflow-hidden">
               <CardContent className="p-0">
                 <div className="flex items-center gap-2 bg-success-bg px-4 py-2">
-                  <Pill size={14} weight="bold" className="text-success" />
+                  <PillIcon size={14} weight="bold" className="text-success" />
                   <span className="font-medium text-sm text-success">
                     Activa
                   </span>
@@ -86,7 +86,7 @@ function PatientPrescriptionsPage() {
                   </div>
                   {rx.refillsRemaining <= 1 && (
                     <div className="flex items-center gap-1.5 text-warning text-xs">
-                      <Warning size={12} weight="bold" />
+                      <WarningIcon size={12} weight="bold" />
                       <span>Pocas recargas — contacta a tu medico</span>
                     </div>
                   )}
@@ -108,7 +108,7 @@ function PatientPrescriptionsPage() {
               <Card key={rx.id} className="opacity-60">
                 <CardContent className="flex items-center gap-4 p-4">
                   <div className="flex size-9 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                    <Clock size={16} />
+                    <ClockIcon size={16} />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="truncate font-medium text-foreground text-sm">

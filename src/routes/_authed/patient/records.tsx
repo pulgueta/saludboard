@@ -1,10 +1,11 @@
+import type { Icon } from "@phosphor-icons/react";
 import {
-  Camera,
-  ClipboardText,
-  Download,
-  Flask,
-  Pill,
-  Stethoscope,
+  CameraIcon,
+  ClipboardTextIcon,
+  DownloadIcon,
+  FlaskIcon,
+  PillIcon,
+  StethoscopeIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@ui/badge";
@@ -26,31 +27,31 @@ export const Route = createFileRoute("/_authed/patient/records")({
 
 const RECORD_TYPE_CONFIG: Record<
   PatientRecord["type"],
-  { label: string; icon: typeof Stethoscope; color: string }
+  { label: string; icon: Icon; color: string }
 > = {
   consulta: {
     label: "Consulta",
-    icon: Stethoscope,
+    icon: StethoscopeIcon,
     color: "bg-primary/10 text-primary",
   },
   laboratorio: {
     label: "Laboratorio",
-    icon: Flask,
+    icon: FlaskIcon,
     color: "bg-success-bg text-success",
   },
   imagen: {
     label: "Imagen",
-    icon: Camera,
+    icon: CameraIcon,
     color: "bg-chart-1/10 text-chart-1",
   },
   receta: {
     label: "Receta",
-    icon: Pill,
+    icon: PillIcon,
     color: "bg-warning-bg text-warning",
   },
   procedimiento: {
     label: "Procedimiento",
-    icon: ClipboardText,
+    icon: ClipboardTextIcon,
     color: "bg-destructive/10 text-destructive",
   },
 };
@@ -172,7 +173,7 @@ function PatientRecordsPage() {
                           type="button"
                           className="mt-3 flex items-center gap-1.5 text-primary text-xs hover:underline"
                         >
-                          <Download size={12} />
+                          <DownloadIcon size={12} />
                           Descargar registro
                         </button>
                       </div>

@@ -1,4 +1,4 @@
-import { File as FileIcon, Trash } from "@phosphor-icons/react";
+import { FileIcon, TrashIcon } from "@phosphor-icons/react";
 import { Button } from "@ui/button";
 import type { FC } from "react";
 
@@ -54,7 +54,7 @@ export const FileList: FC<FileListProps> = ({ files, onRemove }) => {
               aria-label={`Eliminar ${uploaded.file.name}`}
               onClick={() => onRemove(uploaded.id)}
             >
-              <Trash size={16} className="text-muted-foreground" />
+              <TrashIcon size={16} className="text-muted-foreground" />
             </Button>
           </li>
         ))}

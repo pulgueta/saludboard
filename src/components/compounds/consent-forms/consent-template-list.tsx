@@ -1,4 +1,4 @@
-import { FileText } from "@phosphor-icons/react";
+import { FileTextIcon } from "@phosphor-icons/react";
 import { Badge } from "@ui/badge";
 import { Card, CardContent } from "@ui/card";
 import type { FC } from "react";
@@ -60,7 +60,7 @@ export const ConsentTemplateList: FC = () => {
         >
           <CardContent className="flex items-start gap-4 p-0">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <FileText size={20} weight="duotone" />
+              <FileTextIcon size={20} weight="duotone" />
             </div>
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <div className="flex items-center gap-2">

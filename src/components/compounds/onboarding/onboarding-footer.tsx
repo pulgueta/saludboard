@@ -1,4 +1,9 @@
-import { ArrowLeft, ArrowRight, Check } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckIcon,
+} from "@phosphor-icons/react";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/button";
 import type { FC } from "react";
 
@@ -11,8 +16,11 @@ type OnboardingFooterProps = {
 
 /**
  * Navigation footer for onboarding steps.
- * Renders Back/Next buttons with contextual labels and disabled states.
- * This component is persistent and doesn't flash between steps.
+ *
+ * - On the user-type step, if "patient" is selected the Next button reads
+ *   "Ir a mi portal" and navigates to /patient instead of advancing.
+ * - On the last professional step, the button reads "Ir al dashboard"
+ *   and calls the onComplete callback.
  */
 export const OnboardingFooter: FC<OnboardingFooterProps> = ({ className }) => {
   const {
@@ -21,18 +29,37 @@ export const OnboardingFooter: FC<OnboardingFooterProps> = ({ className }) => {
     isLastStep,
     nextStep,
     prevStep,
-    state: { footerConfig },
+    state: { footerConfig, currentStep, userType },
   } = useOnboarding();
+
+  const navigate = useNavigate();
 
   const { nextLabel, onComplete } = footerConfig;
 
+  const isPatientRedirect =
+    currentStep === "user-type" && userType === "patient";
+
   const handleNext = () => {
-    if (isLastStep && onComplete) {
-      onComplete();
+    if (isPatientRedirect) {
+      navigate({ to: "/patient" });
       return;
     }
+
+    if (isLastStep && onComplete) {
+      onComplete();
+      navigate({ to: "/dashboard" });
+      return;
+    }
+
     nextStep();
   };
+
+  const resolvedLabel = (() => {
+    if (isPatientRedirect) return "Ir a mi portal";
+    if (nextLabel) return nextLabel;
+    if (isLastStep) return "Comenzar";
+    return "Continuar";
+  })();
 
   return (
     <div
@@ -40,21 +67,16 @@ export const OnboardingFooter: FC<OnboardingFooterProps> = ({ className }) => {
       className={cn("flex items-center justify-between pt-6", className)}
     >
       <Button variant="outline" onClick={prevStep} disabled={!canGoPrev}>
-        <ArrowLeft weight="bold" className="size-4" />
+        <ArrowLeftIcon weight="bold" className="size-4" />
         Volver
       </Button>
 
       <Button onClick={handleNext} disabled={!canGoNext}>
-        {isLastStep ? (
-          <>
-            {nextLabel ?? "Comenzar"}
-            <Check weight="bold" className="size-4" />
-          </>
+        {resolvedLabel}
+        {isLastStep || isPatientRedirect ? (
+          <CheckIcon weight="bold" className="size-4" />
         ) : (
-          <>
-            {nextLabel ?? "Continuar"}
-            <ArrowRight weight="bold" className="size-4" />
-          </>
+          <ArrowRightIcon weight="bold" className="size-4" />
         )}
       </Button>
     </div>

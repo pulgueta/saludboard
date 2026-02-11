@@ -1,4 +1,4 @@
-import { Stethoscope } from "@phosphor-icons/react";
+import { StethoscopeIcon } from "@phosphor-icons/react";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
 
@@ -44,7 +44,7 @@ export const MarketingFooter: FC = () => {
               className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
             >
               <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Stethoscope size={18} weight="bold" />
+                <StethoscopeIcon size={18} weight="bold" />
               </div>
               <span className="font-semibold text-foreground text-lg tracking-tighter">
                 Salud<span className="text-primary">Board</span>

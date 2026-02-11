@@ -1,4 +1,4 @@
-import { Clock } from "@phosphor-icons/react";
+import { ClockIcon } from "@phosphor-icons/react";
 import { Badge } from "@ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 import type { FC } from "react";
@@ -72,7 +72,7 @@ export const UpcomingAppointments: FC<UpcomingAppointmentsProps> = ({
               className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/50"
             >
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Clock size={18} weight="duotone" />
+                <ClockIcon size={18} weight="duotone" />
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="truncate font-medium text-foreground text-sm">

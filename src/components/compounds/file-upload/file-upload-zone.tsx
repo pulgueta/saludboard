@@ -1,4 +1,4 @@
-import { CloudArrowUp } from "@phosphor-icons/react";
+import { CloudArrowUpIcon } from "@phosphor-icons/react";
 import type { FC, ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -49,7 +49,7 @@ export const FileUploadZone: FC<FileUploadZoneProps> = ({
       <input {...getInputProps()} />
       {children ?? (
         <>
-          <CloudArrowUp
+          <CloudArrowUpIcon
             size={40}
             weight="duotone"
             className={cn(

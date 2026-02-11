@@ -1,19 +1,20 @@
 import {
-  ArrowRight,
-  CalendarDots,
-  ClipboardText,
-  Clock,
-  Pill,
-  Stethoscope,
-  VideoCamera,
+  ArrowRightIcon,
+  CalendarDotsIcon,
+  ClipboardTextIcon,
+  ClockIcon,
+  PillIcon,
+  StethoscopeIcon,
+  VideoCameraIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
-
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import {
   MOCK_PATIENT_STATS,
   MOCK_RECENT_ACTIVITY,
@@ -33,22 +34,24 @@ function formatDate(iso: string): string {
   }).format(new Date(iso));
 }
 
-function formatTime(time: string): string {
-  const [h, m] = time.split(":");
-  const hour = Number(h);
-  const suffix = hour >= 12 ? "PM" : "AM";
-  const display = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-  return `${display}:${m} ${suffix}`;
+function formatTime(time: string) {
+  return Intl.DateTimeFormat("es-CO", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(time));
 }
 
 const ACTIVITY_ICONS = {
-  prescription: Pill,
-  appointment: CalendarDots,
-  record: ClipboardText,
-  invite: Stethoscope,
+  prescription: PillIcon,
+  appointment: CalendarDotsIcon,
+  record: ClipboardTextIcon,
+  invite: StethoscopeIcon,
 } as const;
 
 function PatientHomePage() {
+  const { user, isLoaded } = useCurrentUser();
+
   const stats = MOCK_PATIENT_STATS;
   const upcoming = MOCK_UPCOMING_PATIENT_APPOINTMENTS;
   const nextAppointment = upcoming[0];
@@ -57,12 +60,18 @@ function PatientHomePage() {
     <div className="flex flex-col gap-6">
       {/* Welcome banner */}
       <div>
-        <h1 className="font-bold text-2xl text-foreground tracking-tight">
-          Buenos dias, Santiago
-        </h1>
-        <p className="mt-1 text-muted-foreground text-sm">
-          {formatDate(new Date().toISOString())} — Asi esta tu salud hoy.
-        </p>
+        {isLoaded ? (
+          <>
+            <h1 className="font-bold text-2xl text-foreground tracking-tight">
+              Buenos dias, {user?.firstName}
+            </h1>
+            <p className="mt-1 text-muted-foreground text-sm">
+              {formatDate(new Date().toISOString())} — Asi esta tu salud hoy.
+            </p>
+          </>
+        ) : (
+          <Skeleton className="h-8 w-full max-w-xs" />
+        )}
       </div>
 
       {/* Quick stats */}
@@ -70,7 +79,7 @@ function PatientHomePage() {
         <Card>
           <CardContent className="flex items-center gap-4 p-4">
             <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <CalendarDots size={20} weight="duotone" />
+              <CalendarDotsIcon size={20} weight="duotone" />
             </div>
             <div className="flex flex-col">
               <span className="text-muted-foreground text-xs">
@@ -87,7 +96,7 @@ function PatientHomePage() {
         <Card>
           <CardContent className="flex items-center gap-4 p-4">
             <div className="flex size-10 items-center justify-center rounded-lg bg-success-bg text-success">
-              <Pill size={20} weight="duotone" />
+              <PillIcon size={20} weight="duotone" />
             </div>
             <div className="flex flex-col">
               <span className="text-muted-foreground text-xs">
@@ -102,7 +111,7 @@ function PatientHomePage() {
         <Card>
           <CardContent className="flex items-center gap-4 p-4">
             <div className="flex size-10 items-center justify-center rounded-lg bg-chart-1/10 text-chart-1">
-              <Stethoscope size={20} weight="duotone" />
+              <StethoscopeIcon size={20} weight="duotone" />
             </div>
             <div className="flex flex-col">
               <span className="text-muted-foreground text-xs">
@@ -125,7 +134,7 @@ function PatientHomePage() {
             <Card className="overflow-hidden border-primary/20">
               <CardContent className="p-0">
                 <div className="flex items-center gap-1.5 bg-primary/5 px-5 py-2.5">
-                  <Clock size={14} weight="bold" className="text-primary" />
+                  <ClockIcon size={14} weight="bold" className="text-primary" />
                   <span className="font-medium text-primary text-xs">
                     Proxima cita
                   </span>
@@ -169,7 +178,7 @@ function PatientHomePage() {
                   </div>
                   <div className="flex flex-col gap-1.5 text-sm">
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <CalendarDots size={14} />
+                      <CalendarDotsIcon size={14} />
                       <span>
                         {formatDate(nextAppointment.date)} a las{" "}
                         {formatTime(nextAppointment.time)}
@@ -177,21 +186,19 @@ function PatientHomePage() {
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
                       {nextAppointment.isTelemedicine ? (
-                        <VideoCamera size={14} />
+                        <VideoCameraIcon size={14} />
                       ) : (
-                        <Stethoscope size={14} />
+                        <StethoscopeIcon size={14} />
                       )}
                       <span>{nextAppointment.location}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
-                      Cancelar
-                    </Button>
+                    <Button variant="outline">Cancelar</Button>
                     {nextAppointment.isTelemedicine && (
-                      <Button size="sm">
+                      <Button>
                         Unirse a la llamada
-                        <VideoCamera className="ml-1 size-3.5" />
+                        <VideoCameraIcon className="ml-1 size-3.5" />
                       </Button>
                     )}
                   </div>
@@ -213,7 +220,7 @@ function PatientHomePage() {
                     className="flex items-center gap-1 text-primary text-xs hover:underline"
                   >
                     Ver todas
-                    <ArrowRight size={12} />
+                    <ArrowRightIcon size={12} />
                   </Link>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -224,9 +231,9 @@ function PatientHomePage() {
                     >
                       <div className="flex size-9 items-center justify-center rounded-md bg-muted text-muted-foreground">
                         {apt.isTelemedicine ? (
-                          <VideoCamera size={16} />
+                          <VideoCameraIcon size={16} />
                         ) : (
-                          <CalendarDots size={16} />
+                          <CalendarDotsIcon size={16} />
                         )}
                       </div>
                       <div className="flex min-w-0 flex-1 flex-col">

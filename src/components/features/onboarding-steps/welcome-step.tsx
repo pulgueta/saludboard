@@ -1,8 +1,8 @@
 import {
-  CalendarCheck,
-  ChartBar,
-  Clipboard,
-  Sparkle,
+  CalendarCheckIcon,
+  ChartBarIcon,
+  ClipboardIcon,
+  SparkleIcon,
 } from "@phosphor-icons/react";
 import type { FC } from "react";
 import { useEffect } from "react";
@@ -14,22 +14,22 @@ import { useOnboarding } from "@/lib/onboarding-context";
 
 const FEATURES = [
   {
-    icon: Clipboard,
+    icon: ClipboardIcon,
     label: "Historia clínica",
     description: "Registros clínicos organizados y accesibles.",
   },
   {
-    icon: CalendarCheck,
+    icon: CalendarCheckIcon,
     label: "Agenda de citas",
     description: "Gestión y seguimiento de consultas.",
   },
   {
-    icon: Sparkle,
+    icon: SparkleIcon,
     label: "Asistencia con IA",
     description: "Orientación inteligente en cada paso.",
   },
   {
-    icon: ChartBar,
+    icon: ChartBarIcon,
     label: "Analítica básica",
     description: "Métricas claras de tu práctica.",
   },

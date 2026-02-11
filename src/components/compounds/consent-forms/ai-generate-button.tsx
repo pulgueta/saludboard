@@ -1,4 +1,4 @@
-import { Sparkle } from "@phosphor-icons/react";
+import { SparkleIcon } from "@phosphor-icons/react";
 import type { FC } from "react";
 
 import { cn } from "@/lib/utils";
@@ -53,7 +53,7 @@ export const AiGenerateButton: FC<AiGenerateButtonProps> = ({
         />
       </span>
 
-      <Sparkle
+      <SparkleIcon
         size={18}
         weight="fill"
         className="relative z-10 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
