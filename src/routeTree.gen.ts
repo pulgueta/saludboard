@@ -9,13 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MarketingRouteRouteImport } from './routes/_marketing/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
 import { Route as RegisterSplatRouteImport } from './routes/register.$'
 import { Route as LoginSplatRouteImport } from './routes/login.$'
+import { Route as MarketingPricingRouteImport } from './routes/_marketing/pricing'
 import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
+import { Route as AuthedPatientRouteRouteImport } from './routes/_authed/patient/route'
 import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as AuthedPatientIndexRouteImport } from './routes/_authed/patient/index'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedPatientRecordsRouteImport } from './routes/_authed/patient/records'
+import { Route as AuthedPatientProvidersRouteImport } from './routes/_authed/patient/providers'
+import { Route as AuthedPatientPrescriptionsRouteImport } from './routes/_authed/patient/prescriptions'
+import { Route as AuthedPatientAppointmentsRouteImport } from './routes/_authed/patient/appointments'
 import { Route as AuthedDashboardRecordsIndexRouteImport } from './routes/_authed/dashboard/records/index'
 import { Route as AuthedDashboardPatientsIndexRouteImport } from './routes/_authed/dashboard/patients/index'
 import { Route as AuthedDashboardDocumentsIndexRouteImport } from './routes/_authed/dashboard/documents/index'
@@ -23,14 +31,18 @@ import { Route as AuthedDashboardAppointmentsIndexRouteImport } from './routes/_
 import { Route as AuthedDashboardPatientsNewRouteImport } from './routes/_authed/dashboard/patients/new'
 import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from './routes/_authed/dashboard/documents/consent-forms'
 
+const MarketingRouteRoute = MarketingRouteRouteImport.update({
+  id: '/_marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const MarketingIndexRoute = MarketingIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => MarketingRouteRoute,
 } as any)
 const RegisterSplatRoute = RegisterSplatRouteImport.update({
   id: '/register/$',
@@ -42,9 +54,19 @@ const LoginSplatRoute = LoginSplatRouteImport.update({
   path: '/login/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarketingPricingRoute = MarketingPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => MarketingRouteRoute,
+} as any)
 const AuthedOnboardingRoute = AuthedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedPatientRouteRoute = AuthedPatientRouteRouteImport.update({
+  id: '/patient',
+  path: '/patient',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
 const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
@@ -52,11 +74,38 @@ const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
+const AuthedPatientIndexRoute = AuthedPatientIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedPatientRouteRoute,
+} as any)
 const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedDashboardRouteRoute,
 } as any)
+const AuthedPatientRecordsRoute = AuthedPatientRecordsRouteImport.update({
+  id: '/records',
+  path: '/records',
+  getParentRoute: () => AuthedPatientRouteRoute,
+} as any)
+const AuthedPatientProvidersRoute = AuthedPatientProvidersRouteImport.update({
+  id: '/providers',
+  path: '/providers',
+  getParentRoute: () => AuthedPatientRouteRoute,
+} as any)
+const AuthedPatientPrescriptionsRoute =
+  AuthedPatientPrescriptionsRouteImport.update({
+    id: '/prescriptions',
+    path: '/prescriptions',
+    getParentRoute: () => AuthedPatientRouteRoute,
+  } as any)
+const AuthedPatientAppointmentsRoute =
+  AuthedPatientAppointmentsRouteImport.update({
+    id: '/appointments',
+    path: '/appointments',
+    getParentRoute: () => AuthedPatientRouteRoute,
+  } as any)
 const AuthedDashboardRecordsIndexRoute =
   AuthedDashboardRecordsIndexRouteImport.update({
     id: '/records/',
@@ -95,12 +144,19 @@ const AuthedDashboardDocumentsConsentFormsRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof MarketingIndexRoute
   '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/patient': typeof AuthedPatientRouteRouteWithChildren
   '/onboarding': typeof AuthedOnboardingRoute
+  '/pricing': typeof MarketingPricingRoute
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
+  '/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/patient/providers': typeof AuthedPatientProvidersRoute
+  '/patient/records': typeof AuthedPatientRecordsRoute
   '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/patient/': typeof AuthedPatientIndexRoute
   '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
   '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
   '/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
@@ -109,11 +165,17 @@ export interface FileRoutesByFullPath {
   '/dashboard/records/': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof MarketingIndexRoute
   '/onboarding': typeof AuthedOnboardingRoute
+  '/pricing': typeof MarketingPricingRoute
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
+  '/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/patient/providers': typeof AuthedPatientProvidersRoute
+  '/patient/records': typeof AuthedPatientRecordsRoute
   '/dashboard': typeof AuthedDashboardIndexRoute
+  '/patient': typeof AuthedPatientIndexRoute
   '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
   '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
   '/dashboard/appointments': typeof AuthedDashboardAppointmentsIndexRoute
@@ -123,13 +185,21 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteRouteWithChildren
+  '/_marketing': typeof MarketingRouteRouteWithChildren
   '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/_authed/patient': typeof AuthedPatientRouteRouteWithChildren
   '/_authed/onboarding': typeof AuthedOnboardingRoute
+  '/_marketing/pricing': typeof MarketingPricingRoute
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
+  '/_marketing/': typeof MarketingIndexRoute
+  '/_authed/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/_authed/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/_authed/patient/providers': typeof AuthedPatientProvidersRoute
+  '/_authed/patient/records': typeof AuthedPatientRecordsRoute
   '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_authed/patient/': typeof AuthedPatientIndexRoute
   '/_authed/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
   '/_authed/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
   '/_authed/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
@@ -142,10 +212,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/patient'
     | '/onboarding'
+    | '/pricing'
     | '/login/$'
     | '/register/$'
+    | '/patient/appointments'
+    | '/patient/prescriptions'
+    | '/patient/providers'
+    | '/patient/records'
     | '/dashboard/'
+    | '/patient/'
     | '/dashboard/documents/consent-forms'
     | '/dashboard/patients/new'
     | '/dashboard/appointments/'
@@ -156,9 +233,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/onboarding'
+    | '/pricing'
     | '/login/$'
     | '/register/$'
+    | '/patient/appointments'
+    | '/patient/prescriptions'
+    | '/patient/providers'
+    | '/patient/records'
     | '/dashboard'
+    | '/patient'
     | '/dashboard/documents/consent-forms'
     | '/dashboard/patients/new'
     | '/dashboard/appointments'
@@ -167,13 +250,21 @@ export interface FileRouteTypes {
     | '/dashboard/records'
   id:
     | '__root__'
-    | '/'
     | '/_authed'
+    | '/_marketing'
     | '/_authed/dashboard'
+    | '/_authed/patient'
     | '/_authed/onboarding'
+    | '/_marketing/pricing'
     | '/login/$'
     | '/register/$'
+    | '/_marketing/'
+    | '/_authed/patient/appointments'
+    | '/_authed/patient/prescriptions'
+    | '/_authed/patient/providers'
+    | '/_authed/patient/records'
     | '/_authed/dashboard/'
+    | '/_authed/patient/'
     | '/_authed/dashboard/documents/consent-forms'
     | '/_authed/dashboard/patients/new'
     | '/_authed/dashboard/appointments/'
@@ -183,14 +274,21 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  MarketingRouteRoute: typeof MarketingRouteRouteWithChildren
   LoginSplatRoute: typeof LoginSplatRoute
   RegisterSplatRoute: typeof RegisterSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_marketing': {
+      id: '/_marketing'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MarketingRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed': {
       id: '/_authed'
       path: ''
@@ -198,12 +296,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_marketing/': {
+      id: '/_marketing/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MarketingIndexRouteImport
+      parentRoute: typeof MarketingRouteRoute
     }
     '/register/$': {
       id: '/register/$'
@@ -219,11 +317,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_marketing/pricing': {
+      id: '/_marketing/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof MarketingPricingRouteImport
+      parentRoute: typeof MarketingRouteRoute
+    }
     '/_authed/onboarding': {
       id: '/_authed/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof AuthedOnboardingRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/patient': {
+      id: '/_authed/patient'
+      path: '/patient'
+      fullPath: '/patient'
+      preLoaderRoute: typeof AuthedPatientRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
     '/_authed/dashboard': {
@@ -233,12 +345,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
+    '/_authed/patient/': {
+      id: '/_authed/patient/'
+      path: '/'
+      fullPath: '/patient/'
+      preLoaderRoute: typeof AuthedPatientIndexRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
     '/_authed/dashboard/': {
       id: '/_authed/dashboard/'
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthedDashboardIndexRouteImport
       parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/patient/records': {
+      id: '/_authed/patient/records'
+      path: '/records'
+      fullPath: '/patient/records'
+      preLoaderRoute: typeof AuthedPatientRecordsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/providers': {
+      id: '/_authed/patient/providers'
+      path: '/providers'
+      fullPath: '/patient/providers'
+      preLoaderRoute: typeof AuthedPatientProvidersRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/prescriptions': {
+      id: '/_authed/patient/prescriptions'
+      path: '/prescriptions'
+      fullPath: '/patient/prescriptions'
+      preLoaderRoute: typeof AuthedPatientPrescriptionsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/appointments': {
+      id: '/_authed/patient/appointments'
+      path: '/appointments'
+      fullPath: '/patient/appointments'
+      preLoaderRoute: typeof AuthedPatientAppointmentsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
     }
     '/_authed/dashboard/records/': {
       id: '/_authed/dashboard/records/'
@@ -309,13 +456,34 @@ const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
 const AuthedDashboardRouteRouteWithChildren =
   AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
 
+interface AuthedPatientRouteRouteChildren {
+  AuthedPatientAppointmentsRoute: typeof AuthedPatientAppointmentsRoute
+  AuthedPatientPrescriptionsRoute: typeof AuthedPatientPrescriptionsRoute
+  AuthedPatientProvidersRoute: typeof AuthedPatientProvidersRoute
+  AuthedPatientRecordsRoute: typeof AuthedPatientRecordsRoute
+  AuthedPatientIndexRoute: typeof AuthedPatientIndexRoute
+}
+
+const AuthedPatientRouteRouteChildren: AuthedPatientRouteRouteChildren = {
+  AuthedPatientAppointmentsRoute: AuthedPatientAppointmentsRoute,
+  AuthedPatientPrescriptionsRoute: AuthedPatientPrescriptionsRoute,
+  AuthedPatientProvidersRoute: AuthedPatientProvidersRoute,
+  AuthedPatientRecordsRoute: AuthedPatientRecordsRoute,
+  AuthedPatientIndexRoute: AuthedPatientIndexRoute,
+}
+
+const AuthedPatientRouteRouteWithChildren =
+  AuthedPatientRouteRoute._addFileChildren(AuthedPatientRouteRouteChildren)
+
 interface AuthedRouteRouteChildren {
   AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
+  AuthedPatientRouteRoute: typeof AuthedPatientRouteRouteWithChildren
   AuthedOnboardingRoute: typeof AuthedOnboardingRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
+  AuthedPatientRouteRoute: AuthedPatientRouteRouteWithChildren,
   AuthedOnboardingRoute: AuthedOnboardingRoute,
 }
 
@@ -323,9 +491,23 @@ const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
   AuthedRouteRouteChildren,
 )
 
+interface MarketingRouteRouteChildren {
+  MarketingPricingRoute: typeof MarketingPricingRoute
+  MarketingIndexRoute: typeof MarketingIndexRoute
+}
+
+const MarketingRouteRouteChildren: MarketingRouteRouteChildren = {
+  MarketingPricingRoute: MarketingPricingRoute,
+  MarketingIndexRoute: MarketingIndexRoute,
+}
+
+const MarketingRouteRouteWithChildren = MarketingRouteRoute._addFileChildren(
+  MarketingRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
+  MarketingRouteRoute: MarketingRouteRouteWithChildren,
   LoginSplatRoute: LoginSplatRoute,
   RegisterSplatRoute: RegisterSplatRoute,
 }
