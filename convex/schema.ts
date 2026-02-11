@@ -1,53 +1,72 @@
 import { defineSchema, defineTable } from "convex/server";
 import { zid, zodToConvex } from "convex-helpers/server/zod4";
 import type { ZodType } from "zod";
-import { array, number, object, string } from "zod";
+import { z } from "zod";
 
 export const {
-  table: experiencesTable,
-  insertSchema: experiencesInsertSchema,
-  schema: experiencesSchema,
-  updateSchema: experiencesUpdateSchema,
-} = zodTable("experiences", {
-  company: string(),
-  title: string(),
-  description: string(),
-  location: string(),
-  technologies: array(string()),
-  startDate: number(),
-  endDate: number().optional(),
-  deletedAt: number().optional(),
+  table: appointmentsTable,
+  insertSchema: appointmentsInsertSchema,
+  schema: appointmentsSchema,
+  updateSchema: appointmentsUpdateSchema,
+} = zodTable("appointments", {
+  patientId: zid("patients"),
+  appointmentDate: z.date().transform((date) => date.getTime()),
+  appointmentTime: z.date().transform((date) => date.getTime()),
+  appointmentType: z.enum(["medical", "vaccination", "laboratory", "other"]),
+  status: z.enum(["pending", "confirmed", "cancelled"]),
 });
 
 export const {
-  table: projectsTable,
-  insertSchema: projectsInsertSchema,
-  schema: projectsSchema,
-  updateSchema: projectsUpdateSchema,
-} = zodTable("projects", {
-  name: string(),
-  description: string(),
-  imageUrl: string().url(),
-  links: object({
-    website: string().url(),
-    github: string().url(),
+  table: patientsTable,
+  insertSchema: patientsInsertSchema,
+  schema: patientsSchema,
+  updateSchema: patientsUpdateSchema,
+} = zodTable("patients", {
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.email().optional(),
+  phone: z.string(),
+  address: z.string(),
+  city: z.string(),
+  state: z.string(),
+  id: z.object({
+    type: z.enum(["cc", "ce", "passport", "other"]),
+    number: z.string(),
   }),
-  deletedAt: number().optional(),
+  deletedAt: z
+    .date()
+    .transform((date) => date.getTime())
+    .optional(),
+});
+
+export const {
+  table: recordsTable,
+  insertSchema: recordsInsertSchema,
+  schema: recordsSchema,
+  updateSchema: recordsUpdateSchema,
+} = zodTable("records", {
+  patientId: zid("patients"),
+  recordType: z.enum(["medical", "vaccination", "laboratory", "other"]),
+  recordDate: z.date().transform((date) => date.getTime()),
+  recordData: z.object({}),
+  deletedAt: z
+    .date()
+    .transform((date) => date.getTime())
+    .optional(),
 });
 
 export default defineSchema({
-  projects: projectsTable().index("by_deleted_at", ["deletedAt"]),
-  experiences: experiencesTable().index("by_deleted_at", ["deletedAt"]),
+  patients: patientsTable().index("by_deleted_at", ["deletedAt"]),
 });
 
 export function zodTable<
   Table extends string,
   T extends { [key: string]: ZodType },
 >(tableName: Table, schema: T) {
-  const fullSchema = object({
+  const fullSchema = z.object({
     ...schema,
     _id: zid(tableName),
-    _creationTime: number(),
+    _creationTime: z.date().transform((date) => date.getTime()),
   });
 
   const insertSchema = fullSchema.partial({

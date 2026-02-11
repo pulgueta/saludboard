@@ -57,7 +57,7 @@ export const BreadcrumbLink: FC<useRender.ComponentProps<"a">> = ({
     defaultTagName: "a",
     props: mergeProps<"a">(
       {
-        className: cn("hover:text-foreground transition-colors", className),
+        className: cn("transition-colors hover:text-foreground", className),
       },
       props,
     ),

@@ -6,7 +6,6 @@ import {
 } from "convex-helpers/server/zod4";
 
 import { action, internalMutation, mutation, query } from "./_generated/server";
-import { authComponent } from "./auth";
 
 export const zodQuery = zCustomQuery(query, NoOp);
 export const zodMutation = zCustomMutation(mutation, NoOp);
@@ -15,7 +14,7 @@ export const zodAction = zCustomAction(action, NoOp);
 export const authZodQuery = zCustomQuery(query, {
   args: {},
   input: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await ctx.auth.getUserIdentity();
 
     if (!user) {
       throw new Error("Unauthorized");
@@ -27,7 +26,7 @@ export const authZodQuery = zCustomQuery(query, {
 export const authZodMutation = zCustomMutation(mutation, {
   args: {},
   input: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await ctx.auth.getUserIdentity();
 
     if (!user) {
       throw new Error("Unauthorized");

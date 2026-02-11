@@ -1,6 +1,6 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "eslint.config.js", "prettier.config.js", "vite.config.js"],
-  
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts", "convex/**/*.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -24,7 +24,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@ui/*": ["./src/components/ui/*"]
+      "@ui/*": ["./src/components/ui/*"],
+      "@config/*": ["./src/config/*"]
     }
   }
 }

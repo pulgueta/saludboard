@@ -56,7 +56,7 @@
           "level": "warn",
           "options": {
             "attributes": ["classList"],
-            "functions": ["clsx", "cva", "tw", "tw.*"]
+            "functions": ["clsx", "cn", "cva", "tw", "tw.*"]
           }
         }
       }
