@@ -1,5 +1,6 @@
 import {
   useOrganization,
+  useOrganizationCreationDefaults,
   useOrganizationList,
 } from "@clerk/tanstack-react-start";
 import { useMemo } from "react";
@@ -42,6 +43,7 @@ export function useOrganizationData() {
   } = useOrganizationList({
     userMemberships: { infinite: true },
   });
+  const { isLoading } = useOrganizationCreationDefaults();
 
   const currentOrg: OrganizationInfo | null = useMemo(() => {
     if (!organization) return null;
@@ -69,9 +71,8 @@ export function useOrganizationData() {
     currentOrg,
     organizations,
     isLoaded: orgLoaded && listLoaded,
-    /** Switch to a different organization by ID. */
     setActiveOrganization: setActive,
-    /** Create a new organization. */
     createOrganization,
+    isCreatingOrganization: isLoading,
   } as const;
 }
