@@ -2,6 +2,8 @@ import { StethoscopeIcon } from "@phosphor-icons/react";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
 
+import { BrandLogo } from "@/components/primitives/brand-logo";
+
 const FOOTER_SECTIONS = [
   {
     title: "Producto",
@@ -46,9 +48,7 @@ export const MarketingFooter: FC = () => {
               <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <StethoscopeIcon size={18} weight="bold" />
               </div>
-              <span className="font-semibold text-foreground text-lg tracking-tighter">
-                Salud<span className="text-primary">Board</span>
-              </span>
+              <BrandLogo className="text-lg" />
             </a>
             <p className="max-w-xs text-muted-foreground text-sm leading-relaxed">
               La plataforma de gestion medica disenada para profesionales de

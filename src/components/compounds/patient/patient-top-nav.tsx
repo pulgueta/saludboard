@@ -13,6 +13,7 @@ import {
 } from "@ui/sheet";
 import { useState } from "react";
 
+import { BrandLogo } from "@/components/primitives/brand-logo";
 import { PATIENT_NAV_ITEMS } from "@/lib/patient-navigation-config";
 import { cn } from "@/lib/utils";
 
@@ -28,9 +29,7 @@ export const PatientTopNav = () => {
           to="/patient"
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          <span className="font-semibold text-foreground text-xl tracking-tighter">
-            Salud<span className="text-primary">Board</span>
-          </span>
+          <BrandLogo className="text-xl" />
         </Link>
 
         {/* Desktop nav links */}
@@ -82,9 +81,7 @@ export const PatientTopNav = () => {
                     to="/patient"
                     className="flex items-center gap-2 transition-opacity hover:opacity-80"
                   >
-                    <span className="font-semibold text-foreground text-xl tracking-tighter">
-                      Salud<span className="text-primary">Board</span>
-                    </span>
+                    <BrandLogo className="text-xl" />
                   </Link>
                 </SheetTitle>
               </SheetHeader>

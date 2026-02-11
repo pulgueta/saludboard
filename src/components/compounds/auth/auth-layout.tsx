@@ -2,6 +2,7 @@ import { StethoscopeIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import type { FC, ReactNode } from "react";
 
+import { BrandLogo } from "@/components/primitives/brand-logo";
 import { cn } from "@/lib/utils";
 
 type AuthLayoutProps = {
@@ -40,9 +41,8 @@ export const AuthLayout: FC<AuthLayoutProps> = ({ children, className }) => {
           <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
             <StethoscopeIcon size={22} weight="bold" />
           </div>
-          <h1 className="font-semibold text-foreground text-xl tracking-tighter md:text-3xl">
-            Salud
-            <span className="text-primary">Board</span>
+          <h1>
+            <BrandLogo className="font-semibold text-xl md:text-3xl" />
           </h1>
         </Link>
 

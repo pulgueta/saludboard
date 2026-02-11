@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_marketing/pricing")({
 });
 
 function PricingPage() {
-  const [isOrganizationPlan, setIsOrganizationPlan] = useState(true);
+  const [isOrganizationPlan, setIsOrganizationPlan] = useState<boolean>(false);
 
   return (
     <div className="flex min-h-[calc(100dvh-330px)] flex-col items-center justify-start gap-8 p-4 pt-16">

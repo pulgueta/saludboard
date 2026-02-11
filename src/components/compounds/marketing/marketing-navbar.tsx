@@ -9,6 +9,7 @@ import {
   WhenSignedIn,
   WhenSignedOut,
 } from "@/components/compounds/auth/auth-guard";
+import { BrandLogo } from "@/components/primitives/brand-logo";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -52,9 +53,7 @@ export const MarketingNavbar: FC = () => {
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <StethoscopeIcon size={18} weight="bold" />
           </div>
-          <span className="font-semibold text-foreground text-lg tracking-tighter">
-            Salud<span className="text-primary">Board</span>
-          </span>
+          <BrandLogo className="text-lg" />
         </Link>
 
         {/* Desktop nav */}
