@@ -23,7 +23,7 @@ import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-ste
 import { AnimatedContainer } from "@/components/primitives/animated-container";
 import { SelectionCard } from "@/components/primitives/selection-card";
 import { Spinner } from "@/components/ui/spinner";
-import { useOrganizationData } from "@/hooks/use-organization-data";
+import { useOrganizationActions } from "@/hooks/use-organization-actions";
 import type { ProfessionalType } from "@/lib/onboarding-context";
 import { useOnboarding } from "@/lib/onboarding-context";
 
@@ -82,7 +82,8 @@ const organizationSchema = z.object({
  */
 export const ProfessionalTypeStep: FC = () => {
   const { state, setProfessionalType } = useOnboarding();
-  const { createOrganization, setActiveOrganization } = useOrganizationData();
+  const { createOrganization, setActiveOrganization } =
+    useOrganizationActions();
   const { data: defaults, isLoading: isLoadingDefaults } =
     useOrganizationCreationDefaults();
   const [submitError, setSubmitError] = useState<string | null>(null);

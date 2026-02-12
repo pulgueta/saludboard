@@ -7,7 +7,7 @@ import {
   useReducer,
 } from "react";
 
-import { useOrganizationData } from "@/hooks/use-organization-data";
+import { useOrganization } from "@/hooks/use-organization";
 import type { HealthFieldId } from "@/lib/health-fields";
 
 /** Whether the user is a patient or a healthcare professional. */
@@ -215,7 +215,7 @@ const OnboardingContext = createContext<OnboardingContextValue | null>(null);
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(onboardingReducer, initialState);
 
-  const { currentOrg, organizations } = useOrganizationData();
+  const { currentOrg, organizations } = useOrganization();
 
   const steps = getStepsForUserType(state.userType);
   const stepIndex = steps.indexOf(state.currentStep);

@@ -12,19 +12,7 @@ export type CurrentUser = {
   lastName: string | null;
   email: string;
   imageUrl: string;
-  initials: string;
-  hasImage: boolean;
 };
-
-function deriveInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 /**
  * Returns a normalized current user object with derived fields.
  *
@@ -63,8 +51,6 @@ export function useCurrentUser() {
       lastName: user.lastName,
       email,
       imageUrl: user.imageUrl,
-      initials: deriveInitials(fullName),
-      hasImage: user.hasImage,
     };
   };
 

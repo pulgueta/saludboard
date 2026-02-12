@@ -1,6 +1,5 @@
 import {
-  useOrganization,
-  useOrganizationCreationDefaults,
+  useOrganization as useClerkOrganization,
   useOrganizationList,
 } from "@clerk/tanstack-react-start";
 import { useMemo } from "react";
@@ -27,23 +26,21 @@ export type OrganizationInfo = {
  *
  * @example
  * ```tsx
- * const { currentOrg, organizations, isLoaded } = useOrganizationData();
+ * const { currentOrg, organizations, isLoaded } = useOrganization();
  * if (currentOrg) {
  *   console.log(`Active org: ${currentOrg.name}`);
  * }
  * ```
  */
-export function useOrganizationData() {
-  const { organization, membership, isLoaded: orgLoaded } = useOrganization();
+export function useOrganization() {
   const {
-    userMemberships,
-    isLoaded: listLoaded,
-    setActive,
-    createOrganization,
-  } = useOrganizationList({
+    organization,
+    membership,
+    isLoaded: orgLoaded,
+  } = useClerkOrganization();
+  const { userMemberships, isLoaded: listLoaded } = useOrganizationList({
     userMemberships: { infinite: true },
   });
-  const { isLoading } = useOrganizationCreationDefaults();
 
   const currentOrg: OrganizationInfo | null = useMemo(() => {
     if (!organization) return null;
@@ -71,8 +68,5 @@ export function useOrganizationData() {
     currentOrg,
     organizations,
     isLoaded: orgLoaded && listLoaded,
-    setActiveOrganization: setActive,
-    createOrganization,
-    isCreatingOrganization: isLoading,
   } as const;
 }

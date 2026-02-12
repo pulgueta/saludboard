@@ -28,9 +28,6 @@ export const Route = createFileRoute("/_marketing/")({
   component: LandingPage,
 });
 
-// ---------------------------------------------------------------------------
-// Feature card
-// ---------------------------------------------------------------------------
 type FeatureCardProps = {
   icon: ReactNode;
   title: string;
@@ -38,22 +35,24 @@ type FeatureCardProps = {
 };
 
 const FeatureCard: FC<FeatureCardProps> = ({ icon, title, description }) => (
-  <Card className="group relative overflow-hidden border-border/60 transition-shadow hover:shadow-md">
-    <CardContent className="flex flex-col gap-3 p-6">
-      <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-        {icon}
+  <Card className="group relative overflow-hidden border-border/60 transition-shadow hover:shadow-xs">
+    <CardContent className="flex flex-col gap-2 p-4">
+      <div className="flex items-start gap-4">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+          {icon}
+        </div>
+
+        <div className="space-y-1">
+          <h3 className="font-medium text-foreground text-lg">{title}</h3>
+          <p className="text-pretty text-muted-foreground text-sm">
+            {description}
+          </p>
+        </div>
       </div>
-      <h3 className="font-medium text-foreground">{title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">
-        {description}
-      </p>
     </CardContent>
   </Card>
 );
 
-// ---------------------------------------------------------------------------
-// Step card
-// ---------------------------------------------------------------------------
 type StepCardProps = { step: number; title: string; description: string };
 
 const StepCard: FC<StepCardProps> = ({ step, title, description }) => (
@@ -68,15 +67,9 @@ const StepCard: FC<StepCardProps> = ({ step, title, description }) => (
   </div>
 );
 
-// ---------------------------------------------------------------------------
-// Landing page
-// ---------------------------------------------------------------------------
 function LandingPage() {
   return (
     <div className="flex flex-col">
-      {/* ----------------------------------------------------------- */}
-      {/* HERO */}
-      {/* ----------------------------------------------------------- */}
       <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28">
         {/* Background orbs */}
         <div className="pointer-events-none absolute inset-0">
@@ -140,10 +133,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- */}
-      {/* FEATURES */}
-      {/* ----------------------------------------------------------- */}
-      <section id="features" className="border-t bg-muted/20 py-20 lg:py-28">
+      <section id="features" className="border-t bg-muted/20 py-16">
         <div className="mx-auto max-w-6xl px-4 lg:px-8">
           <div className="mb-14 flex flex-col items-center gap-3 text-center">
             <Badge variant="secondary" className="px-4 py-1.5">
@@ -232,10 +222,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- */}
-      {/* HOW IT WORKS */}
-      {/* ----------------------------------------------------------- */}
-      <section className="py-20 lg:py-28">
+      <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 lg:px-8">
           <div className="mb-14 flex flex-col items-center gap-3 text-center">
             <Badge variant="secondary" className="px-4 py-1.5">
@@ -266,10 +253,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- */}
-      {/* CTA */}
-      {/* ----------------------------------------------------------- */}
-      <section className="border-t bg-muted/20 py-20 lg:py-28">
+      <section className="border-t bg-muted/20 py-16">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 px-4 text-center lg:px-8">
           <h2 className="font-bold text-3xl text-foreground tracking-tight md:text-4xl">
             Comienza a gestionar tu salud hoy
