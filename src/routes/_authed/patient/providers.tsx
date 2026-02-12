@@ -58,17 +58,19 @@ function PatientProvidersPage() {
           <div className="flex items-center gap-2">
             {/* Invite drawer trigger */}
             <Drawer direction="right">
-              <DrawerTrigger asChild>
-                <Button variant="outline">
-                  <EnvelopeIcon weight="bold" className="size-4" />
-                  Invitaciones
-                  {invites.length > 0 && (
-                    <Badge className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-[10px]">
-                      {invites.length}
-                    </Badge>
-                  )}
-                </Button>
-              </DrawerTrigger>
+              <DrawerTrigger
+                render={
+                  <Button variant="outline">
+                    <EnvelopeIcon weight="bold" className="size-4" />
+                    Invitaciones
+                    {invites.length > 0 && (
+                      <Badge className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-[10px]">
+                        {invites.length}
+                      </Badge>
+                    )}
+                  </Button>
+                }
+              />
 
               <DrawerContent className="sm:max-w-md">
                 <DrawerHeader className="border-b">

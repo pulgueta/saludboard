@@ -2,23 +2,22 @@ import { UserButton } from "@clerk/tanstack-react-start";
 import { ListIcon } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Button } from "@ui/button";
-import { Separator } from "@ui/separator";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@ui/sheet";
-import { useState } from "react";
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@ui/drawer";
+import { Separator } from "@ui/separator";
 
 import { BrandLogo } from "@/components/primitives/brand-logo";
 import { PATIENT_NAV_ITEMS } from "@/lib/patient-navigation-config";
 import { cn } from "@/lib/utils";
 
 export const PatientTopNav = () => {
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const location = useLocation();
 
   return (
@@ -57,9 +56,9 @@ export const PatientTopNav = () => {
         <div className="flex items-center gap-2">
           <UserButton />
 
-          {/* Mobile menu sheet */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger
+          {/* Mobile menu drawer */}
+          <Drawer>
+            <DrawerTrigger
               render={
                 <Button
                   variant="outline"
@@ -71,25 +70,22 @@ export const PatientTopNav = () => {
                 </Button>
               }
             />
-            <SheetContent
-              side="right"
-              className="flex flex-col gap-1 px-2 md:hidden"
-            >
-              <SheetHeader>
-                <SheetTitle>
+            <DrawerContent className="flex flex-col gap-1 px-2 md:hidden">
+              <DrawerHeader>
+                <DrawerTitle>
                   <Link
                     to="/patient"
                     className="flex items-center gap-2 transition-opacity hover:opacity-80"
                   >
                     <BrandLogo className="text-xl" />
                   </Link>
-                </SheetTitle>
-              </SheetHeader>
+                </DrawerTitle>
+              </DrawerHeader>
 
               {PATIENT_NAV_ITEMS.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
-                  <SheetClose
+                  <DrawerClose
                     key={item.href}
                     render={(props) => (
                       <Link
@@ -115,23 +111,25 @@ export const PatientTopNav = () => {
 
               <Separator className="my-2" />
 
-              <div className="max-w-max rounded-md border p-1">
-                <UserButton showName />
-              </div>
+              <DrawerFooter>
+                <div className="max-w-max rounded-md border p-1">
+                  <UserButton showName />
+                </div>
 
-              <SheetClose
-                render={(props) => (
-                  <Link
-                    {...props}
-                    to="/"
-                    className="rounded-md px-3 py-2.5 text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground"
-                  >
-                    Volver al inicio
-                  </Link>
-                )}
-              />
-            </SheetContent>
-          </Sheet>
+                <DrawerClose
+                  render={(props) => (
+                    <Link
+                      {...props}
+                      to="/"
+                      className="rounded-md px-3 py-2.5 text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      Volver al inicio
+                    </Link>
+                  )}
+                />
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </div>
       </nav>
     </header>
