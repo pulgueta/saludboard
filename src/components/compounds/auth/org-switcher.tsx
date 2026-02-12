@@ -6,6 +6,7 @@ import {
 import { clerkAppearance } from "@config/clerk-appearance";
 import type { FC } from "react";
 
+import { useSidebar } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type OrgSwitcherProps = {
@@ -41,6 +42,8 @@ export const OrgSwitcher: FC<OrgSwitcherProps> = ({
   afterSelectOrganizationUrl = "/dashboard",
   afterCreateOrganizationUrl = "/dashboard",
 }) => {
+  const { state } = useSidebar();
+
   return (
     <>
       <ClerkLoading>
@@ -55,6 +58,10 @@ export const OrgSwitcher: FC<OrgSwitcherProps> = ({
             ...clerkAppearance,
             elements: {
               ...clerkAppearance.elements,
+              organizationSwitcherTriggerIcon:
+                state === "collapsed" ? "hidden" : "block",
+              organizationPreviewMainIdentifier:
+                state === "collapsed" ? "hidden" : "block",
               // rootBox: "w-full",
               // organizationSwitcherTrigger:
               //   "w-full justify-between rounded-md px-2 py-1.5 hover:bg-sidebar-accent focus-visible:ring-sidebar-ring border-0",

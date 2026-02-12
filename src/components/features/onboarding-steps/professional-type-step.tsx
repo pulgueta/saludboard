@@ -1,5 +1,7 @@
+import { useSubscription } from "@clerk/clerk-react/experimental";
 import {
   PricingTable,
+  useOrganization,
   useOrganizationCreationDefaults,
 } from "@clerk/tanstack-react-start";
 import { Buildings, User, WarningIcon } from "@phosphor-icons/react";
@@ -37,7 +39,7 @@ const PROFESSIONAL_TYPES: {
     type: "individual",
     title: "Profesional individual",
     description:
-      "Consultorio propio o independiente. Selecciona un campo de salud para habilitar las funciones de tu cuenta.",
+      "Consultorio propio o independiente. Selecciona un campo de salud para habilitar tu cuenta.",
     icon: User,
   },
   {
@@ -84,12 +86,24 @@ export const ProfessionalTypeStep: FC = () => {
   const { state, setProfessionalType } = useOnboarding();
   const { createOrganization, setActiveOrganization } =
     useOrganizationActions();
+  const { organization } = useOrganization();
   const { data: defaults, isLoading: isLoadingDefaults } =
     useOrganizationCreationDefaults();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const hasSelection = state.professionalType !== null;
   const isOrganization = state.professionalType === "organization";
+  const { data: organizationSubscription } = useSubscription({
+    for: "organization",
+    enabled: !!organization?.id,
+  });
+
+  const hasActiveOrganizationSubscription =
+    organizationSubscription?.status === "active" ||
+    organizationSubscription?.status === "past_due";
+
+  const shouldWarnAboutIndividualPlan =
+    !isOrganization && hasActiveOrganizationSubscription;
 
   const form = useForm({
     defaultValues: {
@@ -275,9 +289,9 @@ export const ProfessionalTypeStep: FC = () => {
                   <WarningIcon className="size-4" />
                   <AlertTitle>Atención</AlertTitle>
                   <AlertDescription>
-                    Ya existe una organización con el nombre "{existingOrgName}”
+                    Ya existe una organización con el nombre "{existingOrgName}"
                     {existingOrgDomain
-                      ? ` para el dominio “${existingOrgDomain}”.`
+                      ? ` para el dominio "${existingOrgDomain}".`
                       : "."}
                   </AlertDescription>
                 </Alert>
@@ -304,9 +318,24 @@ export const ProfessionalTypeStep: FC = () => {
         </AnimatedContainer>
       ) : null}
 
-      <AnimatedContainer delay={260} duration={450}>
+      <AnimatedContainer delay={300} duration={450}>
         {hasSelection ? (
-          <PricingTable for={isOrganization ? "organization" : "user"} />
+          <div className="space-y-8">
+            {shouldWarnAboutIndividualPlan && (
+              <Alert variant="warning">
+                <WarningIcon className="size-4" />
+                <AlertTitle>Suscripción activa</AlertTitle>
+                <AlertDescription>
+                  Tienes una suscripción activa de organización. Si deseas
+                  suscribirte a un plan individual, te recomendamos cancelar la
+                  suscripción actual o continuar usando ese plan para evitar
+                  cobros duplicados.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <PricingTable for={isOrganization ? "organization" : "user"} />
+          </div>
         ) : (
           <div className="rounded-xl border border-border/70 border-dashed bg-card/40 p-4 text-center text-muted-foreground text-sm">
             Selecciona un tipo de cuenta para ver los planes disponibles.

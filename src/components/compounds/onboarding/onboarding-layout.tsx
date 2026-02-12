@@ -35,7 +35,7 @@ export const OnboardingLayout: FC<OnboardingLayoutProps> = ({
       </div>
 
       {/* Content container */}
-      <div className="relative z-10 flex w-full max-w-3xl flex-1 flex-col px-4 py-8 md:py-10">
+      <div className="relative z-10 flex w-full max-w-4xl flex-1 flex-col px-4 py-8 md:py-10">
         {/* Brand + Step indicator */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
