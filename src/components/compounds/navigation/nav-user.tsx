@@ -21,7 +21,9 @@ export const NavUser: FC = () => {
           <Skeleton className="h-8 w-full" />
         </ClerkLoading>
         <WhenSignedIn>
-          <SidebarUserButton />
+          <div className="w-max rounded-xl border p-1">
+            <SidebarUserButton />
+          </div>
         </WhenSignedIn>
         <WhenSignedOut>
           <SignInButton />

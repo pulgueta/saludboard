@@ -2,15 +2,15 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { SidebarIcon } from "@phosphor-icons/react";
 import { Button } from "@ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@ui/drawer";
 import { Input } from "@ui/input";
 import { Separator } from "@ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@ui/sheet";
 import { Skeleton } from "@ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
 import type { VariantProps } from "class-variance-authority";
@@ -24,6 +24,7 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -156,7 +157,7 @@ export const SidebarProvider: FC<SidebarProviderProps> = ({
 };
 
 type SidebarProps = ComponentProps<"div"> & {
-  side?: "left" | "right";
+  side?: "left" | "right" | "top" | "bottom";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
   children?: ReactNode;
@@ -190,8 +191,13 @@ export const Sidebar: FC<SidebarProps> = ({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
+      <Drawer
+        open={openMobile}
+        onOpenChange={setOpenMobile}
+        direction={side}
+        {...props}
+      >
+        <DrawerContent
           dir={dir}
           data-sidebar="sidebar"
           data-slot="sidebar"
@@ -202,15 +208,16 @@ export const Sidebar: FC<SidebarProps> = ({
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
             } as CSSProperties
           }
-          side={side}
         >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
+          <DrawerHeader className="sr-only">
+            <DrawerTitle>Menú de navegación lateral</DrawerTitle>
+            <DrawerDescription>
+              Despliega el menú de navegación lateral.
+            </DrawerDescription>
+          </DrawerHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     );
   }
 

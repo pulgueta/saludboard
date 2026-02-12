@@ -44,22 +44,22 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
         )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="min-h-[calc(100dvh-3rem)] md:min-h-[calc(100dvh-4rem)]">
         <NavMain items={MAIN_NAV_ITEMS} />
         {fieldNav.length > 0 && (
           <NavProjects label="Herramientas" projects={fieldNav} />
         )}
+
+        <SidebarRail />
+
+        <SidebarFooter className="mt-auto">
+          {isLoaded && isSignedIn ? (
+            <NavUser />
+          ) : (
+            <Skeleton className="h-8 w-full" />
+          )}
+        </SidebarFooter>
       </SidebarContent>
-
-      <SidebarFooter>
-        {isLoaded && isSignedIn ? (
-          <NavUser />
-        ) : (
-          <Skeleton className="h-8 w-full" />
-        )}
-      </SidebarFooter>
-
-      <SidebarRail />
     </Sidebar>
   );
 };

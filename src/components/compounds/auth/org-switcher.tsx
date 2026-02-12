@@ -44,6 +44,8 @@ export const OrgSwitcher: FC<OrgSwitcherProps> = ({
 }) => {
   const { state } = useSidebar();
 
+  const showOrHide = state === "collapsed" ? "hidden" : "block";
+
   return (
     <>
       <ClerkLoading>
@@ -58,10 +60,9 @@ export const OrgSwitcher: FC<OrgSwitcherProps> = ({
             ...clerkAppearance,
             elements: {
               ...clerkAppearance.elements,
-              organizationSwitcherTriggerIcon:
-                state === "collapsed" ? "hidden" : "block",
-              organizationPreviewMainIdentifier:
-                state === "collapsed" ? "hidden" : "block",
+              userPreviewMainIdentifierText: showOrHide,
+              organizationSwitcherTriggerIcon: showOrHide,
+              organizationPreviewMainIdentifier: showOrHide,
               // rootBox: "w-full",
               // organizationSwitcherTrigger:
               //   "w-full justify-between rounded-md px-2 py-1.5 hover:bg-sidebar-accent focus-visible:ring-sidebar-ring border-0",
