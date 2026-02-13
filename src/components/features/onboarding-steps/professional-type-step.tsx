@@ -5,27 +5,18 @@ import {
   useOrganizationCreationDefaults,
 } from "@clerk/tanstack-react-start";
 import { Buildings, User, WarningIcon } from "@phosphor-icons/react";
-import { useForm } from "@tanstack/react-form";
 import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
-import { Button } from "@ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@ui/field";
-import { Input } from "@ui/input";
+import { FieldGroup } from "@ui/field";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
 import { SelectionCard } from "@/components/primitives/selection-card";
-import { Spinner } from "@/components/ui/spinner";
-import { useOrganizationActions } from "@/hooks/use-organization-actions";
+import { useAppForm } from "@/hooks/form/use-form";
+import { useOrganizationActions } from "@/hooks/use-organization";
 import type { ProfessionalType } from "@/lib/onboarding-context";
 import { useOnboarding } from "@/lib/onboarding-context";
 
@@ -63,17 +54,11 @@ function createSlug(value: string) {
 
 const organizationSchema = z.object({
   name: z
-    .string()
+    .string("El nombre es requerido")
     .min(3, "El nombre debe tener al menos 3 caracteres.")
-    .max(80, "El nombre no puede superar los 80 caracteres."),
-  slug: z
-    .string()
-    .min(3, "El slug debe tener al menos 3 caracteres.")
-    .max(80, "El slug no puede superar los 80 caracteres.")
-    .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "El slug solo puede contener letras minúsculas, números y guiones.",
-    ),
+    .max(80, "El nombre no puede superar los 80 caracteres.")
+    .trim(),
+  slug: z.string(),
 });
 
 /**
@@ -105,23 +90,21 @@ export const ProfessionalTypeStep: FC = () => {
   const shouldWarnAboutIndividualPlan =
     !isOrganization && hasActiveOrganizationSubscription;
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       name: "",
       slug: "",
     },
     validators: {
+      onChange: organizationSchema,
       onSubmit: organizationSchema,
     },
     onSubmit: async ({ value }) => {
-      const name = value.name.trim();
-      const slug = value.slug.trim();
-      setSubmitError(null);
-
-      if (!createOrganization) return;
-
       try {
-        const organization = await createOrganization({ name, slug });
+        const organization = await createOrganization?.({
+          name: value.name,
+          slug: value.slug,
+        });
 
         if (organization?.id && setActiveOrganization) {
           await setActiveOrganization({ organization: organization.id });
@@ -148,20 +131,14 @@ export const ProfessionalTypeStep: FC = () => {
     },
   });
 
-  useEffect(() => {
-    if (!defaults?.form?.name) return;
-    if (form.getFieldValue("name")) return;
-    const name = defaults.form.name;
-    form.setFieldValue("name", name);
-    form.setFieldValue("slug", createSlug(name));
-  }, [defaults?.form?.name, form]);
-
   const advisory = defaults?.advisory;
   const showWarning = advisory?.code === "organization_already_exists";
   const existingOrgName = advisory?.meta?.organization_name;
   const existingOrgDomain = advisory?.meta?.organization_domain;
 
-  const loading = form.state.isSubmitting || isLoadingDefaults;
+  console.log(form);
+
+  const _loading = form.state.isSubmitting || isLoadingDefaults;
 
   return (
     <OnboardingStep>
@@ -209,7 +186,7 @@ export const ProfessionalTypeStep: FC = () => {
         )}
       </div>
 
-      {isOrganization ? (
+      {isOrganization && !organization?.id && (
         <AnimatedContainer delay={220} duration={450}>
           <div className="space-y-4">
             <div>
@@ -219,72 +196,42 @@ export const ProfessionalTypeStep: FC = () => {
             </div>
 
             <form
-              className="flex flex-col gap-4"
-              onSubmit={(event) => {
-                event.preventDefault();
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 form.handleSubmit();
               }}
             >
               <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <form.Field name="name">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
+                <form.AppField
+                  name="name"
+                  children={(field) => (
+                    <field.TextField
+                      label="Nombre"
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
 
-                    return (
-                      <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor="org-name">Nombre</FieldLabel>
-                        <Input
-                          id="org-name"
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(event) => {
-                            const nextValue = event.target.value;
-                            field.handleChange(nextValue);
-                            form.setFieldValue("slug", createSlug(nextValue));
-                          }}
-                          aria-invalid={isInvalid}
-                          placeholder="Centro Médico Nueva Vida"
-                          autoComplete="organization"
-                        />
-                        <FieldDescription>
-                          Usa el nombre legal o comercial de tu organización.
-                        </FieldDescription>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-
-                <form.Field name="slug">
-                  {(field) => (
-                    <Field>
-                      <FieldLabel htmlFor="org-slug">
-                        Identificador único
-                      </FieldLabel>
-                      <Input
-                        id="org-slug"
-                        name={field.name}
-                        value={field.state.value}
-                        readOnly
-                        disabled
-                        aria-readonly="true"
-                        aria-disabled="true"
-                        className="cursor-not-allowed bg-muted/50"
-                      />
-                      <FieldDescription>
-                        Identificador único generado automáticamente a partir
-                        del nombre.
-                      </FieldDescription>
-                    </Field>
+                        form.setFieldValue("slug", createSlug(e.target.value));
+                        field.validate("change");
+                      }}
+                    />
                   )}
-                </form.Field>
+                />
+
+                <form.AppField
+                  name="slug"
+                  children={(field) => (
+                    <field.TextField
+                      label="Identificador único"
+                      disabled
+                      className="pointer-events-none"
+                      value={createSlug(form.getFieldValue("name"))}
+                    />
+                  )}
+                />
               </FieldGroup>
 
-              {showWarning ? (
+              {showWarning && (
                 <Alert variant="warning">
                   <WarningIcon className="size-4" />
                   <AlertTitle>Atención</AlertTitle>
@@ -295,28 +242,26 @@ export const ProfessionalTypeStep: FC = () => {
                       : "."}
                   </AlertDescription>
                 </Alert>
-              ) : null}
+              )}
 
-              {submitError ? (
+              {submitError && (
                 <Alert variant="warning">
                   <WarningIcon className="size-4" />
                   <AlertTitle>Error al crear la organización</AlertTitle>
                   <AlertDescription>{submitError}</AlertDescription>
                 </Alert>
-              ) : null}
+              )}
 
-              <Button
-                type="submit"
-                disabled={loading || !createOrganization}
-                className="ml-auto w-max"
-              >
-                {loading && <Spinner />}
-                Crear organización
-              </Button>
+              <form.AppForm>
+                <form.SubmitButton
+                  label="Crear organización"
+                  className="mt-4 mr-auto"
+                />
+              </form.AppForm>
             </form>
           </div>
         </AnimatedContainer>
-      ) : null}
+      )}
 
       <AnimatedContainer delay={300} duration={450}>
         {hasSelection ? (
