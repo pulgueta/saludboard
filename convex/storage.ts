@@ -7,11 +7,11 @@ export const storage = new R2(components.r2);
 
 export const { generateUploadUrl, syncMetadata } = storage.clientApi<DataModel>(
   {
-    checkUpload: async (ctx, bucket) => {
+    checkUpload: async (_ctx, _bucket) => {
       // const user = await userFromAuth(ctx);
       // ...validate that the user can upload to this bucket
     },
-    onUpload: async (ctx, bucket, key) => {
+    onUpload: async (_ctx, _bucket, _key) => {
       // ...do something with the key
       // This technically runs in the `syncMetadata` mutation, as the upload
       // is performed from the client side. Will run if using the `useUploadFile`

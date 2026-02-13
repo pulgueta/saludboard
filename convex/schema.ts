@@ -1,5 +1,5 @@
-import { zid, zodToConvex } from "convex-helpers/server/zod4";
 import { defineSchema, defineTable } from "convex/server";
+import { zid, zodToConvex } from "convex-helpers/server/zod4";
 import type { ZodType } from "zod";
 import { z } from "zod";
 
