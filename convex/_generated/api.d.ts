@@ -12,6 +12,7 @@ import type * as aggregate from "../aggregate.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as index from "../index.js";
+import type * as patients from "../patients.js";
 import type * as presence from "../presence.js";
 import type * as ratelimit from "../ratelimit.js";
 import type * as sms from "../sms.js";
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   index: typeof index;
+  patients: typeof patients;
   presence: typeof presence;
   ratelimit: typeof ratelimit;
   sms: typeof sms;

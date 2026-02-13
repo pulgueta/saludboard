@@ -1,10 +1,11 @@
 import { TableAggregate } from "@convex-dev/aggregate";
 
 import { components } from "./_generated/api";
-import type { DataModel, Id } from "./_generated/dataModel";
+import type { DataModel } from "./_generated/dataModel";
+import type { Patient } from "./schema";
 
 export const aggregateByPatient = new TableAggregate<{
-  Namespace: Id<"patients">;
+  Namespace: Patient["_id"];
   Key: [string, number];
   DataModel: DataModel;
   TableName: "patients";

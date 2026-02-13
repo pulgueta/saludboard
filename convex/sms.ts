@@ -1,7 +1,7 @@
 import { Twilio } from "@convex-dev/twilio";
 import { z } from "zod";
 
-import { zodAction } from ".";
+import { zAction } from ".";
 import { components } from "./_generated/api";
 
 export const twilio = new Twilio(components.twilio, {
@@ -9,7 +9,7 @@ export const twilio = new Twilio(components.twilio, {
   defaultFrom: process.env.TWILIO_PHONE_NUMBER!,
 });
 
-export const sendSms = zodAction({
+export const sendSms = zAction({
   args: z.object({
     to: z.string(),
     body: z.string(),

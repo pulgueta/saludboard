@@ -1,14 +1,9 @@
-import { defineSchema, defineTable } from "convex/server";
 import { zid, zodToConvex } from "convex-helpers/server/zod4";
-import type { ZodType } from "zod";
+import { defineSchema, defineTable } from "convex/server";
+import type { output, ZodType } from "zod";
 import { z } from "zod";
 
-export const {
-  table: usersTable,
-  insertSchema: usersInsertSchema,
-  schema: usersSchema,
-  updateSchema: usersUpdateSchema,
-} = zodTable("users", {
+export const users = zodTable("users", {
   clerkUserId: z.string(),
   name: z.string(),
   userType: z.enum(["patient", "professional"]),
@@ -16,12 +11,9 @@ export const {
   organizationId: zid("organizations").optional(),
 });
 
-export const {
-  table: organizationsTable,
-  insertSchema: organizationsInsertSchema,
-  schema: organizationsSchema,
-  updateSchema: organizationsUpdateSchema,
-} = zodTable("organizations", {
+export type User = output<typeof users.schema>;
+
+export const organizations = zodTable("organizations", {
   name: z.string(),
   slug: z.string(),
   clerkOrganizationId: z.string(),
@@ -38,25 +30,9 @@ export const {
   ),
 });
 
-export const {
-  table: appointmentsTable,
-  insertSchema: appointmentsInsertSchema,
-  schema: appointmentsSchema,
-  updateSchema: appointmentsUpdateSchema,
-} = zodTable("appointments", {
-  patientId: zid("patients"),
-  appointmentDate: z.number(),
-  appointmentTime: z.number(),
-  appointmentType: z.enum(["medical", "vaccination", "laboratory", "other"]),
-  status: z.enum(["pending", "confirmed", "cancelled"]),
-});
+export type Organization = output<typeof organizations.schema>;
 
-export const {
-  table: patientsTable,
-  insertSchema: patientsInsertSchema,
-  schema: patientsSchema,
-  updateSchema: patientsUpdateSchema,
-} = zodTable("patients", {
+export const patients = zodTable("patients", {
   userId: zid("users"),
   address: z.string(),
   city: z.string(),
@@ -65,29 +41,40 @@ export const {
     type: z.enum(["cc", "ce", "passport", "other"]),
     number: z.string(),
   }),
-  deletedAt: z.number().optional(),
 });
 
-export const {
-  table: recordsTable,
-  insertSchema: recordsInsertSchema,
-  schema: recordsSchema,
-  updateSchema: recordsUpdateSchema,
-} = zodTable("records", {
+export type Patient = output<typeof patients.schema>;
+
+export const appointments = zodTable("appointments", {
+  patientId: zid("patients"),
+  appointmentDate: z.number(),
+  appointmentTime: z.number(),
+  appointmentType: z.enum(["medical", "vaccination", "laboratory", "other"]),
+  status: z.enum(["pending", "confirmed", "cancelled"]),
+});
+
+export type Appointment = output<typeof appointments.schema>;
+
+export const records = zodTable("records", {
   patientId: zid("patients"),
   recordType: z.enum(["medical", "vaccination", "laboratory", "other"]),
   recordDate: z.number(),
   recordData: z.object({}),
-  deletedAt: z.number().optional(),
+  key: z.string(),
 });
 
 export default defineSchema({
-  users: usersTable().index("by_clerk_user_id", ["clerkUserId"]),
-  organizations: organizationsTable().index("by_clerk_organization_id", [
-    "clerkOrganizationId",
-  ]),
-  patients: patientsTable()
+  users: users.table
+    .index("by_clerk_user_id", ["clerkUserId"])
+    .index("by_deleted_at", ["deletedAt"]),
+  organizations: organizations.table
+    .index("by_clerk_organization_id", ["clerkOrganizationId"])
+    .index("by_deleted_at", ["deletedAt"]),
+  patients: patients.table
     .index("by_user_id", ["userId"])
+    .index("by_deleted_at", ["deletedAt"]),
+  records: records.table
+    .index("by_patient_id", ["patientId"])
     .index("by_deleted_at", ["deletedAt"]),
 });
 
@@ -99,15 +86,17 @@ export function zodTable<
     ...schema,
     _id: zid(tableName),
     _creationTime: z.number(),
+    deletedAt: z.number().optional(),
   });
 
   const insertSchema = fullSchema.partial({
+    deletedAt: true,
     _id: true,
     _creationTime: true,
   });
 
   const updateSchema = fullSchema
-    .omit({ _id: true, _creationTime: true })
+    .omit({ deletedAt: true, _id: true, _creationTime: true })
     .partial();
 
   return {
@@ -115,8 +104,6 @@ export function zodTable<
     schema: fullSchema,
     insertSchema,
     updateSchema,
-    table: () => {
-      return defineTable(zodToConvex(fullSchema));
-    },
+    table: defineTable(zodToConvex(fullSchema)),
   };
 }

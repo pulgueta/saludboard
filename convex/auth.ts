@@ -18,6 +18,13 @@ export async function requireAuth(ctx: QueryCtx | MutationCtx) {
 export async function getProfile(ctx: QueryCtx | MutationCtx) {
   const user = await requireAuth(ctx);
 
+  if (!user.subject) {
+    throw new ConvexError({
+      code: "UNAUTHORIZED",
+      message: "No estás autorizado para realizar esta acción.",
+    });
+  }
+
   return await ctx.db
     .query("users")
     .withIndex("by_clerk_user_id", (q) => q.eq("clerkUserId", user.subject))
