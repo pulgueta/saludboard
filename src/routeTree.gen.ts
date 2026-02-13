@@ -8,438 +8,398 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AuthedDashboardAppointmentsIndexRouteImport } from "./routes/_authed/dashboard/appointments/index";
-import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from "./routes/_authed/dashboard/documents/consent-forms";
-import { Route as AuthedDashboardDocumentsIndexRouteImport } from "./routes/_authed/dashboard/documents/index";
-import { Route as AuthedDashboardIndexRouteImport } from "./routes/_authed/dashboard/index";
-import { Route as AuthedDashboardPatientsIndexRouteImport } from "./routes/_authed/dashboard/patients/index";
-import { Route as AuthedDashboardPatientsNewRouteImport } from "./routes/_authed/dashboard/patients/new";
-import { Route as AuthedDashboardRecordsIndexRouteImport } from "./routes/_authed/dashboard/records/index";
-import { Route as AuthedDashboardRouteRouteImport } from "./routes/_authed/dashboard/route";
-import { Route as AuthedOnboardingRouteImport } from "./routes/_authed/onboarding";
-import { Route as AuthedPatientAppointmentsRouteImport } from "./routes/_authed/patient/appointments";
-import { Route as AuthedPatientIndexRouteImport } from "./routes/_authed/patient/index";
-import { Route as AuthedPatientPrescriptionsRouteImport } from "./routes/_authed/patient/prescriptions";
-import { Route as AuthedPatientProvidersRouteImport } from "./routes/_authed/patient/providers";
-import { Route as AuthedPatientRecordsRouteImport } from "./routes/_authed/patient/records";
-import { Route as AuthedPatientRouteRouteImport } from "./routes/_authed/patient/route";
-import { Route as AuthedRouteRouteImport } from "./routes/_authed/route";
-import { Route as MarketingIndexRouteImport } from "./routes/_marketing/index";
-import { Route as MarketingPricingRouteImport } from "./routes/_marketing/pricing";
-import { Route as MarketingRouteRouteImport } from "./routes/_marketing/route";
-import { Route as LoginSplatRouteImport } from "./routes/login.$";
-import { Route as RegisterSplatRouteImport } from "./routes/register.$";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as MarketingRouteRouteImport } from './routes/_marketing/route'
+import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
+import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
+import { Route as MarketingPricingRouteImport } from './routes/_marketing/pricing'
+import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
+import { Route as AuthedPatientRouteRouteImport } from './routes/_authed/patient/route'
+import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as AuthedPatientIndexRouteImport } from './routes/_authed/patient/index'
+import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedPatientRecordsRouteImport } from './routes/_authed/patient/records'
+import { Route as AuthedPatientProvidersRouteImport } from './routes/_authed/patient/providers'
+import { Route as AuthedPatientPrescriptionsRouteImport } from './routes/_authed/patient/prescriptions'
+import { Route as AuthedPatientAppointmentsRouteImport } from './routes/_authed/patient/appointments'
+import { Route as AuthedDashboardRecordsIndexRouteImport } from './routes/_authed/dashboard/records/index'
+import { Route as AuthedDashboardPatientsIndexRouteImport } from './routes/_authed/dashboard/patients/index'
+import { Route as AuthedDashboardDocumentsIndexRouteImport } from './routes/_authed/dashboard/documents/index'
+import { Route as AuthedDashboardAppointmentsIndexRouteImport } from './routes/_authed/dashboard/appointments/index'
+import { Route as AuthedDashboardPatientsNewRouteImport } from './routes/_authed/dashboard/patients/new'
+import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from './routes/_authed/dashboard/documents/consent-forms'
 
 const MarketingRouteRoute = MarketingRouteRouteImport.update({
-  id: "/_marketing",
+  id: '/_marketing',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
-  id: "/_authed",
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MarketingIndexRoute = MarketingIndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => MarketingRouteRoute,
-} as any);
-const RegisterSplatRoute = RegisterSplatRouteImport.update({
-  id: "/register/$",
-  path: "/register/$",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const LoginSplatRoute = LoginSplatRouteImport.update({
-  id: "/login/$",
-  path: "/login/$",
-  getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MarketingPricingRoute = MarketingPricingRouteImport.update({
-  id: "/pricing",
-  path: "/pricing",
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => MarketingRouteRoute,
-} as any);
+} as any)
 const AuthedOnboardingRoute = AuthedOnboardingRouteImport.update({
-  id: "/onboarding",
-  path: "/onboarding",
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => AuthedRouteRoute,
-} as any);
+} as any)
 const AuthedPatientRouteRoute = AuthedPatientRouteRouteImport.update({
-  id: "/patient",
-  path: "/patient",
+  id: '/patient',
+  path: '/patient',
   getParentRoute: () => AuthedRouteRoute,
-} as any);
+} as any)
 const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
-  id: "/dashboard",
-  path: "/dashboard",
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthedRouteRoute,
-} as any);
+} as any)
 const AuthedPatientIndexRoute = AuthedPatientIndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => AuthedPatientRouteRoute,
-} as any);
+} as any)
 const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => AuthedDashboardRouteRoute,
-} as any);
+} as any)
 const AuthedPatientRecordsRoute = AuthedPatientRecordsRouteImport.update({
-  id: "/records",
-  path: "/records",
+  id: '/records',
+  path: '/records',
   getParentRoute: () => AuthedPatientRouteRoute,
-} as any);
+} as any)
 const AuthedPatientProvidersRoute = AuthedPatientProvidersRouteImport.update({
-  id: "/providers",
-  path: "/providers",
+  id: '/providers',
+  path: '/providers',
   getParentRoute: () => AuthedPatientRouteRoute,
-} as any);
+} as any)
 const AuthedPatientPrescriptionsRoute =
   AuthedPatientPrescriptionsRouteImport.update({
-    id: "/prescriptions",
-    path: "/prescriptions",
+    id: '/prescriptions',
+    path: '/prescriptions',
     getParentRoute: () => AuthedPatientRouteRoute,
-  } as any);
+  } as any)
 const AuthedPatientAppointmentsRoute =
   AuthedPatientAppointmentsRouteImport.update({
-    id: "/appointments",
-    path: "/appointments",
+    id: '/appointments',
+    path: '/appointments',
     getParentRoute: () => AuthedPatientRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardRecordsIndexRoute =
   AuthedDashboardRecordsIndexRouteImport.update({
-    id: "/records/",
-    path: "/records/",
+    id: '/records/',
+    path: '/records/',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardPatientsIndexRoute =
   AuthedDashboardPatientsIndexRouteImport.update({
-    id: "/patients/",
-    path: "/patients/",
+    id: '/patients/',
+    path: '/patients/',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardDocumentsIndexRoute =
   AuthedDashboardDocumentsIndexRouteImport.update({
-    id: "/documents/",
-    path: "/documents/",
+    id: '/documents/',
+    path: '/documents/',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardAppointmentsIndexRoute =
   AuthedDashboardAppointmentsIndexRouteImport.update({
-    id: "/appointments/",
-    path: "/appointments/",
+    id: '/appointments/',
+    path: '/appointments/',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardPatientsNewRoute =
   AuthedDashboardPatientsNewRouteImport.update({
-    id: "/patients/new",
-    path: "/patients/new",
+    id: '/patients/new',
+    path: '/patients/new',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 const AuthedDashboardDocumentsConsentFormsRoute =
   AuthedDashboardDocumentsConsentFormsRouteImport.update({
-    id: "/documents/consent-forms",
-    path: "/documents/consent-forms",
+    id: '/documents/consent-forms',
+    path: '/documents/consent-forms',
     getParentRoute: () => AuthedDashboardRouteRoute,
-  } as any);
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof MarketingIndexRoute;
-  "/dashboard": typeof AuthedDashboardRouteRouteWithChildren;
-  "/patient": typeof AuthedPatientRouteRouteWithChildren;
-  "/onboarding": typeof AuthedOnboardingRoute;
-  "/pricing": typeof MarketingPricingRoute;
-  "/login/$": typeof LoginSplatRoute;
-  "/register/$": typeof RegisterSplatRoute;
-  "/patient/appointments": typeof AuthedPatientAppointmentsRoute;
-  "/patient/prescriptions": typeof AuthedPatientPrescriptionsRoute;
-  "/patient/providers": typeof AuthedPatientProvidersRoute;
-  "/patient/records": typeof AuthedPatientRecordsRoute;
-  "/dashboard/": typeof AuthedDashboardIndexRoute;
-  "/patient/": typeof AuthedPatientIndexRoute;
-  "/dashboard/documents/consent-forms": typeof AuthedDashboardDocumentsConsentFormsRoute;
-  "/dashboard/patients/new": typeof AuthedDashboardPatientsNewRoute;
-  "/dashboard/appointments/": typeof AuthedDashboardAppointmentsIndexRoute;
-  "/dashboard/documents/": typeof AuthedDashboardDocumentsIndexRoute;
-  "/dashboard/patients/": typeof AuthedDashboardPatientsIndexRoute;
-  "/dashboard/records/": typeof AuthedDashboardRecordsIndexRoute;
+  '/': typeof MarketingIndexRoute
+  '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/patient': typeof AuthedPatientRouteRouteWithChildren
+  '/onboarding': typeof AuthedOnboardingRoute
+  '/pricing': typeof MarketingPricingRoute
+  '/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/patient/providers': typeof AuthedPatientProvidersRoute
+  '/patient/records': typeof AuthedPatientRecordsRoute
+  '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/patient/': typeof AuthedPatientIndexRoute
+  '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
+  '/dashboard/documents/': typeof AuthedDashboardDocumentsIndexRoute
+  '/dashboard/patients/': typeof AuthedDashboardPatientsIndexRoute
+  '/dashboard/records/': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof MarketingIndexRoute;
-  "/onboarding": typeof AuthedOnboardingRoute;
-  "/pricing": typeof MarketingPricingRoute;
-  "/login/$": typeof LoginSplatRoute;
-  "/register/$": typeof RegisterSplatRoute;
-  "/patient/appointments": typeof AuthedPatientAppointmentsRoute;
-  "/patient/prescriptions": typeof AuthedPatientPrescriptionsRoute;
-  "/patient/providers": typeof AuthedPatientProvidersRoute;
-  "/patient/records": typeof AuthedPatientRecordsRoute;
-  "/dashboard": typeof AuthedDashboardIndexRoute;
-  "/patient": typeof AuthedPatientIndexRoute;
-  "/dashboard/documents/consent-forms": typeof AuthedDashboardDocumentsConsentFormsRoute;
-  "/dashboard/patients/new": typeof AuthedDashboardPatientsNewRoute;
-  "/dashboard/appointments": typeof AuthedDashboardAppointmentsIndexRoute;
-  "/dashboard/documents": typeof AuthedDashboardDocumentsIndexRoute;
-  "/dashboard/patients": typeof AuthedDashboardPatientsIndexRoute;
-  "/dashboard/records": typeof AuthedDashboardRecordsIndexRoute;
+  '/': typeof MarketingIndexRoute
+  '/onboarding': typeof AuthedOnboardingRoute
+  '/pricing': typeof MarketingPricingRoute
+  '/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/patient/providers': typeof AuthedPatientProvidersRoute
+  '/patient/records': typeof AuthedPatientRecordsRoute
+  '/dashboard': typeof AuthedDashboardIndexRoute
+  '/patient': typeof AuthedPatientIndexRoute
+  '/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/dashboard/appointments': typeof AuthedDashboardAppointmentsIndexRoute
+  '/dashboard/documents': typeof AuthedDashboardDocumentsIndexRoute
+  '/dashboard/patients': typeof AuthedDashboardPatientsIndexRoute
+  '/dashboard/records': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/_authed": typeof AuthedRouteRouteWithChildren;
-  "/_marketing": typeof MarketingRouteRouteWithChildren;
-  "/_authed/dashboard": typeof AuthedDashboardRouteRouteWithChildren;
-  "/_authed/patient": typeof AuthedPatientRouteRouteWithChildren;
-  "/_authed/onboarding": typeof AuthedOnboardingRoute;
-  "/_marketing/pricing": typeof MarketingPricingRoute;
-  "/login/$": typeof LoginSplatRoute;
-  "/register/$": typeof RegisterSplatRoute;
-  "/_marketing/": typeof MarketingIndexRoute;
-  "/_authed/patient/appointments": typeof AuthedPatientAppointmentsRoute;
-  "/_authed/patient/prescriptions": typeof AuthedPatientPrescriptionsRoute;
-  "/_authed/patient/providers": typeof AuthedPatientProvidersRoute;
-  "/_authed/patient/records": typeof AuthedPatientRecordsRoute;
-  "/_authed/dashboard/": typeof AuthedDashboardIndexRoute;
-  "/_authed/patient/": typeof AuthedPatientIndexRoute;
-  "/_authed/dashboard/documents/consent-forms": typeof AuthedDashboardDocumentsConsentFormsRoute;
-  "/_authed/dashboard/patients/new": typeof AuthedDashboardPatientsNewRoute;
-  "/_authed/dashboard/appointments/": typeof AuthedDashboardAppointmentsIndexRoute;
-  "/_authed/dashboard/documents/": typeof AuthedDashboardDocumentsIndexRoute;
-  "/_authed/dashboard/patients/": typeof AuthedDashboardPatientsIndexRoute;
-  "/_authed/dashboard/records/": typeof AuthedDashboardRecordsIndexRoute;
+  __root__: typeof rootRouteImport
+  '/_authed': typeof AuthedRouteRouteWithChildren
+  '/_marketing': typeof MarketingRouteRouteWithChildren
+  '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/_authed/patient': typeof AuthedPatientRouteRouteWithChildren
+  '/_authed/onboarding': typeof AuthedOnboardingRoute
+  '/_marketing/pricing': typeof MarketingPricingRoute
+  '/_marketing/': typeof MarketingIndexRoute
+  '/_authed/patient/appointments': typeof AuthedPatientAppointmentsRoute
+  '/_authed/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
+  '/_authed/patient/providers': typeof AuthedPatientProvidersRoute
+  '/_authed/patient/records': typeof AuthedPatientRecordsRoute
+  '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_authed/patient/': typeof AuthedPatientIndexRoute
+  '/_authed/dashboard/documents/consent-forms': typeof AuthedDashboardDocumentsConsentFormsRoute
+  '/_authed/dashboard/patients/new': typeof AuthedDashboardPatientsNewRoute
+  '/_authed/dashboard/appointments/': typeof AuthedDashboardAppointmentsIndexRoute
+  '/_authed/dashboard/documents/': typeof AuthedDashboardDocumentsIndexRoute
+  '/_authed/dashboard/patients/': typeof AuthedDashboardPatientsIndexRoute
+  '/_authed/dashboard/records/': typeof AuthedDashboardRecordsIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/dashboard"
-    | "/patient"
-    | "/onboarding"
-    | "/pricing"
-    | "/login/$"
-    | "/register/$"
-    | "/patient/appointments"
-    | "/patient/prescriptions"
-    | "/patient/providers"
-    | "/patient/records"
-    | "/dashboard/"
-    | "/patient/"
-    | "/dashboard/documents/consent-forms"
-    | "/dashboard/patients/new"
-    | "/dashboard/appointments/"
-    | "/dashboard/documents/"
-    | "/dashboard/patients/"
-    | "/dashboard/records/";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/dashboard'
+    | '/patient'
+    | '/onboarding'
+    | '/pricing'
+    | '/patient/appointments'
+    | '/patient/prescriptions'
+    | '/patient/providers'
+    | '/patient/records'
+    | '/dashboard/'
+    | '/patient/'
+    | '/dashboard/documents/consent-forms'
+    | '/dashboard/patients/new'
+    | '/dashboard/appointments/'
+    | '/dashboard/documents/'
+    | '/dashboard/patients/'
+    | '/dashboard/records/'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/onboarding"
-    | "/pricing"
-    | "/login/$"
-    | "/register/$"
-    | "/patient/appointments"
-    | "/patient/prescriptions"
-    | "/patient/providers"
-    | "/patient/records"
-    | "/dashboard"
-    | "/patient"
-    | "/dashboard/documents/consent-forms"
-    | "/dashboard/patients/new"
-    | "/dashboard/appointments"
-    | "/dashboard/documents"
-    | "/dashboard/patients"
-    | "/dashboard/records";
+    | '/'
+    | '/onboarding'
+    | '/pricing'
+    | '/patient/appointments'
+    | '/patient/prescriptions'
+    | '/patient/providers'
+    | '/patient/records'
+    | '/dashboard'
+    | '/patient'
+    | '/dashboard/documents/consent-forms'
+    | '/dashboard/patients/new'
+    | '/dashboard/appointments'
+    | '/dashboard/documents'
+    | '/dashboard/patients'
+    | '/dashboard/records'
   id:
-    | "__root__"
-    | "/_authed"
-    | "/_marketing"
-    | "/_authed/dashboard"
-    | "/_authed/patient"
-    | "/_authed/onboarding"
-    | "/_marketing/pricing"
-    | "/login/$"
-    | "/register/$"
-    | "/_marketing/"
-    | "/_authed/patient/appointments"
-    | "/_authed/patient/prescriptions"
-    | "/_authed/patient/providers"
-    | "/_authed/patient/records"
-    | "/_authed/dashboard/"
-    | "/_authed/patient/"
-    | "/_authed/dashboard/documents/consent-forms"
-    | "/_authed/dashboard/patients/new"
-    | "/_authed/dashboard/appointments/"
-    | "/_authed/dashboard/documents/"
-    | "/_authed/dashboard/patients/"
-    | "/_authed/dashboard/records/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/_authed'
+    | '/_marketing'
+    | '/_authed/dashboard'
+    | '/_authed/patient'
+    | '/_authed/onboarding'
+    | '/_marketing/pricing'
+    | '/_marketing/'
+    | '/_authed/patient/appointments'
+    | '/_authed/patient/prescriptions'
+    | '/_authed/patient/providers'
+    | '/_authed/patient/records'
+    | '/_authed/dashboard/'
+    | '/_authed/patient/'
+    | '/_authed/dashboard/documents/consent-forms'
+    | '/_authed/dashboard/patients/new'
+    | '/_authed/dashboard/appointments/'
+    | '/_authed/dashboard/documents/'
+    | '/_authed/dashboard/patients/'
+    | '/_authed/dashboard/records/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthedRouteRoute: typeof AuthedRouteRouteWithChildren;
-  MarketingRouteRoute: typeof MarketingRouteRouteWithChildren;
-  LoginSplatRoute: typeof LoginSplatRoute;
-  RegisterSplatRoute: typeof RegisterSplatRoute;
+  AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  MarketingRouteRoute: typeof MarketingRouteRouteWithChildren
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/_marketing": {
-      id: "/_marketing";
-      path: "";
-      fullPath: "/";
-      preLoaderRoute: typeof MarketingRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_authed": {
-      id: "/_authed";
-      path: "";
-      fullPath: "/";
-      preLoaderRoute: typeof AuthedRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_marketing/": {
-      id: "/_marketing/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof MarketingIndexRouteImport;
-      parentRoute: typeof MarketingRouteRoute;
-    };
-    "/register/$": {
-      id: "/register/$";
-      path: "/register/$";
-      fullPath: "/register/$";
-      preLoaderRoute: typeof RegisterSplatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/login/$": {
-      id: "/login/$";
-      path: "/login/$";
-      fullPath: "/login/$";
-      preLoaderRoute: typeof LoginSplatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_marketing/pricing": {
-      id: "/_marketing/pricing";
-      path: "/pricing";
-      fullPath: "/pricing";
-      preLoaderRoute: typeof MarketingPricingRouteImport;
-      parentRoute: typeof MarketingRouteRoute;
-    };
-    "/_authed/onboarding": {
-      id: "/_authed/onboarding";
-      path: "/onboarding";
-      fullPath: "/onboarding";
-      preLoaderRoute: typeof AuthedOnboardingRouteImport;
-      parentRoute: typeof AuthedRouteRoute;
-    };
-    "/_authed/patient": {
-      id: "/_authed/patient";
-      path: "/patient";
-      fullPath: "/patient";
-      preLoaderRoute: typeof AuthedPatientRouteRouteImport;
-      parentRoute: typeof AuthedRouteRoute;
-    };
-    "/_authed/dashboard": {
-      id: "/_authed/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof AuthedDashboardRouteRouteImport;
-      parentRoute: typeof AuthedRouteRoute;
-    };
-    "/_authed/patient/": {
-      id: "/_authed/patient/";
-      path: "/";
-      fullPath: "/patient/";
-      preLoaderRoute: typeof AuthedPatientIndexRouteImport;
-      parentRoute: typeof AuthedPatientRouteRoute;
-    };
-    "/_authed/dashboard/": {
-      id: "/_authed/dashboard/";
-      path: "/";
-      fullPath: "/dashboard/";
-      preLoaderRoute: typeof AuthedDashboardIndexRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/patient/records": {
-      id: "/_authed/patient/records";
-      path: "/records";
-      fullPath: "/patient/records";
-      preLoaderRoute: typeof AuthedPatientRecordsRouteImport;
-      parentRoute: typeof AuthedPatientRouteRoute;
-    };
-    "/_authed/patient/providers": {
-      id: "/_authed/patient/providers";
-      path: "/providers";
-      fullPath: "/patient/providers";
-      preLoaderRoute: typeof AuthedPatientProvidersRouteImport;
-      parentRoute: typeof AuthedPatientRouteRoute;
-    };
-    "/_authed/patient/prescriptions": {
-      id: "/_authed/patient/prescriptions";
-      path: "/prescriptions";
-      fullPath: "/patient/prescriptions";
-      preLoaderRoute: typeof AuthedPatientPrescriptionsRouteImport;
-      parentRoute: typeof AuthedPatientRouteRoute;
-    };
-    "/_authed/patient/appointments": {
-      id: "/_authed/patient/appointments";
-      path: "/appointments";
-      fullPath: "/patient/appointments";
-      preLoaderRoute: typeof AuthedPatientAppointmentsRouteImport;
-      parentRoute: typeof AuthedPatientRouteRoute;
-    };
-    "/_authed/dashboard/records/": {
-      id: "/_authed/dashboard/records/";
-      path: "/records";
-      fullPath: "/dashboard/records/";
-      preLoaderRoute: typeof AuthedDashboardRecordsIndexRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/dashboard/patients/": {
-      id: "/_authed/dashboard/patients/";
-      path: "/patients";
-      fullPath: "/dashboard/patients/";
-      preLoaderRoute: typeof AuthedDashboardPatientsIndexRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/dashboard/documents/": {
-      id: "/_authed/dashboard/documents/";
-      path: "/documents";
-      fullPath: "/dashboard/documents/";
-      preLoaderRoute: typeof AuthedDashboardDocumentsIndexRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/dashboard/appointments/": {
-      id: "/_authed/dashboard/appointments/";
-      path: "/appointments";
-      fullPath: "/dashboard/appointments/";
-      preLoaderRoute: typeof AuthedDashboardAppointmentsIndexRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/dashboard/patients/new": {
-      id: "/_authed/dashboard/patients/new";
-      path: "/patients/new";
-      fullPath: "/dashboard/patients/new";
-      preLoaderRoute: typeof AuthedDashboardPatientsNewRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
-    "/_authed/dashboard/documents/consent-forms": {
-      id: "/_authed/dashboard/documents/consent-forms";
-      path: "/documents/consent-forms";
-      fullPath: "/dashboard/documents/consent-forms";
-      preLoaderRoute: typeof AuthedDashboardDocumentsConsentFormsRouteImport;
-      parentRoute: typeof AuthedDashboardRouteRoute;
-    };
+    '/_marketing': {
+      id: '/_marketing'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MarketingRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_marketing/': {
+      id: '/_marketing/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof MarketingIndexRouteImport
+      parentRoute: typeof MarketingRouteRoute
+    }
+    '/_marketing/pricing': {
+      id: '/_marketing/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof MarketingPricingRouteImport
+      parentRoute: typeof MarketingRouteRoute
+    }
+    '/_authed/onboarding': {
+      id: '/_authed/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthedOnboardingRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/patient': {
+      id: '/_authed/patient'
+      path: '/patient'
+      fullPath: '/patient'
+      preLoaderRoute: typeof AuthedPatientRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/dashboard': {
+      id: '/_authed/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthedDashboardRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/patient/': {
+      id: '/_authed/patient/'
+      path: '/'
+      fullPath: '/patient/'
+      preLoaderRoute: typeof AuthedPatientIndexRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/dashboard/': {
+      id: '/_authed/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthedDashboardIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/patient/records': {
+      id: '/_authed/patient/records'
+      path: '/records'
+      fullPath: '/patient/records'
+      preLoaderRoute: typeof AuthedPatientRecordsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/providers': {
+      id: '/_authed/patient/providers'
+      path: '/providers'
+      fullPath: '/patient/providers'
+      preLoaderRoute: typeof AuthedPatientProvidersRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/prescriptions': {
+      id: '/_authed/patient/prescriptions'
+      path: '/prescriptions'
+      fullPath: '/patient/prescriptions'
+      preLoaderRoute: typeof AuthedPatientPrescriptionsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/patient/appointments': {
+      id: '/_authed/patient/appointments'
+      path: '/appointments'
+      fullPath: '/patient/appointments'
+      preLoaderRoute: typeof AuthedPatientAppointmentsRouteImport
+      parentRoute: typeof AuthedPatientRouteRoute
+    }
+    '/_authed/dashboard/records/': {
+      id: '/_authed/dashboard/records/'
+      path: '/records'
+      fullPath: '/dashboard/records/'
+      preLoaderRoute: typeof AuthedDashboardRecordsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/patients/': {
+      id: '/_authed/dashboard/patients/'
+      path: '/patients'
+      fullPath: '/dashboard/patients/'
+      preLoaderRoute: typeof AuthedDashboardPatientsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/documents/': {
+      id: '/_authed/dashboard/documents/'
+      path: '/documents'
+      fullPath: '/dashboard/documents/'
+      preLoaderRoute: typeof AuthedDashboardDocumentsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/appointments/': {
+      id: '/_authed/dashboard/appointments/'
+      path: '/appointments'
+      fullPath: '/dashboard/appointments/'
+      preLoaderRoute: typeof AuthedDashboardAppointmentsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/patients/new': {
+      id: '/_authed/dashboard/patients/new'
+      path: '/patients/new'
+      fullPath: '/dashboard/patients/new'
+      preLoaderRoute: typeof AuthedDashboardPatientsNewRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/documents/consent-forms': {
+      id: '/_authed/dashboard/documents/consent-forms'
+      path: '/documents/consent-forms'
+      fullPath: '/dashboard/documents/consent-forms'
+      preLoaderRoute: typeof AuthedDashboardDocumentsConsentFormsRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
   }
 }
 
 interface AuthedDashboardRouteRouteChildren {
-  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute;
-  AuthedDashboardDocumentsConsentFormsRoute: typeof AuthedDashboardDocumentsConsentFormsRoute;
-  AuthedDashboardPatientsNewRoute: typeof AuthedDashboardPatientsNewRoute;
-  AuthedDashboardAppointmentsIndexRoute: typeof AuthedDashboardAppointmentsIndexRoute;
-  AuthedDashboardDocumentsIndexRoute: typeof AuthedDashboardDocumentsIndexRoute;
-  AuthedDashboardPatientsIndexRoute: typeof AuthedDashboardPatientsIndexRoute;
-  AuthedDashboardRecordsIndexRoute: typeof AuthedDashboardRecordsIndexRoute;
+  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
+  AuthedDashboardDocumentsConsentFormsRoute: typeof AuthedDashboardDocumentsConsentFormsRoute
+  AuthedDashboardPatientsNewRoute: typeof AuthedDashboardPatientsNewRoute
+  AuthedDashboardAppointmentsIndexRoute: typeof AuthedDashboardAppointmentsIndexRoute
+  AuthedDashboardDocumentsIndexRoute: typeof AuthedDashboardDocumentsIndexRoute
+  AuthedDashboardPatientsIndexRoute: typeof AuthedDashboardPatientsIndexRoute
+  AuthedDashboardRecordsIndexRoute: typeof AuthedDashboardRecordsIndexRoute
 }
 
 const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
@@ -451,17 +411,17 @@ const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
   AuthedDashboardDocumentsIndexRoute: AuthedDashboardDocumentsIndexRoute,
   AuthedDashboardPatientsIndexRoute: AuthedDashboardPatientsIndexRoute,
   AuthedDashboardRecordsIndexRoute: AuthedDashboardRecordsIndexRoute,
-};
+}
 
 const AuthedDashboardRouteRouteWithChildren =
-  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren);
+  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
 
 interface AuthedPatientRouteRouteChildren {
-  AuthedPatientAppointmentsRoute: typeof AuthedPatientAppointmentsRoute;
-  AuthedPatientPrescriptionsRoute: typeof AuthedPatientPrescriptionsRoute;
-  AuthedPatientProvidersRoute: typeof AuthedPatientProvidersRoute;
-  AuthedPatientRecordsRoute: typeof AuthedPatientRecordsRoute;
-  AuthedPatientIndexRoute: typeof AuthedPatientIndexRoute;
+  AuthedPatientAppointmentsRoute: typeof AuthedPatientAppointmentsRoute
+  AuthedPatientPrescriptionsRoute: typeof AuthedPatientPrescriptionsRoute
+  AuthedPatientProvidersRoute: typeof AuthedPatientProvidersRoute
+  AuthedPatientRecordsRoute: typeof AuthedPatientRecordsRoute
+  AuthedPatientIndexRoute: typeof AuthedPatientIndexRoute
 }
 
 const AuthedPatientRouteRouteChildren: AuthedPatientRouteRouteChildren = {
@@ -470,58 +430,55 @@ const AuthedPatientRouteRouteChildren: AuthedPatientRouteRouteChildren = {
   AuthedPatientProvidersRoute: AuthedPatientProvidersRoute,
   AuthedPatientRecordsRoute: AuthedPatientRecordsRoute,
   AuthedPatientIndexRoute: AuthedPatientIndexRoute,
-};
+}
 
 const AuthedPatientRouteRouteWithChildren =
-  AuthedPatientRouteRoute._addFileChildren(AuthedPatientRouteRouteChildren);
+  AuthedPatientRouteRoute._addFileChildren(AuthedPatientRouteRouteChildren)
 
 interface AuthedRouteRouteChildren {
-  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren;
-  AuthedPatientRouteRoute: typeof AuthedPatientRouteRouteWithChildren;
-  AuthedOnboardingRoute: typeof AuthedOnboardingRoute;
+  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
+  AuthedPatientRouteRoute: typeof AuthedPatientRouteRouteWithChildren
+  AuthedOnboardingRoute: typeof AuthedOnboardingRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
   AuthedPatientRouteRoute: AuthedPatientRouteRouteWithChildren,
   AuthedOnboardingRoute: AuthedOnboardingRoute,
-};
+}
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
   AuthedRouteRouteChildren,
-);
+)
 
 interface MarketingRouteRouteChildren {
-  MarketingPricingRoute: typeof MarketingPricingRoute;
-  MarketingIndexRoute: typeof MarketingIndexRoute;
+  MarketingPricingRoute: typeof MarketingPricingRoute
+  MarketingIndexRoute: typeof MarketingIndexRoute
 }
 
 const MarketingRouteRouteChildren: MarketingRouteRouteChildren = {
   MarketingPricingRoute: MarketingPricingRoute,
   MarketingIndexRoute: MarketingIndexRoute,
-};
+}
 
 const MarketingRouteRouteWithChildren = MarketingRouteRoute._addFileChildren(
   MarketingRouteRouteChildren,
-);
+)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
   MarketingRouteRoute: MarketingRouteRouteWithChildren,
-  LoginSplatRoute: LoginSplatRoute,
-  RegisterSplatRoute: RegisterSplatRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx";
-import type { startInstance } from "./start.ts";
-
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun run --parallel dev:web dev:convex",
+    "dev": "concurrently \"bun dev:web\" \"bun dev:convex\"",
     "dev:web": "bun --bun vite dev --host --port 3000",
     "dev:convex": "bunx convex dev",
     "start": "bun run .output/server/index.mjs",

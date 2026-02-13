@@ -11,7 +11,7 @@ function PricingPage() {
   const [isOrganizationPlan, setIsOrganizationPlan] = useState<boolean>(false);
 
   return (
-    <div className="flex min-h-[calc(100dvh-330px)] flex-col items-center justify-start gap-8 p-4 pt-16 md:pt-24">
+    <div className="flex min-h-[calc(100dvh-20.6rem)] flex-col items-center justify-start gap-8 p-4 pt-24">
       <header className="text-pretty text-center">
         <h1 className="font-bold text-3xl tracking-tight">Precios</h1>
         <p className="text-muted-foreground text-sm">

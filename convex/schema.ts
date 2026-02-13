@@ -4,14 +4,23 @@ import type { ZodType } from "zod";
 import { z } from "zod";
 
 export const {
+  table: usersTable,
+  insertSchema: usersInsertSchema,
+  schema: usersSchema,
+  updateSchema: usersUpdateSchema,
+} = zodTable("users", {
+  clerkUserId: z.string(),
+});
+
+export const {
   table: appointmentsTable,
   insertSchema: appointmentsInsertSchema,
   schema: appointmentsSchema,
   updateSchema: appointmentsUpdateSchema,
 } = zodTable("appointments", {
   patientId: zid("patients"),
-  appointmentDate: z.date().transform((date) => date.getTime()),
-  appointmentTime: z.date().transform((date) => date.getTime()),
+  appointmentDate: z.number(),
+  appointmentTime: z.number(),
   appointmentType: z.enum(["medical", "vaccination", "laboratory", "other"]),
   status: z.enum(["pending", "confirmed", "cancelled"]),
 });
@@ -33,10 +42,7 @@ export const {
     type: z.enum(["cc", "ce", "passport", "other"]),
     number: z.string(),
   }),
-  deletedAt: z
-    .date()
-    .transform((date) => date.getTime())
-    .optional(),
+  deletedAt: z.number().optional(),
 });
 
 export const {
@@ -47,12 +53,9 @@ export const {
 } = zodTable("records", {
   patientId: zid("patients"),
   recordType: z.enum(["medical", "vaccination", "laboratory", "other"]),
-  recordDate: z.date().transform((date) => date.getTime()),
+  recordDate: z.number(),
   recordData: z.object({}),
-  deletedAt: z
-    .date()
-    .transform((date) => date.getTime())
-    .optional(),
+  deletedAt: z.number().optional(),
 });
 
 export default defineSchema({
@@ -66,7 +69,7 @@ export function zodTable<
   const fullSchema = z.object({
     ...schema,
     _id: zid(tableName),
-    _creationTime: z.date().transform((date) => date.getTime()),
+    _creationTime: z.number(),
   });
 
   const insertSchema = fullSchema.partial({

@@ -20,7 +20,7 @@ export const PatientTopNav = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 border-b bg-background/80 backdrop-blur-lg">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 lg:px-8">
         <Link
           to="/patient"

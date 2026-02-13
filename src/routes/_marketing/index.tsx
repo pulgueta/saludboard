@@ -4,17 +4,14 @@ import {
   CalendarDotsIcon,
   ChartLineUpIcon,
   ClipboardTextIcon,
-  CloudIcon,
   FileTextIcon,
   LockIcon,
   PillIcon,
-  StethoscopeIcon,
   UserCircleIcon,
   UsersIcon,
   VideoCameraIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import type { FC, ReactNode } from "react";
@@ -78,77 +75,47 @@ function LandingPage() {
         </div>
 
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 text-center lg:px-8">
-          <Badge variant="secondary" className="px-4 py-1.5">
-            Disenado para el sistema de salud colombiano
-          </Badge>
-
-          <h1 className="max-w-3xl font-bold text-4xl text-foreground leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
-            Gestion medica <span className="text-primary">simplificada</span>{" "}
-            para Colombia
+          <h1 className="max-w-3xl text-balance font-bold text-4xl text-foreground tracking-tight md:text-5xl">
+            Gestión médica <span className="text-primary">simplificada</span>{" "}
+            para tus pacientes
           </h1>
 
-          <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed md:text-xl">
+          <p className="max-w-prose text-pretty text-muted-foreground md:text-lg">
             Conecta profesionales de salud con pacientes de manera segura y
-            eficiente. Historias clinicas, citas, recetas y documentos en un
+            eficiente. Historias clínicas, citas, recetas y documentos en un
             solo lugar.
           </p>
 
           <WhenSignedOut>
-            <div className="flex flex-col items-center gap-3 sm:flex-row">
-              <SignUpButton mode="redirect">
-                <Button size="lg">
-                  Soy profesional de salud
-                  <ArrowRightIcon weight="bold" className="ml-1 size-4" />
-                </Button>
-              </SignUpButton>
-              <SignUpButton mode="redirect">
-                <Button variant="outline" size="lg">
-                  Soy paciente
-                </Button>
-              </SignUpButton>
-            </div>
+            <SignUpButton mode="modal">
+              <Button>
+                Empezar ahora
+                <ArrowRightIcon weight="bold" className="ml-1 size-4" />
+              </Button>
+            </SignUpButton>
           </WhenSignedOut>
+
           <WhenSignedIn>
-            <Button size="lg" render={<Link to="/dashboard" />}>
+            <Button nativeButton={false} render={<Link to="/dashboard" />}>
               Ir al dashboard
               <ArrowRightIcon weight="bold" className="ml-1 size-4" />
             </Button>
           </WhenSignedIn>
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-muted-foreground">
-            <div className="flex items-center gap-2 text-xs">
-              <LockIcon size={16} weight="duotone" />
-              <span>Datos encriptados</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <CloudIcon size={16} weight="duotone" />
-              <span>100% en la nube</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <StethoscopeIcon size={16} weight="duotone" />
-              <span>Cumple normatividad colombiana</span>
-            </div>
-          </div>
         </div>
       </section>
 
       <section id="features" className="border-t bg-muted/20 py-16">
         <div className="mx-auto max-w-6xl px-4 lg:px-8">
-          <div className="mb-14 flex flex-col items-center gap-3 text-center">
-            <Badge variant="secondary" className="px-4 py-1.5">
-              Funcionalidades
-            </Badge>
-            <h2 className="max-w-xl font-bold text-3xl text-foreground tracking-tight md:text-4xl">
+          <div className="mb-8 flex flex-col items-center gap-4 text-center">
+            <h2 className="max-w-prose font-bold text-3xl text-foreground tracking-tight">
               Todo lo que necesitas para gestionar tu salud
             </h2>
-            <p className="max-w-lg text-muted-foreground">
+            <p className="max-w-prose text-pretty text-muted-foreground">
               Herramientas disenadas para cada actor del sistema de salud
               colombiano.
             </p>
           </div>
 
-          {/* Professional features */}
           <div className="mb-12">
             <h3 className="mb-6 font-semibold text-muted-foreground text-sm uppercase tracking-wider">
               Para profesionales
@@ -172,7 +139,6 @@ function LandingPage() {
             </div>
           </div>
 
-          {/* Patient features */}
           <div className="mb-12">
             <h3 className="mb-6 font-semibold text-muted-foreground text-sm uppercase tracking-wider">
               Para pacientes
@@ -196,10 +162,9 @@ function LandingPage() {
             </div>
           </div>
 
-          {/* Org features */}
           <div>
             <h3 className="mb-6 font-semibold text-muted-foreground text-sm uppercase tracking-wider">
-              Para clinicas y organizaciones
+              Para clínicas y organizaciones
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
@@ -225,9 +190,6 @@ function LandingPage() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 lg:px-8">
           <div className="mb-14 flex flex-col items-center gap-3 text-center">
-            <Badge variant="secondary" className="px-4 py-1.5">
-              Como funciona
-            </Badge>
             <h2 className="max-w-lg font-bold text-3xl text-foreground tracking-tight md:text-4xl">
               Comienza en minutos
             </h2>
@@ -236,18 +198,18 @@ function LandingPage() {
           <div className="grid gap-12 md:grid-cols-3">
             <StepCard
               step={1}
-              title="Registrate gratis"
-              description="Crea tu cuenta como profesional de salud o como paciente. Sin tarjeta de credito requerida."
+              title="Regístrate gratis"
+              description="Crea tu cuenta como profesional de salud o como paciente."
             />
             <StepCard
               step={2}
               title="Conecta"
-              description="Invita a tus pacientes o conectate con tus profesionales de salud de confianza."
+              description="Invita a tus pacientes o conecta con tus profesionales de salud de confianza."
             />
             <StepCard
               step={3}
               title="Gestiona"
-              description="Administra citas, historias clinicas, recetas y documentos desde un solo lugar."
+              description="Administra citas, historias clínicas, recetas y documentos desde un solo lugar."
             />
           </div>
         </div>
@@ -258,20 +220,22 @@ function LandingPage() {
           <h2 className="font-bold text-3xl text-foreground tracking-tight md:text-4xl">
             Comienza a gestionar tu salud hoy
           </h2>
-          <p className="max-w-lg text-muted-foreground leading-relaxed">
+          <p className="max-w-prose text-pretty text-muted-foreground">
             Unete a los profesionales de salud y pacientes que ya confian en
             SaludBoard para la gestion de su informacion medica.
           </p>
+
           <WhenSignedOut>
             <SignUpButton mode="redirect">
-              <Button size="lg">
+              <Button>
                 Crear cuenta gratis
                 <ArrowRightIcon weight="bold" className="ml-1 size-4" />
               </Button>
             </SignUpButton>
           </WhenSignedOut>
+
           <WhenSignedIn>
-            <Button size="lg" render={<Link to="/dashboard" />}>
+            <Button nativeButton={false} render={<Link to="/dashboard" />}>
               Ir al dashboard
               <ArrowRightIcon weight="bold" className="ml-1 size-4" />
             </Button>

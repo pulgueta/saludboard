@@ -72,8 +72,7 @@ export const ProfessionalTypeStep: FC = () => {
   const { createOrganization, setActiveOrganization } =
     useOrganizationActions();
   const { organization } = useOrganization();
-  const { data: defaults, isLoading: isLoadingDefaults } =
-    useOrganizationCreationDefaults();
+  const { data: defaults } = useOrganizationCreationDefaults();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const hasSelection = state.professionalType !== null;
@@ -135,10 +134,6 @@ export const ProfessionalTypeStep: FC = () => {
   const showWarning = advisory?.code === "organization_already_exists";
   const existingOrgName = advisory?.meta?.organization_name;
   const existingOrgDomain = advisory?.meta?.organization_domain;
-
-  console.log(form);
-
-  const _loading = form.state.isSubmitting || isLoadingDefaults;
 
   return (
     <OnboardingStep>
