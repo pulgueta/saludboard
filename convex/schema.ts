@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from "convex/server";
 import { zid, zodToConvex } from "convex-helpers/server/zod4";
+import { defineSchema, defineTable } from "convex/server";
 import type { ZodType } from "zod";
 import { z } from "zod";
 
@@ -10,6 +10,32 @@ export const {
   updateSchema: usersUpdateSchema,
 } = zodTable("users", {
   clerkUserId: z.string(),
+  name: z.string(),
+  userType: z.enum(["patient", "professional"]),
+  accountType: z.enum(["individual", "organization"]),
+  organizationId: zid("organizations").optional(),
+});
+
+export const {
+  table: organizationsTable,
+  insertSchema: organizationsInsertSchema,
+  schema: organizationsSchema,
+  updateSchema: organizationsUpdateSchema,
+} = zodTable("organizations", {
+  name: z.string(),
+  slug: z.string(),
+  clerkOrganizationId: z.string(),
+  areaOfExpertise: z.array(
+    z.enum([
+      "general-medicine",
+      "pediatrics",
+      "dermatology",
+      "orthopedics",
+      "dentistry",
+      "nutrition",
+      "psychology",
+    ]),
+  ),
 });
 
 export const {
@@ -31,10 +57,7 @@ export const {
   schema: patientsSchema,
   updateSchema: patientsUpdateSchema,
 } = zodTable("patients", {
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.email().optional(),
-  phone: z.string(),
+  userId: zid("users"),
   address: z.string(),
   city: z.string(),
   state: z.string(),
@@ -59,7 +82,13 @@ export const {
 });
 
 export default defineSchema({
-  patients: patientsTable().index("by_deleted_at", ["deletedAt"]),
+  users: usersTable().index("by_clerk_user_id", ["clerkUserId"]),
+  organizations: organizationsTable().index("by_clerk_organization_id", [
+    "clerkOrganizationId",
+  ]),
+  patients: patientsTable()
+    .index("by_user_id", ["userId"])
+    .index("by_deleted_at", ["deletedAt"]),
 });
 
 export function zodTable<
