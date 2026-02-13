@@ -1,5 +1,6 @@
 import {
-  useOrganization,
+  useOrganization as useClerkOrganization,
+  useOrganizationCreationDefaults,
   useOrganizationList,
 } from "@clerk/tanstack-react-start";
 import { useMemo } from "react";
@@ -26,20 +27,19 @@ export type OrganizationInfo = {
  *
  * @example
  * ```tsx
- * const { currentOrg, organizations, isLoaded } = useOrganizationData();
+ * const { currentOrg, organizations, isLoaded } = useOrganization();
  * if (currentOrg) {
  *   console.log(`Active org: ${currentOrg.name}`);
  * }
  * ```
  */
-export function useOrganizationData() {
-  const { organization, membership, isLoaded: orgLoaded } = useOrganization();
+export function useOrganization() {
   const {
-    userMemberships,
-    isLoaded: listLoaded,
-    setActive,
-    createOrganization,
-  } = useOrganizationList({
+    organization,
+    membership,
+    isLoaded: orgLoaded,
+  } = useClerkOrganization();
+  const { userMemberships, isLoaded: listLoaded } = useOrganizationList({
     userMemberships: { infinite: true },
   });
 
@@ -69,9 +69,31 @@ export function useOrganizationData() {
     currentOrg,
     organizations,
     isLoaded: orgLoaded && listLoaded,
-    /** Switch to a different organization by ID. */
-    setActiveOrganization: setActive,
-    /** Create a new organization. */
+  } as const;
+}
+
+/**
+ * Returns organization actions for creating and switching organizations.
+ * Suitable for use when you need to mutate organization state without
+ * subscribing to organization data.
+ *
+ * @example
+ * ```tsx
+ * const { createOrganization, setActiveOrganization } = useOrganizationActions();
+ * await createOrganization({ name: "My Org", slug: "my-org" });
+ * ```
+ */
+export function useOrganizationActions() {
+  const { setActive: setActiveOrganization, createOrganization } =
+    useOrganizationList({
+      userMemberships: { infinite: true },
+    });
+  const { isLoading: isCreatingOrganization } =
+    useOrganizationCreationDefaults();
+
+  return {
+    setActiveOrganization,
     createOrganization,
+    isCreatingOrganization,
   } as const;
 }

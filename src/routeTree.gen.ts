@@ -12,8 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MarketingRouteRouteImport } from './routes/_marketing/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
-import { Route as RegisterSplatRouteImport } from './routes/register.$'
-import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as MarketingPricingRouteImport } from './routes/_marketing/pricing'
 import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
 import { Route as AuthedPatientRouteRouteImport } from './routes/_authed/patient/route'
@@ -43,16 +41,6 @@ const MarketingIndexRoute = MarketingIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MarketingRouteRoute,
-} as any)
-const RegisterSplatRoute = RegisterSplatRouteImport.update({
-  id: '/register/$',
-  path: '/register/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginSplatRoute = LoginSplatRouteImport.update({
-  id: '/login/$',
-  path: '/login/$',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const MarketingPricingRoute = MarketingPricingRouteImport.update({
   id: '/pricing',
@@ -149,8 +137,6 @@ export interface FileRoutesByFullPath {
   '/patient': typeof AuthedPatientRouteRouteWithChildren
   '/onboarding': typeof AuthedOnboardingRoute
   '/pricing': typeof MarketingPricingRoute
-  '/login/$': typeof LoginSplatRoute
-  '/register/$': typeof RegisterSplatRoute
   '/patient/appointments': typeof AuthedPatientAppointmentsRoute
   '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
   '/patient/providers': typeof AuthedPatientProvidersRoute
@@ -168,8 +154,6 @@ export interface FileRoutesByTo {
   '/': typeof MarketingIndexRoute
   '/onboarding': typeof AuthedOnboardingRoute
   '/pricing': typeof MarketingPricingRoute
-  '/login/$': typeof LoginSplatRoute
-  '/register/$': typeof RegisterSplatRoute
   '/patient/appointments': typeof AuthedPatientAppointmentsRoute
   '/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
   '/patient/providers': typeof AuthedPatientProvidersRoute
@@ -191,8 +175,6 @@ export interface FileRoutesById {
   '/_authed/patient': typeof AuthedPatientRouteRouteWithChildren
   '/_authed/onboarding': typeof AuthedOnboardingRoute
   '/_marketing/pricing': typeof MarketingPricingRoute
-  '/login/$': typeof LoginSplatRoute
-  '/register/$': typeof RegisterSplatRoute
   '/_marketing/': typeof MarketingIndexRoute
   '/_authed/patient/appointments': typeof AuthedPatientAppointmentsRoute
   '/_authed/patient/prescriptions': typeof AuthedPatientPrescriptionsRoute
@@ -215,8 +197,6 @@ export interface FileRouteTypes {
     | '/patient'
     | '/onboarding'
     | '/pricing'
-    | '/login/$'
-    | '/register/$'
     | '/patient/appointments'
     | '/patient/prescriptions'
     | '/patient/providers'
@@ -234,8 +214,6 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/pricing'
-    | '/login/$'
-    | '/register/$'
     | '/patient/appointments'
     | '/patient/prescriptions'
     | '/patient/providers'
@@ -256,8 +234,6 @@ export interface FileRouteTypes {
     | '/_authed/patient'
     | '/_authed/onboarding'
     | '/_marketing/pricing'
-    | '/login/$'
-    | '/register/$'
     | '/_marketing/'
     | '/_authed/patient/appointments'
     | '/_authed/patient/prescriptions'
@@ -276,8 +252,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
   MarketingRouteRoute: typeof MarketingRouteRouteWithChildren
-  LoginSplatRoute: typeof LoginSplatRoute
-  RegisterSplatRoute: typeof RegisterSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -302,20 +276,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof MarketingIndexRouteImport
       parentRoute: typeof MarketingRouteRoute
-    }
-    '/register/$': {
-      id: '/register/$'
-      path: '/register/$'
-      fullPath: '/register/$'
-      preLoaderRoute: typeof RegisterSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/$': {
-      id: '/login/$'
-      path: '/login/$'
-      fullPath: '/login/$'
-      preLoaderRoute: typeof LoginSplatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_marketing/pricing': {
       id: '/_marketing/pricing'
@@ -508,8 +468,6 @@ const MarketingRouteRouteWithChildren = MarketingRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
   MarketingRouteRoute: MarketingRouteRouteWithChildren,
-  LoginSplatRoute: LoginSplatRoute,
-  RegisterSplatRoute: RegisterSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

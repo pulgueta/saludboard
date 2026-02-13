@@ -23,20 +23,12 @@
   },
   "overrides": [
     {
-      "includes": ["src/routeTree.gen.ts", "convex/convex/_generated/**/*.ts"],
+      "includes": ["src/routeTree.gen.ts", "convex/_generated/**/*.ts"],
       "linter": {
-        "rules": {
-          "complexity": {
-            "noBannedTypes": "off"
-          },
-          "correctness": {
-            "noUnusedVariables": "off",
-            "noUnusedImports": "off"
-          },
-          "suspicious": {
-            "noExplicitAny": "off"
-          }
-        }
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
       }
     }
   ],
@@ -49,6 +41,9 @@
       },
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "correctness": {
+        "noChildrenProp": "off"
       },
       "nursery": {
         "useSortedClasses": {

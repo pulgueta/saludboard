@@ -1,4 +1,4 @@
-import { useSubscription } from "@clerk/clerk-react/experimental";
+import { usePlans, useSubscription } from "@clerk/clerk-react/experimental";
 import { useUser } from "@clerk/tanstack-react-start";
 
 /**
@@ -12,19 +12,7 @@ export type CurrentUser = {
   lastName: string | null;
   email: string;
   imageUrl: string;
-  initials: string;
-  hasImage: boolean;
 };
-
-function deriveInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 /**
  * Returns a normalized current user object with derived fields.
  *
@@ -48,30 +36,25 @@ export function useCurrentUser() {
   const { data: currentSubscription } = useSubscription({
     for: userHasOrganization ? "organization" : "user",
   });
+  const { data: plans } = usePlans({
+    enabled: !!userHasOrganization,
+    for: userHasOrganization ? "organization" : "user",
+  });
 
-  const currentUser = () => {
-    if (!user) return null;
-
-    const fullName =
-      user.fullName || user.primaryEmailAddress?.emailAddress || "Usuario";
-    const email = user.primaryEmailAddress?.emailAddress || "";
-
-    return {
-      id: user.id,
-      fullName,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email,
-      imageUrl: user.imageUrl,
-      initials: deriveInitials(fullName),
-      hasImage: user.hasImage,
-    };
-  };
+  const currentPlan = plans.find(
+    (p) =>
+      p.id ===
+      currentSubscription?.subscriptionItems.find((i) => i.plan.id)?.plan.id,
+  );
 
   return {
-    user: currentUser(),
+    user,
     isLoaded,
     isSignedIn,
-    subscription: currentSubscription,
+    subscription: {
+      name: currentPlan?.name,
+      description: currentPlan?.description,
+      ...currentSubscription,
+    },
   } as const;
 }

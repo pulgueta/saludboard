@@ -1,11 +1,22 @@
-import { PricingTable } from "@clerk/tanstack-react-start";
-import { BuildingsIcon, UserIcon } from "@phosphor-icons/react";
-import { type FC, useEffect } from "react";
+import { useSubscription } from "@clerk/clerk-react/experimental";
+import {
+  PricingTable,
+  useOrganization,
+  useOrganizationCreationDefaults,
+} from "@clerk/tanstack-react-start";
+import { Buildings, User, WarningIcon } from "@phosphor-icons/react";
+import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
+import { FieldGroup } from "@ui/field";
+import type { FC } from "react";
+import { useState } from "react";
+import { z } from "zod";
 
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
 import { SelectionCard } from "@/components/primitives/selection-card";
+import { useAppForm } from "@/hooks/form/use-form";
+import { useOrganizationActions } from "@/hooks/use-organization";
 import type { ProfessionalType } from "@/lib/onboarding-context";
 import { useOnboarding } from "@/lib/onboarding-context";
 
@@ -13,39 +24,116 @@ const PROFESSIONAL_TYPES: {
   type: ProfessionalType;
   title: string;
   description: string;
-  icon: typeof UserIcon;
+  icon: typeof User;
 }[] = [
   {
     type: "individual",
     title: "Profesional individual",
     description:
-      "Consultorio propio o independiente para gestionar pacientes, citas, historias clínicas y documentos.",
-    icon: UserIcon,
+      "Consultorio propio o independiente. Selecciona un campo de salud para habilitar tu cuenta.",
+    icon: User,
   },
   {
     type: "organization",
     title: "Organización",
     description:
       "Consultorio o centro de salud con múltiples especialidades y profesionales en tu equipo.",
-    icon: BuildingsIcon,
+    icon: Buildings,
   },
 ];
+
+function createSlug(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "")
+    .slice(0, 60);
+}
+
+const organizationSchema = z.object({
+  name: z
+    .string("El nombre es requerido")
+    .min(3, "El nombre debe tener al menos 3 caracteres.")
+    .max(80, "El nombre no puede superar los 80 caracteres.")
+    .trim(),
+  slug: z.string(),
+});
 
 /**
  * Step 3 (professionals only): Choose account type + plan in one screen.
  * Shows different PricingTable plans based on the selected type.
+ *
+ * When "Organización" is selected, a simple TanStack Form creates the org.
  */
 export const ProfessionalTypeStep: FC = () => {
   const { state, setProfessionalType } = useOnboarding();
-
-  useEffect(() => {
-    if (state.professionalType === null) {
-      setProfessionalType("individual");
-    }
-  }, [state.professionalType, setProfessionalType]);
+  const { createOrganization, setActiveOrganization } =
+    useOrganizationActions();
+  const { organization } = useOrganization();
+  const { data: defaults } = useOrganizationCreationDefaults();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const hasSelection = state.professionalType !== null;
   const isOrganization = state.professionalType === "organization";
+  const { data: organizationSubscription } = useSubscription({
+    for: "organization",
+    enabled: !!organization?.id,
+  });
+
+  const hasActiveOrganizationSubscription =
+    organizationSubscription?.status === "active" ||
+    organizationSubscription?.status === "past_due";
+
+  const shouldWarnAboutIndividualPlan =
+    !isOrganization && hasActiveOrganizationSubscription;
+
+  const form = useAppForm({
+    defaultValues: {
+      name: "",
+      slug: "",
+    },
+    validators: {
+      onChange: organizationSchema,
+      onSubmit: organizationSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const organization = await createOrganization?.({
+          name: value.name,
+          slug: value.slug,
+        });
+
+        if (organization?.id && setActiveOrganization) {
+          await setActiveOrganization({ organization: organization.id });
+        }
+      } catch (error) {
+        const fallback =
+          "No pudimos crear la organización. Verifica el nombre e inténtalo de nuevo.";
+
+        const clerkError =
+          typeof error === "object" &&
+          error &&
+          "errors" in error &&
+          Array.isArray(
+            (error as { errors?: Array<{ message?: string }> }).errors,
+          )
+            ? (error as { errors?: Array<{ message?: string }> }).errors
+                ?.map((err) => err?.message)
+                .filter(Boolean)
+                .join("\n")
+            : null;
+
+        setSubmitError(clerkError || fallback);
+      }
+    },
+  });
+
+  const advisory = defaults?.advisory;
+  const showWarning = advisory?.code === "organization_already_exists";
+  const existingOrgName = advisory?.meta?.organization_name;
+  const existingOrgDomain = advisory?.meta?.organization_domain;
 
   return (
     <OnboardingStep>
@@ -93,18 +181,103 @@ export const ProfessionalTypeStep: FC = () => {
         )}
       </div>
 
-      <AnimatedContainer delay={250} duration={450} className="space-y-4">
-        {isOrganization && (
-          <p className="text-pretty text-center text-muted-foreground text-sm">
-            Necesitas crear una organización para poder seleccionar un plan.
-            Selecciona el plan personal para continuar.
-          </p>
-        )}
+      {isOrganization && !organization?.id && (
+        <AnimatedContainer delay={220} duration={450}>
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-medium text-base text-foreground">
+                Crea tu organización
+              </h3>
+            </div>
 
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit();
+              }}
+            >
+              <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <form.AppField
+                  name="name"
+                  children={(field) => (
+                    <field.TextField
+                      label="Nombre"
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+
+                        form.setFieldValue("slug", createSlug(e.target.value));
+                        field.validate("change");
+                      }}
+                    />
+                  )}
+                />
+
+                <form.AppField
+                  name="slug"
+                  children={(field) => (
+                    <field.TextField
+                      label="Identificador único"
+                      disabled
+                      className="pointer-events-none"
+                      value={createSlug(form.getFieldValue("name"))}
+                    />
+                  )}
+                />
+              </FieldGroup>
+
+              {showWarning && (
+                <Alert variant="warning">
+                  <WarningIcon className="size-4" />
+                  <AlertTitle>Atención</AlertTitle>
+                  <AlertDescription>
+                    Ya existe una organización con el nombre "{existingOrgName}"
+                    {existingOrgDomain
+                      ? ` para el dominio "${existingOrgDomain}".`
+                      : "."}
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {submitError && (
+                <Alert variant="warning">
+                  <WarningIcon className="size-4" />
+                  <AlertTitle>Error al crear la organización</AlertTitle>
+                  <AlertDescription>{submitError}</AlertDescription>
+                </Alert>
+              )}
+
+              <form.AppForm>
+                <form.SubmitButton
+                  label="Crear organización"
+                  className="mt-4 mr-auto"
+                />
+              </form.AppForm>
+            </form>
+          </div>
+        </AnimatedContainer>
+      )}
+
+      <AnimatedContainer delay={300} duration={450}>
         {hasSelection ? (
-          <PricingTable for={isOrganization ? "organization" : "user"} />
+          <div className="space-y-8">
+            {shouldWarnAboutIndividualPlan && (
+              <Alert variant="warning">
+                <WarningIcon className="size-4" />
+                <AlertTitle>Suscripción activa</AlertTitle>
+                <AlertDescription>
+                  Tienes una suscripción activa de organización. Si deseas
+                  suscribirte a un plan individual, te recomendamos cancelar la
+                  suscripción actual o continuar usando ese plan para evitar
+                  cobros duplicados.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <PricingTable for={isOrganization ? "organization" : "user"} />
+          </div>
         ) : (
-          <div className="rounded-xl border border-border/70 border-dashed bg-card/40 p-6 text-center text-muted-foreground text-sm">
+          <div className="rounded-xl border border-border/70 border-dashed bg-card/40 p-4 text-center text-muted-foreground text-sm">
             Selecciona un tipo de cuenta para ver los planes disponibles.
           </div>
         )}

@@ -3,9 +3,9 @@ import { Badge } from "@ui/badge";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
 import { useCallback, useEffect } from "react";
-
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { getHealthFieldById } from "@/lib/health-fields";
 import { useOnboarding } from "@/lib/onboarding-context";
 
@@ -15,6 +15,8 @@ import { useOnboarding } from "@/lib/onboarding-context";
  */
 export const ConfirmationStep: FC = () => {
   const { state, setFooterConfig } = useOnboarding();
+
+  const { subscription } = useCurrentUser();
 
   const selectedFieldNames = state.selectedFields
     .map((id) => getHealthFieldById(id)?.name)
@@ -77,23 +79,22 @@ export const ConfirmationStep: FC = () => {
               Tipo de cuenta
             </span>
             <span className="font-medium text-foreground text-sm">
-              {isOrganization ? "Organización" : "Individual"}
+              {state.professionalType === "organization"
+                ? "Organización"
+                : "Individual"}
             </span>
           </div>
 
           <Separator />
 
-          {/* Plan */}
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-muted-foreground text-sm">Plan</span>
-            <Badge variant="secondary">
-              {state.planSelected ? "Seleccionado" : "Pendiente"}
-            </Badge>
+
+            <Badge variant="success">{subscription.name}</Badge>
           </div>
 
           <Separator />
 
-          {/* Health fields */}
           <div className="flex flex-col gap-2.5 px-5 py-4">
             <span className="text-muted-foreground text-sm">
               {isOrganization ? "Especialidades" : "Especialidad"}
@@ -109,7 +110,6 @@ export const ConfirmationStep: FC = () => {
 
           <Separator />
 
-          {/* Profile info */}
           <div className="flex flex-col gap-3 px-5 py-4">
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground text-sm">Nombre</span>
@@ -125,6 +125,7 @@ export const ConfirmationStep: FC = () => {
                 {state.profile.documentNumber || "-"}
               </span>
             </div>
+
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground text-sm">
                 Correo electrónico
@@ -133,15 +134,17 @@ export const ConfirmationStep: FC = () => {
                 {state.profile.email || "-"}
               </span>
             </div>
-            {state.profile.phone ? (
+
+            {state.profile.phone && (
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground text-sm">Teléfono</span>
                 <span className="font-medium text-foreground text-sm">
                   {state.profile.phone}
                 </span>
               </div>
-            ) : null}
-            {state.profile.licenseNumber ? (
+            )}
+
+            {state.profile.licenseNumber && (
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground text-sm">
                   {isOrganization
@@ -152,7 +155,7 @@ export const ConfirmationStep: FC = () => {
                   {state.profile.licenseNumber}
                 </span>
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </AnimatedContainer>

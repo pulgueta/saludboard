@@ -1,4 +1,4 @@
-import { StethoscopeIcon } from "@phosphor-icons/react";
+import { Link } from "@tanstack/react-router";
 import { Separator } from "@ui/separator";
 import type { FC } from "react";
 
@@ -8,26 +8,24 @@ const FOOTER_SECTIONS = [
   {
     title: "Producto",
     links: [
-      { label: "Funcionalidades", href: "/#features" },
+      { label: "Funcionalidades", href: "/" },
       { label: "Precios", href: "/pricing" },
-      { label: "Para profesionales", href: "/register" },
-      { label: "Para pacientes", href: "/register" },
     ],
   },
   {
     title: "Empresa",
     links: [
-      { label: "Acerca de", href: "/#" },
-      { label: "Blog", href: "/#" },
-      { label: "Contacto", href: "/#" },
+      { label: "Acerca de", href: "/" },
+      { label: "Blog", href: "/" },
+      { label: "Contacto", href: "/" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Terminos de uso", href: "/#" },
-      { label: "Politica de privacidad", href: "/#" },
-      { label: "Habeas data", href: "/#" },
+      { label: "Terminos de uso", href: "/" },
+      { label: "Politica de privacidad", href: "/" },
+      { label: "Habeas data", href: "/" },
     ],
   },
 ] as const;
@@ -41,19 +39,12 @@ export const MarketingFooter: FC = () => {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
             >
-              <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <StethoscopeIcon size={18} weight="bold" />
-              </div>
-              <BrandLogo className="text-lg" />
-            </a>
-            <p className="max-w-xs text-muted-foreground text-sm leading-relaxed">
-              La plataforma de gestion medica disenada para profesionales de
-              salud y pacientes en Colombia.
-            </p>
+              <BrandLogo />
+            </Link>
           </div>
 
           {/* Link columns */}
@@ -65,12 +56,12 @@ export const MarketingFooter: FC = () => {
               <ul className="flex flex-col gap-2">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="text-muted-foreground text-sm transition-colors hover:text-foreground"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -84,7 +75,6 @@ export const MarketingFooter: FC = () => {
           <p className="text-muted-foreground text-xs">
             &copy; {year} SaludBoard. Todos los derechos reservados.
           </p>
-          <p className="text-muted-foreground text-xs">Hecho en Colombia</p>
         </div>
       </div>
     </footer>

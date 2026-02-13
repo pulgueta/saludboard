@@ -7,11 +7,8 @@ import {
   useReducer,
 } from "react";
 
+import { useOrganization } from "@/hooks/use-organization";
 import type { HealthFieldId } from "@/lib/health-fields";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 /** Whether the user is a patient or a healthcare professional. */
 export type UserType = "patient" | "professional";
@@ -140,7 +137,8 @@ function onboardingReducer(
         ...state,
         userType: action.userType,
         // Reset downstream selections when user type changes
-        professionalType: null,
+        professionalType:
+          action.userType === "professional" ? "individual" : null,
         selectedFields: [],
         planSelected: false,
       };
@@ -217,6 +215,8 @@ const OnboardingContext = createContext<OnboardingContextValue | null>(null);
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(onboardingReducer, initialState);
 
+  const { currentOrg, organizations } = useOrganization();
+
   const steps = getStepsForUserType(state.userType);
   const stepIndex = steps.indexOf(state.currentStep);
   const totalSteps = steps.length;
@@ -230,8 +230,15 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         return true;
       case "user-type":
         return state.userType !== null;
-      case "professional-type":
-        return state.professionalType !== null;
+      case "professional-type": {
+        if (!state.professionalType) return false;
+        if (state.professionalType === "organization") {
+          const hasOrganization =
+            !!currentOrg || !!(organizations && organizations.length > 0);
+          return hasOrganization;
+        }
+        return state.planSelected;
+      }
       case "health-field":
         return state.selectedFields.length > 0;
       case "profile":
@@ -245,7 +252,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       default:
         return false;
     }
-  }, [state]);
+  }, [state, currentOrg, organizations]);
 
   const canGoPrev = stepIndex > 0;
 

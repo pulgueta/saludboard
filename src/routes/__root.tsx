@@ -75,9 +75,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <ClerkProvider
       localization={esMX}
       appearance={clerkAppearance}
-      signInUrl="/login"
-      signUpUrl="/register"
-      afterSignOutUrl="/login"
+      afterSignOutUrl="/"
+      newSubscriptionRedirectUrl={null}
+      signInForceRedirectUrl="/dashboard"
+      signUpForceRedirectUrl="/onboarding"
     >
       <ConvexProviderWithClerk client={ctx.convexClient} useAuth={useAuth}>
         <html lang="es" suppressHydrationWarning>

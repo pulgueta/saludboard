@@ -2,9 +2,20 @@ import { UserButton } from "@clerk/tanstack-react-start";
 import { GearIcon, SparkleIcon } from "@phosphor-icons/react";
 import type { FC } from "react";
 
+import { useSidebar } from "@/components/ui/sidebar";
+
 export const SidebarUserButton: FC = () => {
+  const { state } = useSidebar();
+
   return (
-    <UserButton showName>
+    <UserButton
+      showName
+      appearance={{
+        elements: {
+          userButtonOuterIdentifier: state === "collapsed" ? "hidden" : "block",
+        },
+      }}
+    >
       <UserButton.MenuItems>
         <UserButton.Action
           label="Actualizar plan"
