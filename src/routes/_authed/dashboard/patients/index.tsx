@@ -1,5 +1,6 @@
 import { MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useDebouncedValue } from "@tanstack/react-pacer";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
@@ -9,11 +10,18 @@ import { useState } from "react";
 
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
-import { MOCK_RECENT_PATIENTS } from "@/lib/dashboard-mock-data";
+import { patientsQueryOptions, useSearchPatients } from "@/hooks/use-patients";
 
 export const Route = createFileRoute("/_authed/dashboard/patients/")({
   component: PatientsPage,
   pendingComponent: DashboardPageSkeleton,
+  loader: async ({ context }) => {
+    if (!context.userId) {
+      throw redirect({ to: "/" });
+    }
+
+    await context.queryClient.ensureQueryData(patientsQueryOptions());
+  },
 });
 
 function getInitials(name: string): string {
@@ -26,13 +34,13 @@ function getInitials(name: string): string {
 }
 
 function PatientsPage() {
-  const [search, setSearch] = useState<string>("");
+  const [query, setQuery] = useState<string>("");
 
-  const filtered = MOCK_RECENT_PATIENTS.filter(
-    (p) =>
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.documentNumber.includes(search),
-  );
+  const [search] = useDebouncedValue(query, {
+    wait: 500,
+  });
+
+  const { data: patients } = useSearchPatients(search);
 
   return (
     <>
@@ -56,33 +64,35 @@ function PatientsPage() {
         <Input
           placeholder="Buscar por nombre o documento..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           className="pl-9"
         />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-        {filtered.length === 0 ? (
+        {patients.length === 0 ? (
           <Card>
             <CardContent className="py-8 text-center text-muted-foreground text-sm">
               No se encontraron pacientes.
             </CardContent>
           </Card>
         ) : (
-          filtered.map((patient) => (
+          patients.map((patient) => (
             <Card
-              key={patient.id}
+              key={patient?._id}
               className="p-4 transition-colors hover:bg-muted/30"
             >
               <CardContent className="flex items-center gap-4 p-0">
                 <Avatar>
-                  <AvatarFallback>{getInitials(patient.name)}</AvatarFallback>
+                  <AvatarFallback>
+                    {getInitials(`${patient.firstName} ${patient.lastName}`)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="truncate font-medium text-sm">
-                    {patient.name}
+                    {patient.firstName} {patient.lastName}
                   </span>
                   <span className="text-muted-foreground text-xs">
-                    CC {patient.documentNumber}
+                    {patient.email}
                   </span>
                 </div>
                 <Badge variant="secondary" className="text-xs">

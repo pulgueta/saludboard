@@ -5,8 +5,12 @@ import { z } from "zod";
 
 export const users = zodTable("users", {
   clerkUserId: z.string(),
-  name: z.string(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   userType: z.enum(["patient", "professional"]),
+  email: z.email(),
+  phone: z.string().optional(),
+  imageUrl: z.string().optional(),
   accountType: z.enum(["individual", "organization"]),
   organizationId: zid("organizations").optional(),
 });
@@ -65,6 +69,10 @@ export const records = zodTable("records", {
 
 export default defineSchema({
   users: users.table
+    .searchIndex("by_name", {
+      searchField: "firstName",
+      filterFields: ["lastName"],
+    })
     .index("by_clerk_user_id", ["clerkUserId"])
     .index("by_deleted_at", ["deletedAt"]),
   organizations: organizations.table
