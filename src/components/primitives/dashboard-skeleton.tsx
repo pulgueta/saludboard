@@ -40,10 +40,10 @@ export const DashboardPageSkeleton: FC<ComponentProps<"div">> = ({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <Skeleton className="gradient-shimmer h-7 w-48 rounded-lg" />
+          <Skeleton className="h-7 w-48 rounded-lg" />
           <Skeleton className="h-4 w-72 rounded-md opacity-70" />
         </div>
-        <Skeleton className="gradient-shimmer h-9 w-28 rounded-md" />
+        <Skeleton className="h-9 w-28 rounded-md" />
       </div>
 
       <div className="grid gap-4">
@@ -57,19 +57,9 @@ export const DashboardPageSkeleton: FC<ComponentProps<"div">> = ({
             style={{ opacity: calculateOpacity(index, cards.length) }}
           >
             <div className="flex items-center gap-4">
-              <Skeleton
-                className={cn(
-                  "size-10 rounded-lg",
-                  index < 2 && "gradient-shimmer",
-                )}
-              />
+              <Skeleton className="size-10 rounded-lg" />
               <div className="flex flex-1 flex-col gap-2">
-                <Skeleton
-                  className={cn(
-                    "h-4 w-1/3 rounded-md",
-                    index < 2 && "gradient-shimmer",
-                  )}
-                />
+                <Skeleton className="h-4 w-1/3 rounded-md" />
                 <Skeleton className="h-3 w-2/3 rounded-md" />
               </div>
               <Skeleton className="h-6 w-16 rounded-full" />

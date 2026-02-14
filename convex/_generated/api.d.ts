@@ -15,9 +15,11 @@ import type * as index from "../index.js";
 import type * as patients from "../patients.js";
 import type * as presence from "../presence.js";
 import type * as ratelimit from "../ratelimit.js";
+import type * as records from "../records.js";
 import type * as sms from "../sms.js";
 import type * as storage from "../storage.js";
 import type * as triggers from "../triggers.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -33,9 +35,11 @@ declare const fullApi: ApiFromModules<{
   patients: typeof patients;
   presence: typeof presence;
   ratelimit: typeof ratelimit;
+  records: typeof records;
   sms: typeof sms;
   storage: typeof storage;
   triggers: typeof triggers;
+  users: typeof users;
 }>;
 
 /**

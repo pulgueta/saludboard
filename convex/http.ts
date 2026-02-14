@@ -12,14 +12,23 @@ const http = httpRouter();
 twilio.registerRoutes(http);
 
 http.route({
-  path: "/clerk-users-webhook",
+  path: "/clerk",
   method: "POST",
   handler: httpAction(async (ctx, request) => {
     const event = await validateRequest(request);
+
     if (!event) {
       return new Response("Error occured", { status: 400 });
     }
+
     switch (event.type) {
+      case "organization.created":
+      case "organization.updated":
+        await ctx.runMutation(internal.auth.upsertOrganizationFromClerk, {
+          data: event.data,
+        });
+        break;
+
       case "user.created":
       case "user.updated":
         await ctx.runMutation(internal.auth.upsertFromClerk, {
@@ -49,6 +58,7 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
   };
 
   const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
+
   try {
     return wh.verify(payloadString, svixHeaders) as unknown as WebhookEvent;
   } catch (error) {

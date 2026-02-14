@@ -3,6 +3,9 @@ import {
   useOrganizationCreationDefaults,
   useOrganizationList,
 } from "@clerk/tanstack-react-start";
+import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { api } from "convex/_generated/api";
 import { useMemo } from "react";
 
 /**
@@ -96,4 +99,14 @@ export function useOrganizationActions() {
     createOrganization,
     isCreatingOrganization,
   } as const;
+}
+
+export function currentOrganizationQueryOptions() {
+  return convexQuery(api.auth.getCurrentOrganizations, {
+    limit: 5,
+  });
+}
+
+export function useCurrentOrganization() {
+  return useSuspenseQuery(currentOrganizationQueryOptions());
 }

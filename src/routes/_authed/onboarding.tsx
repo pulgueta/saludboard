@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { OnboardingLayout } from "@/components/compounds/onboarding/onboarding-layout";
 import { ConfirmationStep } from "@/components/features/onboarding-steps/confirmation-step";
@@ -7,10 +7,31 @@ import { ProfessionalTypeStep } from "@/components/features/onboarding-steps/pro
 import { ProfileStep } from "@/components/features/onboarding-steps/profile-step";
 import { UserTypeStep } from "@/components/features/onboarding-steps/user-type-step";
 import { WelcomeStep } from "@/components/features/onboarding-steps/welcome-step";
+import { currentUserQueryOptions } from "@/hooks/use-current-user";
+import { currentOrganizationQueryOptions } from "@/hooks/use-organization";
 import { OnboardingProvider, useOnboarding } from "@/lib/onboarding-context";
 
 export const Route = createFileRoute("/_authed/onboarding")({
   component: OnboardingPage,
+  loader: async ({ context }) => {
+    const organizations = await context.queryClient.ensureQueryData(
+      currentOrganizationQueryOptions(),
+    );
+
+    if (context.userId) {
+      const isEnrolled = await context.queryClient.ensureQueryData(
+        currentUserQueryOptions(context.userId),
+      );
+
+      if (isEnrolled && !organizations?.data.length) {
+        throw redirect({ to: "/patient" });
+      }
+    }
+
+    if (organizations?.data.length) {
+      redirect({ to: "/dashboard" });
+    }
+  },
 });
 
 function OnboardingPage() {

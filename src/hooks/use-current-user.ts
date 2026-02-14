@@ -1,5 +1,8 @@
 import { usePlans, useSubscription } from "@clerk/clerk-react/experimental";
 import { useUser } from "@clerk/tanstack-react-start";
+import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { api } from "convex/_generated/api";
 
 /**
  * Normalized user profile for use across the application.
@@ -28,8 +31,13 @@ export type CurrentUser = {
  * return <span>{user.fullName}</span>;
  * ```
  */
+
 export function useCurrentUser() {
   const { user, isLoaded, isSignedIn } = useUser();
+
+  const { data: isEnrolled } = useSuspenseQuery(
+    currentUserQueryOptions(user?.id ?? ""),
+  );
 
   const userHasOrganization = !!user?.organizationMemberships.length;
 
@@ -56,5 +64,11 @@ export function useCurrentUser() {
       description: currentPlan?.description,
       ...currentSubscription,
     },
+    isEnrolled,
   } as const;
 }
+export const currentUserQueryOptions = (clerkUserId: string) => {
+  return convexQuery(api.users.exists, {
+    clerkUserId,
+  });
+};
