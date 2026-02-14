@@ -1,10 +1,23 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { auth } from "@clerk/tanstack-react-start/server";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { MarketingFooter } from "@/components/compounds/marketing/marketing-footer";
 import { MarketingNavbar } from "@/components/compounds/marketing/marketing-navbar";
 
 export const Route = createFileRoute("/_marketing")({
   component: MarketingLayout,
+  loader: async ({ context }) => {
+    if (context.userId) {
+      const user = await auth();
+
+      if (user.orgId) {
+        throw redirect({ to: "/dashboard" });
+      } else {
+        throw redirect({ to: "/patient" });
+      }
+    }
+  },
+  ssr: true,
 });
 
 function MarketingLayout() {

@@ -1,4 +1,5 @@
 import { SignUpButton } from "@clerk/tanstack-react-start";
+import { auth } from "@clerk/tanstack-react-start/server";
 import {
   ArrowRightIcon,
   CalendarDotsIcon,
@@ -11,7 +12,7 @@ import {
   UsersIcon,
   VideoCameraIcon,
 } from "@phosphor-icons/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import type { FC, ReactNode } from "react";
@@ -23,6 +24,17 @@ import {
 
 export const Route = createFileRoute("/_marketing/")({
   component: LandingPage,
+  beforeLoad: async ({ context }) => {
+    if (context.userId) {
+      const user = await auth();
+
+      if (user.orgId) {
+        throw redirect({ to: "/dashboard" });
+      } else {
+        throw redirect({ to: "/patient" });
+      }
+    }
+  },
 });
 
 type FeatureCardProps = {

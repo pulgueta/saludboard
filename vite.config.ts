@@ -7,9 +7,24 @@ import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 const config = defineConfig({
+  ssr: {
+    noExternal: [
+      "@convex-dev/r2",
+      "@convex-dev/twilio",
+      "@convex-dev/aggregate",
+      "@convex-dev/presence",
+      "@convex-dev/rate-limiter",
+    ],
+  },
   plugins: [
     devtools(),
-    nitro({ preset: "bun" }),
+    nitro({
+      vercel: {
+        functions: {
+          runtime: "bun1.x",
+        },
+      },
+    }),
     // this is the plugin that enables path aliases
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],

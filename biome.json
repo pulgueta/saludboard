@@ -23,7 +23,11 @@
   },
   "overrides": [
     {
-      "includes": ["src/routeTree.gen.ts", "convex/_generated/**/*.ts"],
+      "includes": [
+        "src/routeTree.gen.ts",
+        "convex/_generated/**/*.ts",
+        "convex/_generated/**/*.js"
+      ],
       "linter": {
         "enabled": false
       },

@@ -5,33 +5,18 @@ import {
   zCustomQuery,
 } from "convex-helpers/server/zod4";
 
-import { action, internalMutation, mutation, query } from "./_generated/server";
+import {
+  action,
+  internalAction,
+  internalMutation,
+  internalQuery,
+  mutation,
+  query,
+} from "./_generated/server";
 
-export const zodQuery = zCustomQuery(query, NoOp);
-export const zodMutation = zCustomMutation(mutation, NoOp);
-export const zodInternalMutation = zCustomMutation(internalMutation, NoOp);
-export const zodAction = zCustomAction(action, NoOp);
-export const authZodQuery = zCustomQuery(query, {
-  args: {},
-  input: async (ctx, args) => {
-    const user = await ctx.auth.getUserIdentity();
-
-    if (!user) {
-      throw new Error("Unauthorized");
-    }
-
-    return { ctx: { ...ctx, user }, args };
-  },
-});
-export const authZodMutation = zCustomMutation(mutation, {
-  args: {},
-  input: async (ctx, args) => {
-    const user = await ctx.auth.getUserIdentity();
-
-    if (!user) {
-      throw new Error("Unauthorized");
-    }
-
-    return { ctx: { ...ctx, user }, args };
-  },
-});
+export const zQuery = zCustomQuery(query, NoOp);
+export const zInternalQuery = zCustomQuery(internalQuery, NoOp);
+export const zMutation = zCustomMutation(mutation, NoOp);
+export const zInternalMutation = zCustomMutation(internalMutation, NoOp);
+export const zAction = zCustomAction(action, NoOp);
+export const zInternalAction = zCustomAction(internalAction, NoOp);
