@@ -3,10 +3,6 @@ import { z } from "zod";
 import { zQuery } from ".";
 import { getProfile } from "./auth";
 
-// ---------------------------------------------------------------------------
-// Queries
-// ---------------------------------------------------------------------------
-
 export const getForCurrentUser = zQuery({
   handler: async (ctx) => {
     const profile = await getProfile(ctx);

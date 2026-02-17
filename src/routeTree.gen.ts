@@ -9,25 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MarketingRouteRouteImport } from './routes/_marketing/route'
+import { Route as AuthedDashboardAppointmentsIndexRouteImport } from './routes/_authed/dashboard/appointments/index'
+import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from './routes/_authed/dashboard/documents/consent-forms'
+import { Route as AuthedDashboardDocumentsIndexRouteImport } from './routes/_authed/dashboard/documents/index'
+import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedDashboardPatientsIndexRouteImport } from './routes/_authed/dashboard/patients/index'
+import { Route as AuthedDashboardPatientsNewRouteImport } from './routes/_authed/dashboard/patients/new'
+import { Route as AuthedDashboardRecordsIndexRouteImport } from './routes/_authed/dashboard/records/index'
+import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
+import { Route as AuthedPatientAppointmentsRouteImport } from './routes/_authed/patient/appointments'
+import { Route as AuthedPatientIndexRouteImport } from './routes/_authed/patient/index'
+import { Route as AuthedPatientPrescriptionsRouteImport } from './routes/_authed/patient/prescriptions'
+import { Route as AuthedPatientProvidersRouteImport } from './routes/_authed/patient/providers'
+import { Route as AuthedPatientRecordsRouteImport } from './routes/_authed/patient/records'
+import { Route as AuthedPatientRouteRouteImport } from './routes/_authed/patient/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
 import { Route as MarketingPricingRouteImport } from './routes/_marketing/pricing'
-import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
-import { Route as AuthedPatientRouteRouteImport } from './routes/_authed/patient/route'
-import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
-import { Route as AuthedPatientIndexRouteImport } from './routes/_authed/patient/index'
-import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
-import { Route as AuthedPatientRecordsRouteImport } from './routes/_authed/patient/records'
-import { Route as AuthedPatientProvidersRouteImport } from './routes/_authed/patient/providers'
-import { Route as AuthedPatientPrescriptionsRouteImport } from './routes/_authed/patient/prescriptions'
-import { Route as AuthedPatientAppointmentsRouteImport } from './routes/_authed/patient/appointments'
-import { Route as AuthedDashboardRecordsIndexRouteImport } from './routes/_authed/dashboard/records/index'
-import { Route as AuthedDashboardPatientsIndexRouteImport } from './routes/_authed/dashboard/patients/index'
-import { Route as AuthedDashboardDocumentsIndexRouteImport } from './routes/_authed/dashboard/documents/index'
-import { Route as AuthedDashboardAppointmentsIndexRouteImport } from './routes/_authed/dashboard/appointments/index'
-import { Route as AuthedDashboardPatientsNewRouteImport } from './routes/_authed/dashboard/patients/new'
-import { Route as AuthedDashboardDocumentsConsentFormsRouteImport } from './routes/_authed/dashboard/documents/consent-forms'
+import { Route as MarketingRouteRouteImport } from './routes/_marketing/route'
 
 const MarketingRouteRoute = MarketingRouteRouteImport.update({
   id: '/_marketing',
@@ -475,6 +475,7 @@ export const routeTree = rootRouteImport
 
 import type { getRouter } from './router.tsx'
 import type { startInstance } from './start.ts'
+
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

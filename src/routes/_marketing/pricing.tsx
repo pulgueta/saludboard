@@ -1,7 +1,8 @@
-import { PricingTable } from "@clerk/tanstack-react-start";
 import { createFileRoute } from "@tanstack/react-router";
 import { Switch } from "@ui/switch";
 import { useState } from "react";
+
+// import { PricingTable } from "@/components/primitives/pricing-table";
 
 export const Route = createFileRoute("/_marketing/pricing")({
   component: PricingPage,
@@ -44,7 +45,7 @@ function PricingPage() {
           </button>
         </div>
 
-        <PricingTable for={isOrganizationPlan ? "organization" : "user"} />
+        {/* <PricingTable /> */}
       </div>
     </div>
   );

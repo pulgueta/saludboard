@@ -18,13 +18,14 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import appCss from "../styles.css?url";
 
 const fetchClerkAuth = createServerFn().handler(async () => {
-  const { getToken, userId } = await auth();
+  const { getToken, userId, isAuthenticated } = await auth();
 
   const token = await getToken({ template: "convex" });
 
   return {
     userId,
     token,
+    isAuthenticated,
   };
 });
 
@@ -32,6 +33,7 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   convexQueryClient: ConvexQueryClient;
   convexClient: ConvexReactClient;
+  isAuthenticated: boolean;
 }>()({
   head: () => ({
     meta: [
@@ -54,7 +56,7 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   beforeLoad: async (ctx) => {
-    const { userId, token } = await fetchClerkAuth();
+    const { userId, token, isAuthenticated } = await fetchClerkAuth();
 
     if (token) {
       ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
@@ -63,6 +65,7 @@ export const Route = createRootRouteWithContext<{
     return {
       userId,
       token,
+      isAuthenticated,
     };
   },
   shellComponent: RootDocument,

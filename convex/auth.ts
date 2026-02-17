@@ -144,14 +144,13 @@ export const upsertOrganizationFromClerk = internalMutation({
 export const deleteFromClerk = internalMutation({
   args: { clerkUserId: v.string() },
   handler: async (ctx, { clerkUserId }) => {
-    const user = await getProfile(ctx);
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user_id", (q) => q.eq("clerkUserId", clerkUserId))
+      .unique();
 
-    if (user !== null) {
+    if (user) {
       await ctx.db.delete(user._id);
-    } else {
-      console.warn(
-        `Can't delete user, there is none for Clerk user ID: ${clerkUserId}`,
-      );
     }
   },
 });

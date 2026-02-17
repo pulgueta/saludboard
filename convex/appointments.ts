@@ -1,15 +1,9 @@
 import { ConvexError } from "convex/values";
-import { zid } from "convex-helpers/server/zod4";
-import { z } from "zod";
 
 import { zMutation, zQuery } from ".";
 import { appointmentsAggregate } from "./aggregate";
 import { getProfile, requireProfessional } from "./auth";
-import { appointments } from "./schema";
-
-// ---------------------------------------------------------------------------
-// Queries
-// ---------------------------------------------------------------------------
+import { appointments, patients } from "./schema";
 
 export const getAll = zQuery({
   handler: async (ctx) => {
@@ -30,9 +24,7 @@ export const getAll = zQuery({
 });
 
 export const getByPatient = zQuery({
-  args: z.object({
-    patientId: zid("patients"),
-  }),
+  args: patients.tools.id,
   handler: async (ctx, args) => {
     const profile = await getProfile(ctx);
 
@@ -42,7 +34,7 @@ export const getByPatient = zQuery({
 
     return ctx.db
       .query("appointments")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) =>
         q.and(
           q.eq(q.field("deletedAt"), undefined),
@@ -79,10 +71,6 @@ export const getUpcoming = zQuery({
   },
 });
 
-// ---------------------------------------------------------------------------
-// Mutations
-// ---------------------------------------------------------------------------
-
 export const create = zMutation({
   args: appointments.insertSchema,
   handler: async (ctx, args) => {
@@ -95,20 +83,20 @@ export const create = zMutation({
     });
 
     const doc = await ctx.db.get(id);
-    await appointmentsAggregate.insert(ctx, doc!);
+
+    if (doc) {
+      await appointmentsAggregate.insert(ctx, doc);
+    }
 
     return id;
   },
 });
 
 export const updateStatus = zMutation({
-  args: z.object({
-    appointmentId: zid("appointments"),
-    status: z.enum(["programada", "completada", "cancelada", "no-asistio"]),
-  }),
+  args: appointments.tools.update,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const existing = await ctx.db.get(args.appointmentId);
+    const existing = await ctx.db.get(args.id);
 
     if (!existing || existing.deletedAt) {
       throw new ConvexError({
@@ -125,21 +113,22 @@ export const updateStatus = zMutation({
     }
 
     const oldDoc = existing;
-    await ctx.db.patch(args.appointmentId, { status: args.status });
-    const newDoc = await ctx.db.get(args.appointmentId);
-    await appointmentsAggregate.replace(ctx, oldDoc, newDoc!);
+    await ctx.db.patch(args.id, { status: args.data.status });
+    const newDoc = await ctx.db.get(args.id);
 
-    return args.appointmentId;
+    if (newDoc) {
+      await appointmentsAggregate.replace(ctx, oldDoc, newDoc);
+    }
+
+    return args.id;
   },
 });
 
 export const cancel = zMutation({
-  args: z.object({
-    appointmentId: zid("appointments"),
-  }),
+  args: appointments.tools.id,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const existing = await ctx.db.get(args.appointmentId);
+    const existing = await ctx.db.get(args.id);
 
     if (!existing || existing.deletedAt) {
       throw new ConvexError({
@@ -155,7 +144,7 @@ export const cancel = zMutation({
       });
     }
 
-    await ctx.db.patch(args.appointmentId, { deletedAt: Date.now() });
+    await ctx.db.patch(args.id, { deletedAt: Date.now() });
     await appointmentsAggregate.delete(ctx, existing);
   },
 });
