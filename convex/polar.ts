@@ -1,5 +1,4 @@
 import { Polar } from "@convex-dev/polar";
-import { ConvexError } from "convex/values";
 import { zQuery } from ".";
 import { components } from "./_generated/api";
 import { requireAuth } from "./auth";
@@ -21,10 +20,7 @@ export const getCurrentSubscription = zQuery({
     const user = await requireAuth(ctx);
 
     if (!user?.subject) {
-      throw new ConvexError({
-        code: "UNAUTHENTICATED",
-        message: "Debes iniciar sesion para continuar.",
-      });
+      return null;
     }
 
     const subscription = await polar.getCurrentSubscription(ctx, {

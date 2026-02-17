@@ -9,10 +9,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { getHealthFieldById } from "@/lib/health-fields";
 import { useOnboarding } from "@/lib/onboarding-context";
 
-/**
- * Step 7 (professionals only): Confirmation summary.
- * Shows all selections before completing onboarding.
- */
 export const ConfirmationStep: FC = () => {
   const { state, setFooterConfig } = useOnboarding();
 
@@ -25,7 +21,6 @@ export const ConfirmationStep: FC = () => {
   const isOrganization = state.professionalType === "organization";
 
   const handleComplete = useCallback(() => {
-    // In a real app this would persist to the backend.
     console.info("Onboarding complete:", {
       userType: state.userType,
       professionalType: state.professionalType,
@@ -73,7 +68,6 @@ export const ConfirmationStep: FC = () => {
 
       <AnimatedContainer delay={200} duration={450}>
         <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm">
-          {/* Professional type */}
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-muted-foreground text-sm">
               Tipo de cuenta
@@ -90,7 +84,9 @@ export const ConfirmationStep: FC = () => {
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-muted-foreground text-sm">Plan</span>
 
-            <Badge variant="success">{subscription.name}</Badge>
+            <Badge variant={subscription.isActive ? "success" : "secondary"}>
+              {subscription.name || "Sin plan"}
+            </Badge>
           </div>
 
           <Separator />

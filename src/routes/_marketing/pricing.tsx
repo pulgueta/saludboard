@@ -1,11 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Switch } from "@ui/switch";
 import { useState } from "react";
 
-// import { PricingTable } from "@/components/primitives/pricing-table";
+import { PricingTable } from "@/components/primitives/pricing-table";
 
 export const Route = createFileRoute("/_marketing/pricing")({
   component: PricingPage,
+  beforeLoad: async ({ context }) => {
+    if (context.isAuthenticated) {
+      throw redirect({ to: "/dashboard/billing" as any });
+    }
+  },
 });
 
 function PricingPage() {
@@ -45,7 +50,9 @@ function PricingPage() {
           </button>
         </div>
 
-        {/* <PricingTable /> */}
+        <PricingTable
+          forType={isOrganizationPlan ? "organization" : "individual"}
+        />
       </div>
     </div>
   );
