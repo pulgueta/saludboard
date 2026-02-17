@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
 import { useDebouncedValue } from "@tanstack/react-pacer";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
@@ -20,9 +20,9 @@ export const Route = createFileRoute("/_authed/dashboard/patients/")({
   pendingComponent: DashboardPageSkeleton,
   errorComponent: AppErrorBoundary,
   loader: async ({ context }) => {
-    if (!context.userId) {
-      throw redirect({ to: "/" });
-    }
+    // if (!context.userId) {
+    //   throw redirect({ to: "/" });
+    // }
 
     await context.queryClient.ensureQueryData(patientsQueryOptions());
   },

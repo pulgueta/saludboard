@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { AppErrorBoundary } from "@/components/error-boundary";
 import { AppointmentChart } from "@/components/features/dashboard/appointment-chart";
@@ -23,9 +23,9 @@ export const Route = createFileRoute("/_authed/dashboard/")({
   pendingComponent: DashboardPageSkeleton,
   errorComponent: AppErrorBoundary,
   loader: async ({ context }) => {
-    if (!context.userId) {
-      throw redirect({ to: "/" });
-    }
+    // if (!context.isAuthenticated) {
+    //   throw redirect({ to: "/" });
+    // }
 
     // Prefetch dashboard data in parallel
     await Promise.all([

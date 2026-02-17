@@ -5,10 +5,12 @@ import { Webhook } from "svix";
 
 import { internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
+import { polar } from "./polar";
 import { twilio } from "./sms";
 
 const http = httpRouter();
 
+polar.registerRoutes(http);
 twilio.registerRoutes(http);
 
 http.route({
@@ -37,8 +39,11 @@ http.route({
         break;
 
       case "user.deleted": {
-        const clerkUserId = event.data.id!;
-        await ctx.runMutation(internal.auth.deleteFromClerk, { clerkUserId });
+        const clerkUserId = event.data.id;
+
+        if (clerkUserId) {
+          await ctx.runMutation(internal.auth.deleteFromClerk, { clerkUserId });
+        }
         break;
       }
       default:

@@ -2,6 +2,7 @@ import { CalendarDotsIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
+
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
 import { MOCK_UPCOMING_APPOINTMENTS } from "@/lib/dashboard-mock-data";
@@ -26,6 +27,7 @@ function AppointmentsPage() {
   return (
     <>
       <PageHeader title="Agenda" description="Citas programadas y calendario" />
+
       <Card>
         <CardHeader>
           <CardTitle>Citas de hoy</CardTitle>

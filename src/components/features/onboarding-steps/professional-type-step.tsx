@@ -1,6 +1,4 @@
-import { useSubscription } from "@clerk/clerk-react/experimental";
 import {
-  PricingTable,
   useOrganization,
   useOrganizationCreationDefaults,
 } from "@clerk/tanstack-react-start";
@@ -14,9 +12,11 @@ import { z } from "zod";
 import { OnboardingHeader } from "@/components/compounds/onboarding/onboarding-header";
 import { OnboardingStep } from "@/components/compounds/onboarding/onboarding-step";
 import { AnimatedContainer } from "@/components/primitives/animated-container";
+import { PricingTable } from "@/components/primitives/pricing-table";
 import { SelectionCard } from "@/components/primitives/selection-card";
 import { useAppForm } from "@/hooks/form/use-form";
 import { useOrganizationActions } from "@/hooks/use-organization";
+import { usePolarSubscription } from "@/hooks/use-polar";
 import type { ProfessionalType } from "@/lib/onboarding-context";
 import { useOnboarding } from "@/lib/onboarding-context";
 
@@ -61,12 +61,6 @@ const organizationSchema = z.object({
   slug: z.string(),
 });
 
-/**
- * Step 3 (professionals only): Choose account type + plan in one screen.
- * Shows different PricingTable plans based on the selected type.
- *
- * When "Organización" is selected, a simple TanStack Form creates the org.
- */
 export const ProfessionalTypeStep: FC = () => {
   const { state, setProfessionalType } = useOnboarding();
   const { createOrganization, setActiveOrganization } =
@@ -77,17 +71,11 @@ export const ProfessionalTypeStep: FC = () => {
 
   const hasSelection = state.professionalType !== null;
   const isOrganization = state.professionalType === "organization";
-  const { data: organizationSubscription } = useSubscription({
-    for: "organization",
-    enabled: !!organization?.id,
-  });
 
-  const hasActiveOrganizationSubscription =
-    organizationSubscription?.status === "active" ||
-    organizationSubscription?.status === "past_due";
+  const { hasActiveSubscription } = usePolarSubscription();
 
   const shouldWarnAboutIndividualPlan =
-    !isOrganization && hasActiveOrganizationSubscription;
+    !isOrganization && hasActiveSubscription;
 
   const form = useAppForm({
     defaultValues: {
@@ -274,7 +262,9 @@ export const ProfessionalTypeStep: FC = () => {
               </Alert>
             )}
 
-            <PricingTable for={isOrganization ? "organization" : "user"} />
+            <PricingTable
+              forType={isOrganization ? "organization" : "individual"}
+            />
           </div>
         ) : (
           <div className="rounded-xl border border-border/70 border-dashed bg-card/40 p-4 text-center text-muted-foreground text-sm">

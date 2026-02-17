@@ -1,20 +1,12 @@
 import { ConvexError } from "convex/values";
-import { zid } from "convex-helpers/server/zod4";
-import { z } from "zod";
 
 import { zMutation, zQuery } from ".";
 import { recordsAggregate } from "./aggregate";
 import { getProfile, requireProfessional } from "./auth";
-import { records } from "./schema";
-
-// ---------------------------------------------------------------------------
-// Queries
-// ---------------------------------------------------------------------------
+import { patients, records } from "./schema";
 
 export const getByPatient = zQuery({
-  args: z.object({
-    patientId: zid("patients"),
-  }),
+  args: patients.tools.id,
   handler: async (ctx, args) => {
     const profile = await getProfile(ctx);
 
@@ -24,7 +16,7 @@ export const getByPatient = zQuery({
 
     return ctx.db
       .query("records")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) =>
         q.and(
           q.eq(q.field("deletedAt"), undefined),
@@ -54,10 +46,6 @@ export const getRecent = zQuery({
   },
 });
 
-// ---------------------------------------------------------------------------
-// Mutations
-// ---------------------------------------------------------------------------
-
 export const create = zMutation({
   args: records.insertSchema,
   handler: async (ctx, args) => {
@@ -69,20 +57,20 @@ export const create = zMutation({
     });
 
     const doc = await ctx.db.get(id);
-    await recordsAggregate.insert(ctx, doc!);
+
+    if (doc) {
+      await recordsAggregate.insert(ctx, doc);
+    }
 
     return id;
   },
 });
 
 export const update = zMutation({
-  args: z.object({
-    recordId: zid("records"),
-    data: records.updateSchema,
-  }),
+  args: records.tools.update,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const existing = await ctx.db.get(args.recordId);
+    const existing = await ctx.db.get(args.id);
 
     if (!existing || existing.deletedAt) {
       throw new ConvexError({
@@ -99,10 +87,13 @@ export const update = zMutation({
     }
 
     const oldDoc = existing;
-    await ctx.db.patch(args.recordId, args.data);
-    const newDoc = await ctx.db.get(args.recordId);
-    await recordsAggregate.replace(ctx, oldDoc, newDoc!);
+    await ctx.db.patch(args.id, args.data);
+    const newDoc = await ctx.db.get(args.id);
 
-    return args.recordId;
+    if (newDoc) {
+      await recordsAggregate.replace(ctx, oldDoc, newDoc);
+    }
+
+    return args.id;
   },
 });

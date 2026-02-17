@@ -27,20 +27,21 @@ export const PatientForm: FC<PatientFormProps> = ({ onSuccess }) => {
       documentNumber: "",
       email: "",
       phone: "",
-      birthDate: Date.now(),
+      birthDate: new Date().toISOString(),
       gender: "male" as const,
       regime: "contributive" as const,
       eps: "",
     },
     validators: {
-      // @ts-expect-error - Convex schema is not compatible with TanStack Form
-      onSubmit: patients.insertSchema,
+      onSubmit: patients.insert,
     },
     onSubmit: async ({ value }) => {
       await create(value);
       onSuccess?.();
     },
   });
+
+  console.log(form.state.errorMap);
 
   return (
     <form
@@ -136,7 +137,7 @@ export const PatientForm: FC<PatientFormProps> = ({ onSuccess }) => {
         />
 
         <form.AppField
-          name="documentNumber"
+          name="eps"
           children={(field) => (
             <field.SelectField
               label="EPS"

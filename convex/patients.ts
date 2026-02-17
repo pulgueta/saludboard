@@ -1,5 +1,5 @@
-import { zid } from "convex-helpers/server/zod4";
 import { ConvexError } from "convex/values";
+import { zid } from "convex-helpers/server/zod4";
 import { z } from "zod";
 
 import { zMutation, zQuery } from ".";
@@ -7,10 +7,6 @@ import { patientsAggregate } from "./aggregate";
 import { getProfile, requireAuth, requireProfessional } from "./auth";
 import { rateLimitOrThrow } from "./ratelimit";
 import { patients } from "./schema";
-
-// ---------------------------------------------------------------------------
-// Queries
-// ---------------------------------------------------------------------------
 
 export const getAll = zQuery({
   handler: async (ctx) => {
@@ -108,10 +104,6 @@ export const getArchived = zQuery({
   },
 });
 
-// ---------------------------------------------------------------------------
-// Mutations
-// ---------------------------------------------------------------------------
-
 export const create = zMutation({
   args: patients.insertSchema,
   handler: async (ctx, args) => {
@@ -125,20 +117,21 @@ export const create = zMutation({
     });
 
     const doc = await ctx.db.get(id);
-    await patientsAggregate.insert(ctx, doc!);
+
+    if (doc) {
+      await patientsAggregate.insert(ctx, doc);
+    }
 
     return id;
   },
 });
 
 export const update = zMutation({
-  args: z.object({
-    patientId: zid("patients"),
-    data: patients.updateSchema,
-  }),
+  args: patients.tools.update,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const existing = await ctx.db.get(args.patientId);
+
+    const existing = await ctx.db.get(args.id);
 
     if (!existing || existing.deletedAt) {
       throw new ConvexError({
@@ -155,21 +148,23 @@ export const update = zMutation({
     }
 
     const oldDoc = existing;
-    await ctx.db.patch(args.patientId, args.data);
-    const newDoc = await ctx.db.get(args.patientId);
-    await patientsAggregate.replace(ctx, oldDoc, newDoc!);
 
-    return args.patientId;
+    await ctx.db.patch(args.id, args.data);
+    const newDoc = await ctx.db.get(args.id);
+
+    if (newDoc) {
+      await patientsAggregate.replace(ctx, oldDoc, newDoc);
+    }
+
+    return args.id;
   },
 });
 
 export const archive = zMutation({
-  args: z.object({
-    patientId: zid("patients"),
-  }),
+  args: patients.tools.id,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const patient = await ctx.db.get(args.patientId);
+    const patient = await ctx.db.get(args.id);
 
     if (!patient || patient.deletedAt) {
       throw new ConvexError({
@@ -188,13 +183,13 @@ export const archive = zMutation({
     const now = Date.now();
 
     // Soft delete patient
-    await ctx.db.patch(args.patientId, { deletedAt: now });
+    await ctx.db.patch(args.id, { deletedAt: now });
     await patientsAggregate.delete(ctx, patient);
 
     // Cascade: soft delete appointments
     const appointments = await ctx.db
       .query("appointments")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), undefined))
       .collect();
 
@@ -205,7 +200,7 @@ export const archive = zMutation({
     // Cascade: soft delete records
     const records = await ctx.db
       .query("records")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), undefined))
       .collect();
 
@@ -216,7 +211,7 @@ export const archive = zMutation({
     // Cascade: soft delete prescriptions
     const prescriptions = await ctx.db
       .query("prescriptions")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), undefined))
       .collect();
 
@@ -227,12 +222,10 @@ export const archive = zMutation({
 });
 
 export const restore = zMutation({
-  args: z.object({
-    patientId: zid("patients"),
-  }),
+  args: patients.tools.id,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const patient = await ctx.db.get(args.patientId);
+    const patient = await ctx.db.get(args.id);
 
     if (!patient || !patient.deletedAt) {
       throw new ConvexError({
@@ -251,14 +244,17 @@ export const restore = zMutation({
     const archivedAt = patient.deletedAt;
 
     // Restore patient
-    await ctx.db.patch(args.patientId, { deletedAt: undefined });
-    const restoredDoc = await ctx.db.get(args.patientId);
-    await patientsAggregate.insert(ctx, restoredDoc!);
+    await ctx.db.patch(args.id, { deletedAt: undefined });
+    const restoredDoc = await ctx.db.get(args.id);
+
+    if (restoredDoc) {
+      await patientsAggregate.insert(ctx, restoredDoc);
+    }
 
     // Restore cascaded appointments
     const appointments = await ctx.db
       .query("appointments")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), archivedAt))
       .collect();
 
@@ -269,7 +265,7 @@ export const restore = zMutation({
     // Restore cascaded records
     const records = await ctx.db
       .query("records")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), archivedAt))
       .collect();
 
@@ -280,7 +276,7 @@ export const restore = zMutation({
     // Restore cascaded prescriptions
     const prescriptions = await ctx.db
       .query("prescriptions")
-      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.id))
       .filter((q) => q.eq(q.field("deletedAt"), archivedAt))
       .collect();
 

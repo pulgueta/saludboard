@@ -7,7 +7,6 @@ import { ProfessionalTypeStep } from "@/components/features/onboarding-steps/pro
 import { ProfileStep } from "@/components/features/onboarding-steps/profile-step";
 import { UserTypeStep } from "@/components/features/onboarding-steps/user-type-step";
 import { WelcomeStep } from "@/components/features/onboarding-steps/welcome-step";
-import { existsQueryOptions } from "@/hooks/use-current-user";
 import { currentOrganizationQueryOptions } from "@/hooks/use-organization";
 import { OnboardingProvider, useOnboarding } from "@/lib/onboarding-context";
 
@@ -17,16 +16,6 @@ export const Route = createFileRoute("/_authed/onboarding")({
     const organizations = await context.queryClient.ensureQueryData(
       currentOrganizationQueryOptions(),
     );
-
-    if (context.userId) {
-      const isEnrolled = await context.queryClient.ensureQueryData(
-        existsQueryOptions(context.userId),
-      );
-
-      if (isEnrolled && !organizations?.data.length) {
-        throw redirect({ to: "/patient" });
-      }
-    }
 
     if (organizations?.data.length) {
       redirect({ to: "/dashboard" });
