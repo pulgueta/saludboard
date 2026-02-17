@@ -30,8 +30,9 @@ export const ProfileStep: FC = () => {
     if (!state.profile.fullName && user.fullName) {
       updateProfile("fullName", user.fullName);
     }
-    if (!state.profile.email && user.email) {
-      updateProfile("email", user.email);
+    const email = user.primaryEmailAddress?.emailAddress;
+    if (!state.profile.email && email) {
+      updateProfile("email", email);
     }
   }, [user, state.profile.fullName, state.profile.email, updateProfile]);
 

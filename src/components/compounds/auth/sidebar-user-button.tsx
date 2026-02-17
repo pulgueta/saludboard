@@ -17,12 +17,10 @@ export const SidebarUserButton: FC = () => {
       }}
     >
       <UserButton.MenuItems>
-        <UserButton.Action
+        <UserButton.Link
           label="Actualizar plan"
           labelIcon={<SparkleIcon weight="duotone" />}
-          onClick={() => {
-            // TODO: wire to billing/pricing page
-          }}
+          href="/dashboard/billing"
         />
         <UserButton.Link
           label="Configuración"

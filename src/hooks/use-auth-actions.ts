@@ -12,7 +12,7 @@ import { useRouter } from "@tanstack/react-router";
  * @example
  * ```tsx
  * const { signOut, openUserProfile } = useAuthActions();
- * <button onClick={signOut}>Cerrar sesión</button>
+ * <button onClick={signOut}>Cerrar sesi\u00f3n</button>
  * <button onClick={openUserProfile}>Mi perfil</button>
  * ```
  */
@@ -22,7 +22,7 @@ export function useAuthActions() {
 
   const signOut = async () => {
     await clerk.signOut();
-    router.navigate({ to: "/login/$" });
+    router.navigate({ to: "/" });
   };
 
   const openUserProfile = () => {
@@ -33,19 +33,9 @@ export function useAuthActions() {
     clerk.openOrganizationProfile();
   };
 
-  const redirectToSignIn = () => {
-    router.navigate({ to: "/login/$" });
-  };
-
-  const redirectToSignUp = () => {
-    router.navigate({ to: "/register/$" });
-  };
-
   return {
     signOut,
     openUserProfile,
     openOrganizationProfile,
-    redirectToSignIn,
-    redirectToSignUp,
   } as const;
 }

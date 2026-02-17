@@ -5,6 +5,7 @@ import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
+import { AppErrorBoundary } from "./components/error-boundary";
 import { routeTree } from "./routeTree.gen";
 
 export const getRouter = () => {
@@ -33,7 +34,7 @@ export const getRouter = () => {
       queryClient,
       convexClient,
     },
-    defaultErrorComponent: ({ error }) => <p>{JSON.stringify(error)}</p>,
+    defaultErrorComponent: AppErrorBoundary,
     defaultNotFoundComponent: () => <p>not found</p>,
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,

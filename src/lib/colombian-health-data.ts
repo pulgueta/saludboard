@@ -13,7 +13,7 @@ export const DOCUMENT_TYPES = [
   { value: "NIT", label: "NIT" },
   { value: "PEP", label: "Permiso especial de permanencia" },
   { value: "PPT", label: "Permiso de protección temporal" },
-] as const;
+];
 
 export type DocumentType = (typeof DOCUMENT_TYPES)[number]["value"];
 
@@ -23,7 +23,7 @@ export const HEALTH_REGIMES = [
   { value: "subsidiado", label: "Subsidiado" },
   { value: "vinculado", label: "Vinculado" },
   { value: "particular", label: "Particular" },
-] as const;
+];
 
 export type HealthRegime = (typeof HEALTH_REGIMES)[number]["value"];
 
@@ -46,7 +46,7 @@ export const EPS_LIST = [
   { value: "asmet-salud", label: "Asmet Salud EPS" },
   { value: "otra", label: "Otra" },
   { value: "ninguna", label: "Ninguna" },
-] as const;
+];
 
 export type EpsValue = (typeof EPS_LIST)[number]["value"];
 
@@ -64,7 +64,7 @@ export const GENDERS = [
   { value: "masculino", label: "Masculino" },
   { value: "femenino", label: "Femenino" },
   { value: "otro", label: "Otro" },
-] as const;
+];
 
 /** Estados civiles */
 export const MARITAL_STATUS = [
