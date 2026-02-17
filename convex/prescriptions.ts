@@ -3,9 +3,8 @@ import { zid } from "convex-helpers/server/zod4";
 import { z } from "zod";
 
 import { zMutation, zQuery } from ".";
-import { recordsAggregate } from "./aggregate";
 import { getProfile, requireProfessional } from "./auth";
-import { records } from "./schema";
+import { prescriptions } from "./schema";
 
 // ---------------------------------------------------------------------------
 // Queries
@@ -23,7 +22,7 @@ export const getByPatient = zQuery({
     }
 
     return ctx.db
-      .query("records")
+      .query("prescriptions")
       .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
       .filter((q) =>
         q.and(
@@ -35,8 +34,11 @@ export const getByPatient = zQuery({
   },
 });
 
-export const getRecent = zQuery({
-  handler: async (ctx) => {
+export const getActive = zQuery({
+  args: z.object({
+    patientId: zid("patients"),
+  }),
+  handler: async (ctx, args) => {
     const profile = await getProfile(ctx);
 
     if (!profile) {
@@ -44,13 +46,16 @@ export const getRecent = zQuery({
     }
 
     return ctx.db
-      .query("records")
-      .withIndex("by_professional_id", (q) =>
-        q.eq("professionalId", profile._id),
+      .query("prescriptions")
+      .withIndex("by_patient_id", (q) => q.eq("patientId", args.patientId))
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("deletedAt"), undefined),
+          q.eq(q.field("professionalId"), profile._id),
+          q.eq(q.field("status"), "active"),
+        ),
       )
-      .filter((q) => q.eq(q.field("deletedAt"), undefined))
-      .order("desc")
-      .take(20);
+      .collect();
   },
 });
 
@@ -59,50 +64,46 @@ export const getRecent = zQuery({
 // ---------------------------------------------------------------------------
 
 export const create = zMutation({
-  args: records.insertSchema,
+  args: prescriptions.insertSchema,
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
 
-    const id = await ctx.db.insert("records", {
+    const id = await ctx.db.insert("prescriptions", {
       ...args,
       professionalId: profile._id,
+      status: "active",
+      prescribedAt: Date.now(),
     });
-
-    const doc = await ctx.db.get(id);
-    await recordsAggregate.insert(ctx, doc!);
 
     return id;
   },
 });
 
-export const update = zMutation({
+export const updateStatus = zMutation({
   args: z.object({
-    recordId: zid("records"),
-    data: records.updateSchema,
+    prescriptionId: zid("prescriptions"),
+    status: z.enum(["active", "completed", "cancelled"]),
   }),
   handler: async (ctx, args) => {
     const profile = await requireProfessional(ctx);
-    const existing = await ctx.db.get(args.recordId);
+    const existing = await ctx.db.get(args.prescriptionId);
 
     if (!existing || existing.deletedAt) {
       throw new ConvexError({
         code: "NOT_FOUND",
-        message: "Registro no encontrado.",
+        message: "Prescripcion no encontrada.",
       });
     }
 
     if (existing.professionalId !== profile._id) {
       throw new ConvexError({
         code: "FORBIDDEN",
-        message: "No tienes permiso para editar este registro.",
+        message: "No tienes permiso para modificar esta prescripcion.",
       });
     }
 
-    const oldDoc = existing;
-    await ctx.db.patch(args.recordId, args.data);
-    const newDoc = await ctx.db.get(args.recordId);
-    await recordsAggregate.replace(ctx, oldDoc, newDoc!);
+    await ctx.db.patch(args.prescriptionId, { status: args.status });
 
-    return args.recordId;
+    return args.prescriptionId;
   },
 });

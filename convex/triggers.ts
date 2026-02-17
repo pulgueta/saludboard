@@ -1,23 +1,24 @@
 import { Triggers } from "convex-helpers/server/triggers";
 
 import type { DataModel } from "./_generated/dataModel";
-import { getProfile } from "./auth";
-import { getByUserId } from "./patients";
 
 export const triggers = new Triggers<DataModel>();
 
 triggers.register("users", async (ctx, change) => {
-  if (change.operation === "delete") {
-    const user = await getProfile(ctx);
+  if (change.operation === "delete" && change.oldDoc) {
+    const userId = change.oldDoc._id;
 
-    if (!user) {
-      return;
-    }
+    // Soft-delete all patients owned by this professional
+    const patients = await ctx.db
+      .query("patients")
+      .withIndex("by_professional_id", (q) => q.eq("professionalId", userId))
+      .filter((q) => q.eq(q.field("deletedAt"), undefined))
+      .collect();
 
-    const patient = await getByUserId(ctx, user._id);
+    const now = Date.now();
 
-    if (patient) {
-      await ctx.db.delete("patients", patient._id);
+    for (const patient of patients) {
+      await ctx.db.patch(patient._id, { deletedAt: now });
     }
   }
 });

@@ -1,6 +1,13 @@
 import type { FC, ReactNode } from "react";
+import { lazy, Suspense } from "react";
 
-import { PatientTopNav } from "@/components/compounds/patient/patient-top-nav";
+import { PatientTopNavSkeleton } from "./patient-top-nav.skeleton";
+
+const PatientTopNav = lazy(() =>
+  import("@/components/compounds/patient/patient-top-nav").then((module) => ({
+    default: module.PatientTopNav,
+  })),
+);
 
 type PatientShellProps = {
   children: ReactNode;
@@ -15,7 +22,9 @@ type PatientShellProps = {
 export const PatientShell: FC<PatientShellProps> = ({ children }) => {
   return (
     <div className="flex min-h-dvh flex-col bg-background">
-      <PatientTopNav />
+      <Suspense fallback={<PatientTopNavSkeleton />}>
+        <PatientTopNav />
+      </Suspense>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 lg:px-8 lg:py-8">
         {children}
       </main>

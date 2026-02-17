@@ -36,8 +36,10 @@ export function useCurrentUser() {
   const { user, isLoaded, isSignedIn } = useUser();
 
   const { data: isEnrolled } = useSuspenseQuery(
-    currentUserQueryOptions(user?.id ?? ""),
+    existsQueryOptions(user?.id ?? ""),
   );
+
+  const { data: convexUser } = useSuspenseQuery(getQueryOptions());
 
   const userHasOrganization = !!user?.organizationMemberships.length;
 
@@ -56,7 +58,7 @@ export function useCurrentUser() {
   );
 
   return {
-    user,
+    user: convexUser,
     isLoaded,
     isSignedIn,
     subscription: {
@@ -67,8 +69,13 @@ export function useCurrentUser() {
     isEnrolled,
   } as const;
 }
-export const currentUserQueryOptions = (clerkUserId: string) => {
+
+export const existsQueryOptions = (clerkUserId: string) => {
   return convexQuery(api.users.exists, {
     clerkUserId,
   });
+};
+
+export const getQueryOptions = () => {
+  return convexQuery(api.users.get, {});
 };

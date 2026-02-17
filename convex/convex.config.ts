@@ -9,7 +9,9 @@ const app = defineApp();
 
 app.use(rateLimit);
 app.use(presence);
-app.use(aggregate);
+app.use(aggregate, { name: "patientsAggregate" });
+app.use(aggregate, { name: "appointmentsAggregate" });
+app.use(aggregate, { name: "recordsAggregate" });
 app.use(twilio);
 app.use(storage);
 

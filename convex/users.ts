@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { zQuery } from ".";
+import { getProfile } from "./auth";
 
 export const exists = zQuery({
   args: z.object({
@@ -16,5 +17,17 @@ export const exists = zQuery({
       .unique();
 
     return !!user;
+  },
+});
+
+export const get = zQuery({
+  handler: async (ctx) => {
+    const profile = await getProfile(ctx);
+
+    if (!profile) {
+      return null;
+    }
+
+    return profile;
   },
 });

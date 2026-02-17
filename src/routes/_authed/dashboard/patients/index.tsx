@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
 import { useDebouncedValue } from "@tanstack/react-pacer";
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@ui/avatar";
 import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
@@ -8,13 +8,17 @@ import { Card, CardContent } from "@ui/card";
 import { Input } from "@ui/input";
 import { useState } from "react";
 
+import { PatientDrawer } from "@/components/compounds/patients/patient-drawer";
+import { AppErrorBoundary } from "@/components/error-boundary";
 import { DashboardPageSkeleton } from "@/components/primitives/dashboard-skeleton";
 import { PageHeader } from "@/components/primitives/page-header";
-import { patientsQueryOptions, useSearchPatients } from "@/hooks/use-patients";
+import { useSearchPatients } from "@/hooks/patients/use-patients";
+import { patientsQueryOptions } from "@/lib/query-options/patients";
 
 export const Route = createFileRoute("/_authed/dashboard/patients/")({
   component: PatientsPage,
   pendingComponent: DashboardPageSkeleton,
+  errorComponent: AppErrorBoundary,
   loader: async ({ context }) => {
     if (!context.userId) {
       throw redirect({ to: "/" });
@@ -35,6 +39,7 @@ function getInitials(name: string): string {
 
 function PatientsPage() {
   const [query, setQuery] = useState<string>("");
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const [search] = useDebouncedValue(query, {
     wait: 500,
@@ -48,22 +53,17 @@ function PatientsPage() {
         title="Pacientes"
         description="Gestiona la lista de pacientes"
         actions={
-          <Button
-            nativeButton={false}
-            render={
-              <Link to="/dashboard/patients/new">
-                <PlusIcon weight="bold" className="size-4" />
-                Nuevo paciente
-              </Link>
-            }
-          />
+          <Button onClick={() => setDrawerOpen(true)}>
+            <PlusIcon weight="bold" className="size-4" />
+            Nuevo paciente
+          </Button>
         }
       />
       <div className="relative max-w-sm">
         <MagnifyingGlassIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Buscar por nombre o documento..."
-          value={search}
+          value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="pl-9"
         />
@@ -84,15 +84,17 @@ function PatientsPage() {
               <CardContent className="flex items-center gap-4 p-0">
                 <Avatar>
                   <AvatarFallback>
-                    {getInitials(`${patient.firstName} ${patient.lastName}`)}
+                    {getInitials(
+                      `${patient?.user.firstName} ${patient?.user.lastName}`,
+                    )}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="truncate font-medium text-sm">
-                    {patient.firstName} {patient.lastName}
+                    {patient?.user.firstName} {patient?.user.lastName}
                   </span>
                   <span className="text-muted-foreground text-xs">
-                    {patient.email}
+                    {patient?.user.email}
                   </span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
@@ -103,6 +105,8 @@ function PatientsPage() {
           ))
         )}
       </div>
+
+      <PatientDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
     </>
   );
 }

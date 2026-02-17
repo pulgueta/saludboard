@@ -81,7 +81,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       signUpForceRedirectUrl="/onboarding"
     >
       <ConvexProviderWithClerk client={ctx.convexClient} useAuth={useAuth}>
-        <html lang="es" suppressHydrationWarning>
+        <html lang="es" suppressHydrationWarning className="">
           <head>
             <HeadContent />
           </head>

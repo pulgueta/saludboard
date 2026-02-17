@@ -1,8 +1,9 @@
 import type { OrganizationJSON, UserJSON } from "@clerk/backend";
 import { createClerkClient } from "@clerk/backend";
 import type { Validator } from "convex/values";
-import { v } from "convex/values";
-import z from "zod";
+import { ConvexError, v } from "convex/values";
+import { z } from "zod";
+
 import { zQuery } from ".";
 import {
   internalMutation,
@@ -31,6 +32,26 @@ export async function getProfile(ctx: QueryCtx | MutationCtx) {
     .query("users")
     .withIndex("by_clerk_user_id", (q) => q.eq("clerkUserId", user.subject))
     .unique();
+}
+
+export async function requireProfessional(ctx: QueryCtx | MutationCtx) {
+  const profile = await getProfile(ctx);
+
+  if (!profile) {
+    throw new ConvexError({
+      code: "UNAUTHENTICATED",
+      message: "Debes iniciar sesion para continuar.",
+    });
+  }
+
+  if (profile.userType !== "professional") {
+    throw new ConvexError({
+      code: "FORBIDDEN",
+      message: "Solo los profesionales pueden realizar esta accion.",
+    });
+  }
+
+  return profile;
 }
 
 export async function getOrganization(
